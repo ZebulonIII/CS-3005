@@ -6,21 +6,24 @@ std::string getString( std::istream& is, std::ostream& os, const std::string& pr
 {
 	os << prompt;
 	std::string line;
-	std::getline(is, line);
+	//std::getline(is, line);
+	is >> line;
 	return line;
 }
 int getInteger( std::istream& is, std::ostream& os, const std::string& prompt )
 {
 	os << prompt;
 	std::string line;
-	std::getline(is, line);
+	//std::getline(is, line);
+	is >> line;
 	return std::stoi(line);
 }
 double getDouble( std::istream& is, std::ostream& os, const std::string& prompt )
 {
 	os << prompt;
 	std::string line;
-	getline(is, line);
+	//getline(is, line);
+	is >> line;
 	return std::stod(line);
 }
 int assignment1( std::istream& is, std::ostream& os )
