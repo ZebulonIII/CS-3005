@@ -45,7 +45,6 @@ int assignment2(std::istream& is, std::ostream& os)
 	ppm.setMaxColorValue(max_color_value);
 
 	// initialize pixels
-	int channel = 0;
 	int mid_height = height / 2;
 	int mid_width = width / 2;
 	for (int i = 0; i < height; i++)
