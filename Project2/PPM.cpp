@@ -3,7 +3,7 @@
 PPM::PPM() : height(0), width(0), max_color_value(0) {}
 PPM::PPM(const int& height, const int& width) : height(height), width(width), max_color_value(0)
 {
-	image = new char[height * width];
+	image = new byte[height * width];
 }
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
 {
