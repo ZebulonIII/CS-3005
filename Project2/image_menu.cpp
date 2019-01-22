@@ -59,5 +59,5 @@ int assignment2(std::istream& is, std::ostream& os)
 	output << ppm;
 	output.close();
 
-	return width * height;
+	return ppm.size();
 }

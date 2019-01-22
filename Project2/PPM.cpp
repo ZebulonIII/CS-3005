@@ -1,9 +1,14 @@
 #include "PPM.h"
 
+size_t PPM::sizeOfImage()
+{
+	return height * width * num_channels * sizeof(byte);
+}
+
 PPM::PPM() : height(0), width(0), max_color_value(0) {}
 PPM::PPM(const int& height, const int& width) : height(height), width(width), max_color_value(0)
 {
-	image = new byte[height * width];
+	image = new byte[sizeOfImage()];
 }
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
 {
@@ -11,7 +16,8 @@ bool PPM::indexValid(const int& row, const int& column, const int& channel) cons
 }
 int PPM::index(const int& row, const int& column, const int& channel) const
 {
-	return image[channel + column * num_channels + row * width * num_channels];
+	return channel + column * num_channels + row * width * num_channels;
+	//return channel + (row * width * num_channels + column * num_channels);
 }
 bool PPM::valueValid(const int& value) const
 {
@@ -39,7 +45,7 @@ void PPM::setHeight(const int& height)
 	{
 		this->height = height;
 		delete image;
-		image = new byte[height * width];
+		image = new byte[sizeOfImage()];
 	}
 }
 void PPM::setWidth(const int& width)
@@ -48,7 +54,7 @@ void PPM::setWidth(const int& width)
 	{
 		this->width = width;
 		delete image;
-		image = new byte[height * width];
+		image = new byte[sizeOfImage()];
 	}
 }
 void PPM::setMaxColorValue(const int& max_color_value)
@@ -67,14 +73,16 @@ void PPM::setPixel(const int& row, const int& column, const int& red, const int&
 	setChannel(row, column, 1, green);
 	setChannel(row, column, 2, blue);
 }
+int PPM::size()
+{
+	return height * width;
+}
 std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {
-	std::stringstream ss;
-	ss << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
+	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
 	for (int i = 0; i < rhs.getHeight(); i++)
 		for (int j = 0; j < rhs.getWidth(); j++)
 			for (int k = 0; k < 3; k++)
-				ss << rhs.getChannel(i, j, k);
-	os << ss.str();
+				os << (byte) rhs.getChannel(i, j, k);
 	return os;
 }
