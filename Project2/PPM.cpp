@@ -58,7 +58,7 @@ void PPM::setMaxColorValue(const int& max_color_value)
 }
 void PPM::setChannel(const int& row, const int& column, const int& channel, const int& value)
 {
-	if (valueValid(value) && channel >= 0 && channel < 3 && indexValid(row, column, channel))
+	if (valueValid(value) && indexValid(row, column, channel))
 		image[index(row, column, channel)] = value;
 }
 void PPM::setPixel(const int& row, const int& column, const int& red, const int& green, const int& blue)
