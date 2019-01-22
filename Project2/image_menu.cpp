@@ -49,12 +49,11 @@ int assignment2(std::istream& is, std::ostream& os)
 	int mid_width = width / 2;
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
-			for (int k = 0; k < 3; k++)
-			{
-				ppm.setChannel(i, j, k, i <= mid_height ? 0 : max_color_value);
-				ppm.setChannel(i, j, k, j <= mid_width ? 0 : max_color_value);
-				ppm.setChannel(i, j, k, (i + j) % (max_color_value + 1));
-			}
+		{
+			ppm.setChannel(i, j, 0, i <= mid_height ? 0 : max_color_value);
+			ppm.setChannel(i, j, 1, j <= mid_width ? 0 : max_color_value);
+			ppm.setChannel(i, j, 2, (i + j) % (max_color_value + 1));
+		}
 
 	std::ofstream output(filename);
 	output << ppm;
