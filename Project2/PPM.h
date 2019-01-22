@@ -4,10 +4,12 @@
 #include <iostream>
 #include <sstream>
 
+using byte = unsigned char;
+
 class PPM
 {
 private:
-	char* image;
+	byte* image;
 	int height, width, max_color_value;
 	const int num_channels = 3;
 
