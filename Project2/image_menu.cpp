@@ -34,11 +34,17 @@ int assignment1(std::istream& is, std::ostream& os)
 		os << i << ' ' << s << ' ' << d << std::endl;
 	return integer;
 }
+void writeUserImage(std::istream& is, std::ostream& os, const PPM& p)
+{
+	std::string filename = getString(is, os, "Output filename? ");
+	std::ofstream output(filename);
+	output << p;
+	output.close();
+}
 int assignment2(std::istream& is, std::ostream& os)
 {
 	int height = getInteger(is, os, "Image height? ");
 	int width = getInteger(is, os, "Image width? ");
-	std::string filename = getString(is, os, "Image filename? ");
 
 	PPM ppm = PPM(height, width);
 	int max_color_value = (height + width) / 3;
@@ -46,7 +52,7 @@ int assignment2(std::istream& is, std::ostream& os)
 		max_color_value = 255;
 	ppm.setMaxColorValue(max_color_value);
 
-	// initialize pixels
+	// create image
 	int mid_height = height / 2;
 	int mid_width = width / 2;
 	for (int i = 0; i < height; i++)
@@ -56,10 +62,7 @@ int assignment2(std::istream& is, std::ostream& os)
 			ppm.setChannel(i, j, 1, (i + j) % (max_color_value + 1));		// g
 			ppm.setChannel(i, j, 2, j < mid_width ? 0 : max_color_value);	// b
 		}
-
-	std::ofstream output(filename);
-	output << ppm;
-	output.close();
-
+	
+	writeUserImage(is, os, ppm);
 	return ppm.size();
 }
