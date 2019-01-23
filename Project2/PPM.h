@@ -17,6 +17,7 @@ private:
 public:
 	PPM();
 	PPM(const int& height, const int& width);
+	~PPM();
 	bool indexValid(const int& row, const int& column, const int& channel) const;
 	int index(const int& row, const int& column, const int& channel) const;
 	bool valueValid(const int& value) const;
