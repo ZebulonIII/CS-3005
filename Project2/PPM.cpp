@@ -19,7 +19,7 @@ PPM::~PPM()
 // Checks if row, column and channel are all within the legal limits. Returns true if they all are, and false otherwise.
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
 {
-	return row >= 0 && row < height && column >= 0 && column < width && channel >= 0 && channel < 3;
+	return row >= 0 && row < height && column >= 0 && column < width && channel >= 0 && channel < num_channels;
 }
 // Returns the index into the channels data for the color channel in the pixel at row, column.
 int PPM::index(const int& row, const int& column, const int& channel) const
@@ -49,7 +49,10 @@ int PPM::getMaxColorValue() const
 // Returns an int representation of the color channel and pixel specified. Returns -1 if the channel or pixel is not valid.
 int PPM::getChannel(const int& row, const int& column, const int& channel) const
 {
-	return (int) image[index(row, column, channel)];
+	if (!indexValid(row, column, channel)
+	    return -1;
+	else
+	    return (int) image[index(row, column, channel)];
 }
 /* Change the height of the PPM. The state of any new or existing pixels after this call is undetermined.
    Only non-negative values should be accepted. If the value is not accepted, make no changes.
