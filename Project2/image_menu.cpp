@@ -42,6 +42,8 @@ int assignment2(std::istream& is, std::ostream& os)
 
 	PPM ppm = PPM(height, width);
 	int max_color_value = (height + width) / 3;
+	if (max_color_value > 255)
+		max_color_value = 255;
 	ppm.setMaxColorValue(max_color_value);
 
 	// initialize pixels
@@ -50,9 +52,9 @@ int assignment2(std::istream& is, std::ostream& os)
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 		{
-			ppm.setChannel(i, j, 0, i <= mid_height ? 0 : max_color_value);
-			ppm.setChannel(i, j, 1, j <= mid_width ? 0 : max_color_value);
-			ppm.setChannel(i, j, 2, (i + j) % (max_color_value + 1));
+			ppm.setChannel(i, j, 0, i < mid_height ? 0 : max_color_value);	// r
+			ppm.setChannel(i, j, 1, (i + j) % (max_color_value + 1));		// g
+			ppm.setChannel(i, j, 2, j < mid_width ? 0 : max_color_value);	// b
 		}
 
 	std::ofstream output(filename);
