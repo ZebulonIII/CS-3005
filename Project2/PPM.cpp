@@ -6,11 +6,16 @@ size_t PPM::sizeOfImage()
 	return height * width * num_channels * sizeof(byte);
 }
 // The default constructor. A default PPM has 0 height, 0 width, and max color value of 0.
-PPM::PPM() : height(0), width(0), max_color_value(0) {}
+PPM::PPM() : height(0), width(0), max_color_value(0), image(NULL) {}
 // A constructor with parameters for the height and width. The max color value should be set to 0.
 PPM::PPM(const int& height, const int& width) : height(height), width(width), max_color_value(0)
 {
 	image = new byte[sizeOfImage()];
+}
+PPM::~PPM()
+{
+	if (image != NULL)
+		delete image;
 }
 // Checks if row, column and channel are all within the legal limits. Returns true if they all are, and false otherwise.
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
