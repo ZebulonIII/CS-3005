@@ -13,4 +13,4 @@ PPM.o: PPM.cpp
 	g++ -std=c++11 -c PPM.cpp
 
 clean:
-	rm ppm_image ppm_menu.o image_menu.o PPM.o
+	rm ppm_menu.o image_menu.o PPM.o
