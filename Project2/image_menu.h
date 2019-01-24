@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "PPM.h"
 
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt);
 int getInteger(std::istream& is, std::ostream& os, const std::string& prompt);

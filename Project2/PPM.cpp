@@ -6,7 +6,7 @@ size_t PPM::sizeOfImage()
 	return height * width * num_channels * sizeof(byte);
 }
 // The default constructor. A default PPM has 0 height, 0 width, and max color value of 0.
-PPM::PPM() : height(0), width(0), max_color_value(0), image(nullptr) {}
+PPM::PPM() : image(nullptr), height(0), width(0), max_color_value(0) {}
 // A constructor with parameters for the height and width. The max color value should be set to 0.
 PPM::PPM(const int& height, const int& width) : height(height), width(width), max_color_value(0)
 {
@@ -49,7 +49,7 @@ int PPM::getMaxColorValue() const
 // Returns an int representation of the color channel and pixel specified. Returns -1 if the channel or pixel is not valid.
 int PPM::getChannel(const int& row, const int& column, const int& channel) const
 {
-	if (!indexValid(row, column, channel)
+	if (!indexValid(row, column, channel))
 	    return -1;
 	else
 	    return (int) image[index(row, column, channel)];
@@ -90,7 +90,7 @@ void PPM::setMaxColorValue(const int& max_color_value)
 void PPM::setChannel(const int& row, const int& column, const int& channel, const int& value)
 {
 	if (valueValid(value) && indexValid(row, column, channel))
-		image[index(row, column, channel)] = value;
+		image[index(row, column, channel)] = (byte) value;
 }
 // Set all three channels for the specified pixel. Should use setChannel to do the work.
 void PPM::setPixel(const int& row, const int& column, const int& red, const int& green, const int& blue)
@@ -99,11 +99,11 @@ void PPM::setPixel(const int& row, const int& column, const int& red, const int&
 	setChannel(row, column, 1, green);
 	setChannel(row, column, 2, blue);
 }
-// Return number of pixels in image
+/*// Return number of pixels in image
 int PPM::size()
 {
 	return height * width;
-}
+}*/
 std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {
 	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
