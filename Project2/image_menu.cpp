@@ -37,7 +37,7 @@ int assignment1(std::istream& is, std::ostream& os)
 void writeUserImage(std::istream& is, std::ostream& os, const PPM& p)
 {
 	std::string filename = getString(is, os, "Output filename? ");
-	std::ofstream output(filename);
+	std::ofstream output(filename, std::ios::binary);
 	output << p;
 	output.close();
 }

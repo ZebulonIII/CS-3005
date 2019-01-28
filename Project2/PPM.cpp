@@ -99,11 +99,6 @@ void PPM::setPixel(const int& row, const int& column, const int& red, const int&
 	setChannel(row, column, 1, green);
 	setChannel(row, column, 2, blue);
 }
-/*// Return number of pixels in image
-int PPM::size()
-{
-	return height * width;
-}*/
 std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {
 	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
