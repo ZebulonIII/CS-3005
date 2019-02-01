@@ -114,6 +114,7 @@ PPM& PPM::operator= (const PPM& rhs)
 	this->height = rhs.height;
 	this->width = rhs.width;
 	this->max_color_value = rhs.max_color_value;
+	delete image;
 	this->image = new byte[sizeOfImage()];
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
