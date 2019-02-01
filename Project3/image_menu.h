@@ -21,7 +21,7 @@ void setSize(std::istream& is, std::ostream& os, PPM& src);
 void setMaxColorValue(std::istream& is, std::ostream& os, PPM& src);
 void setChannel(std::istream& is, std::ostream& os, PPM& src);
 void setPixel(std::istream& is, std::ostream& os, PPM& src);
-void clearAll(std::istream& is, std::ostream& os, PPM& src);
+void clearAll(PPM& src);
 void drawDiamond(std::istream& is, std::ostream& os, PPM& src);
 void drawCircle(std::istream& is, std::ostream& os, PPM& src);
 void drawBox(std::istream& is, std::ostream& os, PPM& src);

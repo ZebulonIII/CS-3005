@@ -77,7 +77,7 @@ void showMenu(std::ostream& os)
 		"max) Set the max color value of input image 1\n"
 		"channel) Set a channel value in input image 1\n"
 		"pixel) Set a pixel's 3 values in input image 1\n"
-		"clear) Set all pixels to 0, 0, 0 in input image 1\n"
+		"clear) Set all pixels to 0,0,0 in input image 1\n"
 		"diamond) Draw a diamond shape in input image 1\n"
 		"circle) Draw a circle shape in input image 1\n"
 		"box) Draw a box shape in input image 1\n"
@@ -90,8 +90,8 @@ std::string getChoice(std::istream& is, std::ostream& os)
 void commentLine(std::istream& is)
 {
 	char* buffer = new char[1];
-	while (is.read(buffer, 1));
-	delete buffer;
+	while (is.read(buffer, 1) && buffer[0] != '\n');
+	delete[] buffer;
 }
 void setSize(std::istream& is, std::ostream& os, PPM& src)
 {
@@ -104,14 +104,24 @@ void setMaxColorValue(std::istream& is, std::ostream& os, PPM& src)
 }
 void setChannel(std::istream& is, std::ostream& os, PPM& src)
 {
-	src.setChannel(getInteger(is, os, "Row? "), getInteger(is, os, "Column? "), getInteger(is, os, "Channel? "), getInteger(is, os, "Value? "));
+	int row = getInteger(is, os, "Row? ");
+	int col = getInteger(is, os, "Column? ");
+	int channel = getInteger(is, os, "Channel? ");
+	int value = getInteger(is, os, "Value? ");
+
+	src.setChannel(row, col, channel, value);
 }
 void setPixel(std::istream& is, std::ostream& os, PPM& src)
 {
-	src.setPixel(getInteger(is, os, "Row? "), getInteger(is, os, "Column? "),
-		getInteger(is, os, "Red? "), getInteger(is, os, "Green? "), getInteger(is, os, "Blue? "));
+	int row = getInteger(is, os, "Row? ");
+	int col = getInteger(is, os, "Column? ");
+	int red = getInteger(is, os, "Red? ");
+	int green = getInteger(is, os, "Green? ");
+	int blue = getInteger(is, os, "Blue? ");
+
+	src.setPixel(row, col, red, green, blue);
 }
-void clearAll(std::istream& is, std::ostream& os, PPM& src)
+void clearAll(PPM& src)
 {
 	for (int i = 0; i < src.getHeight(); i++)
 		for (int j = 0; j < src.getWidth(); j++)
@@ -174,57 +184,31 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 	(void)input_image2; // eliminates unused parameter warning
 
 	if (choice == "write")
-	{
 		writeUserImage(is, os, output_image);
-	}
 	else if (choice == "copy")
-	{
-		output_image = PPM(input_image1);
-	}
+		output_image = input_image1;
 	else if (choice[0] == '#')
-	{
 		commentLine(is);
-	}
 	else if (choice == "size")
-	{
 		setSize(is, os, input_image1);
-	}
 	else if (choice == "max")
-	{
 		setMaxColorValue(is, os, input_image1);
-	}
 	else if (choice == "channel")
-	{
 		setChannel(is, os, input_image1);
-	}
 	else if (choice == "pixel")
-	{
 		setPixel(is, os, input_image1);
-	}
 	else if (choice == "clear")
-	{
-		clearAll(is, os, input_image1);
-	}
+		clearAll(input_image1);
 	else if (choice == "diamond")
-	{
 		drawDiamond(is, os, input_image1);
-	}
 	else if (choice == "circle")
-	{
 		drawCircle(is, os, input_image1);
-	}
 	else if (choice == "box")
-	{
 		drawBox(is, os, input_image1);
-	}
 	else if (choice == "quit")
-	{
 		return;
-	}	
 	else
-	{
 		os << "Unkown action '" << choice << "'.\n";
-	}
 }
 int imageMenu(std::istream& is, std::ostream& os)
 {
@@ -232,18 +216,10 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM input_image2 = PPM();
 	PPM output_image = PPM();
 	std::string choice;
-	setSize(is, os, input_image1);
-	setMaxColorValue(is, os, input_image1);
-	drawBox(is, os, input_image1);
-	drawCircle(is, os, input_image1);
-	drawDiamond(is, os, input_image1);
-	takeAction(is, os, "copy", input_image1, input_image2, output_image);
-	takeAction(is, os, "write", input_image1, input_image2, output_image);
-	/*do
-	{
+	do {
 		showMenu(os);
 		choice = getChoice(is, os);
 		takeAction(is, os, choice, input_image1, input_image2, output_image);
-	} while (choice != "quit");*/
+	} while (choice != "quit");
 	return 0;
 }

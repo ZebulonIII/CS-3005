@@ -100,17 +100,8 @@ void PPM::setPixel(const int& row, const int& column, const int& red, const int&
 	setChannel(row, column, 1, green);
 	setChannel(row, column, 2, blue);
 }
-std::ostream& operator<< (std::ostream& os, const PPM& rhs)
-{
-	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
-	for (int i = 0; i < rhs.getHeight(); i++)
-		for (int j = 0; j < rhs.getWidth(); j++)
-			for (int k = 0; k < 3; k++)
-				os << (byte) rhs.getChannel(i, j, k);
-	return os;
-}
 PPM& PPM::operator= (const PPM& rhs)
-{	
+{
 	this->height = rhs.height;
 	this->width = rhs.width;
 	this->max_color_value = rhs.max_color_value;
@@ -121,4 +112,13 @@ PPM& PPM::operator= (const PPM& rhs)
 			for (int k = 0; k < num_channels; k++)
 				setChannel(i, j, k, rhs.getChannel(i, j, k));
 	return *this;
+}
+std::ostream& operator<< (std::ostream& os, const PPM& rhs)
+{
+	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
+	for (int i = 0; i < rhs.getHeight(); i++)
+		for (int j = 0; j < rhs.getWidth(); j++)
+			for (int k = 0; k < 3; k++)
+				os << (byte) rhs.getChannel(i, j, k);
+	return os;
 }
