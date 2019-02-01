@@ -183,7 +183,7 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 	}
 	else if (choice[0] == '#')
 	{
-		return;
+		commentLine(is);
 	}
 	else if (choice == "size")
 	{
