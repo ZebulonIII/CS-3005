@@ -1,4 +1,5 @@
 #include "PPM.h"
+#include <cstring>
 
 // Returns amount of memory needed to store the image
 size_t PPM::sizeOfImage()
@@ -107,10 +108,11 @@ PPM& PPM::operator= (const PPM& rhs)
 	this->max_color_value = rhs.max_color_value;
 	delete image;
 	this->image = new byte[sizeOfImage()];
-	for (int i = 0; i < height; i++)
+	/*for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
-				setChannel(i, j, k, rhs.getChannel(i, j, k));
+				setChannel(i, j, k, rhs.getChannel(i, j, k));*/
+	std::memcpy(this->image, rhs.image, this->sizeOfImage());
 	return *this;
 }
 std::ostream& operator<< (std::ostream& os, const PPM& rhs)
