@@ -286,6 +286,8 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 }
 void readUserImage(std::istream& is, std::ostream& os, PPM& ppm)
 {
-	is >> ppm;
-	os << "File read.\n";
+	std::string filename = getString(is, os, "Input filename? ");
+	std::ifstream ifs(filename);
+	ifs >> ppm;
+	ifs.close();
 }

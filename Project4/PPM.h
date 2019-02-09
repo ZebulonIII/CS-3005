@@ -37,11 +37,10 @@ public:
 	void grayFromBlue(PPM& dst) const;
 	double linearColorimetricPixelValue(const int& row, const int& column) const;
 	void grayFromLinearColorimetric(PPM& dst) const;
-	PPM& operator= (const PPM& rhs);
+	PPM& operator= (const PPM& rhs);	
 };
 
 std::ostream& operator<< (std::ostream& os, const PPM& rhs);
 std::istream& operator>> (std::istream& is, PPM& rhs);
-
 
 #endif // _PPM_H_

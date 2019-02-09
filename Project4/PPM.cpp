@@ -163,16 +163,26 @@ std::ostream& operator<< (std::ostream& os, const PPM& rhs)
 				os << (byte) rhs.getChannel(i, j, k);
 	return os;
 }
-std::istream& operator>>( std::istream& is, PPM& rhs )
+std::istream& operator>>(std::istream& is, PPM& rhs)
 {
 	std::string p6;
 	int height, width, max_color_value;
+	char* value = new char[3];
 
-	is >> p6 >> height >> width >> max_color_value;
-	rhs = PPM(height, width);
+	is >> p6 >> width >> height >> max_color_value;
+	is.ignore(); //ignore newline
+
+	rhs.setHeight(height);
+	rhs.setWidth(width);
 	rhs.setMaxColorValue(max_color_value);
 
-	is.read((char*)rhs.image, rhs.sizeOfImage());
-
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+		{
+			is.read(value, 3 * sizeof(char));
+			rhs.setPixel(i, j, value[0], value[1], value[2]);
+		}
+	
+	delete[] value;
 	return is;
 }

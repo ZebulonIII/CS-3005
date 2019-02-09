@@ -1,11 +1,12 @@
 GCC := g++ -std=c++11
+G := -g
 C := -c
 O := -o
 
 all: ppm_menu
 
 ppm_menu: ppm_menu.o image_menu.o PPM.o
-	$(GCC) $^ $(O) ppm_image
+	$(GCC) $^ $(O) ppm_menu
 
 ppm_menu.o: ppm_menu.cpp
 	$(GCC) $(C) $<
