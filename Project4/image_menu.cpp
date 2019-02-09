@@ -261,6 +261,8 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.grayFromGreen(output_image);
 	else if (choice == "blue-gray")
 		input_image1.grayFromBlue(output_image);
+	else if (choice == "linear-gray")
+		input_image1.grayFromLinearColorimetric(output_image);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")

@@ -109,10 +109,13 @@ void PPM::setPixel(const int& row, const int& column, const int& value)
 }
 void PPM::grayFromChannel(PPM& dst, const int& src_channel) const
 {
+	dst.setHeight(height);
+	dst.setWidth(width);
+	dst.setMaxColorValue(max_color_value);
+
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
-			for (int k = 0; k < 3; k++)
-				dst.setChannel(i, j, k, getChannel(i, j, src_channel));
+			dst.setPixel(i, j, getChannel(i, j, src_channel));
 }
 void PPM::grayFromRed(PPM& dst) const
 {
@@ -136,6 +139,10 @@ double PPM::linearColorimetricPixelValue(const int& row, const int& column) cons
 }
 void PPM::grayFromLinearColorimetric(PPM& dst) const
 {
+	dst.setHeight(height);
+	dst.setWidth(width);
+	dst.setMaxColorValue(max_color_value);
+
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			dst.setPixel(i, j, (int)linearColorimetricPixelValue(i, j));
