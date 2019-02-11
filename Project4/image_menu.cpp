@@ -67,22 +67,6 @@ int assignment2(std::istream& is, std::ostream& os)
 	return 0;
 }
 // Project 3
-/*void showMenu(std::ostream& os)
-{
-	os << "\nActions available:\n\n"
-		"write) Write output image to file.\n"
-		"copy) Copy input image 1 to output image.\n"
-		"# Comment to end of line\n"
-		"size) Set the size of input image 1\n"
-		"max) Set the max color value of input image 1\n"
-		"channel) Set a channel value in input image 1\n"
-		"pixel) Set a pixel's 3 values in input image 1\n"
-		"clear) Set all pixels to 0,0,0 in input image 1\n"
-		"diamond) Draw a diamond shape in input image 1\n"
-		"circle) Draw a circle shape in input image 1\n"
-		"box) Draw a box shape in input image 1\n"
-		"quit) Quit\n\n";
-}*/
 std::string getChoice(std::istream& is, std::ostream& os)
 {
 	return getString(is, os, "Choice? ");
@@ -143,7 +127,7 @@ void drawDiamond(std::istream& is, std::ostream& os, PPM& src)
 
 	for (int i = lower_i; i <= upper_i; i++)
 		for (int j = lower_j; j <= upper_j; j++)
-			if (std::abs(i - center_row) + std::abs(j - center_col) <= size) //?
+			if (std::abs(i - center_row) + std::abs(j - center_col) <= size)
 				src.setPixel(i, j, red, green, blue);
 }
 void drawCircle(std::istream& is, std::ostream& os, PPM& src)
@@ -179,37 +163,6 @@ void drawBox(std::istream& is, std::ostream& os, PPM& src)
 		for (int j = left_col; j <= right_col; j++)
 			src.setPixel(i, j, red, green, blue);
 }
-/*void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image)
-{
-	(void)input_image2; // eliminates unused parameter warning
-
-	if (choice == "write")
-		writeUserImage(is, os, output_image);
-	else if (choice == "copy")
-		output_image = input_image1;
-	else if (choice[0] == '#')
-		commentLine(is);
-	else if (choice == "size")
-		setSize(is, os, input_image1);
-	else if (choice == "max")
-		setMaxColorValue(is, os, input_image1);
-	else if (choice == "channel")
-		setChannel(is, os, input_image1);
-	else if (choice == "pixel")
-		setPixel(is, os, input_image1);
-	else if (choice == "clear")
-		clearAll(input_image1);
-	else if (choice == "diamond")
-		drawDiamond(is, os, input_image1);
-	else if (choice == "circle")
-		drawCircle(is, os, input_image1);
-	else if (choice == "box")
-		drawBox(is, os, input_image1);
-	else if (choice == "quit")
-		return;
-	else
-		os << "Unkown action '" << choice << "'.\n";
-}*/
 int imageMenu(std::istream& is, std::ostream& os)
 {
 	PPM input_image1 = PPM();

@@ -156,10 +156,6 @@ PPM& PPM::operator=(const PPM& rhs)
 	this->max_color_value = rhs.max_color_value;
 	delete image;
 	this->image = new byte[sizeOfImage()];
-	/*for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			for (int k = 0; k < num_channels; k++)
-				setChannel(i, j, k, rhs.getChannel(i, j, k));*/
 	std::memcpy(this->image, rhs.image, this->sizeOfImage());
 	return *this;
 }
@@ -186,7 +182,8 @@ std::istream& operator>>(std::istream& is, PPM& rhs)
 	rhs.setMaxColorValue(max_color_value);
 
 	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++){
+		for (int j = 0; j < width; j++)
+		{
 			is.read((char*)pixel, 3);
 			rhs.setPixel(i, j, pixel[0], pixel[1], pixel[2]);
 		}
