@@ -107,6 +107,8 @@ void PPM::setPixel(const int& row, const int& column, const int& value)
 	for (int k = 0; k < num_channels; k++)
 		setChannel(row, column, k, value);
 }
+/* Sets dst to have the same meta-data as *this. Sets every pixel in dst to have all channels (Red, Green and Blue) set to
+   the value taken from the src_channel of the pixel at the same position of *this. Channel is the channel index (0, 1 or 2)*/
 void PPM::grayFromChannel(PPM& dst, const int& src_channel) const
 {
 	dst.setHeight(height);
@@ -147,7 +149,7 @@ void PPM::grayFromLinearColorimetric(PPM& dst) const
 		for (int j = 0; j < width; j++)
 			dst.setPixel(i, j, (int)linearColorimetricPixelValue(i, j));
 }
-PPM& PPM::operator= (const PPM& rhs)
+PPM& PPM::operator=(const PPM& rhs)
 {
 	this->height = rhs.height;
 	this->width = rhs.width;
@@ -161,7 +163,7 @@ PPM& PPM::operator= (const PPM& rhs)
 	std::memcpy(this->image, rhs.image, this->sizeOfImage());
 	return *this;
 }
-std::ostream& operator<< (std::ostream& os, const PPM& rhs)
+std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {
 	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
 	for (int i = 0; i < rhs.getHeight(); i++)
@@ -174,7 +176,7 @@ std::istream& operator>>(std::istream& is, PPM& rhs)
 {
 	std::string p6;
 	int height, width, max_color_value;
-	char* value = new char[3];
+	byte* pixel = new byte[3];
 
 	is >> p6 >> width >> height >> max_color_value;
 	is.ignore(); //ignore newline
@@ -184,12 +186,11 @@ std::istream& operator>>(std::istream& is, PPM& rhs)
 	rhs.setMaxColorValue(max_color_value);
 
 	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-		{
-			is.read(value, 3 * sizeof(char));
-			rhs.setPixel(i, j, value[0], value[1], value[2]);
+		for (int j = 0; j < width; j++){
+			is.read((char*)pixel, 3);
+			rhs.setPixel(i, j, pixel[0], pixel[1], pixel[2]);
 		}
 	
-	delete[] value;
+	delete[] pixel;
 	return is;
 }
