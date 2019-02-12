@@ -37,6 +37,8 @@ public:
 	void grayFromBlue(PPM& dst) const;
 	double linearColorimetricPixelValue(const int& row, const int& column) const;
 	void grayFromLinearColorimetric(PPM& dst) const;
+	void invert(PPM& dst) const; // custom
+	void motionBlur(const int& blur_length, PPM& dst) const; // custom
 	PPM& operator= (const PPM& rhs);	
 };
 

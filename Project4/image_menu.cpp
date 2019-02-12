@@ -187,6 +187,8 @@ void showMenu(std::ostream& os)
 		"green-gray) Set output image from input image 1's grayscale from green.\n"
 		"blue-gray) Set output image from input image 1's grayscale from blue.\n"
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
+		"invert) Set output image to inverted input image 1.\n"
+		"motionblur) Set output image to a motionblured input image 1.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -216,6 +218,10 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.grayFromBlue(output_image);
 	else if (choice == "linear-gray")
 		input_image1.grayFromLinearColorimetric(output_image);
+	else if (choice == "invert") // custom
+		input_image1.invert(output_image);
+	else if (choice == "motionblur")
+		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image); // custom
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")

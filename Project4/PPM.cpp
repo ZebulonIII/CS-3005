@@ -1,5 +1,6 @@
 #include "PPM.h"
 #include <cstring>
+#include <algorithm>
 
 // The default constructor. A default PPM has 0 height, 0 width, and max color value of 0.
 PPM::PPM() : image(nullptr), height(0), width(0), max_color_value(0) {}
@@ -148,6 +149,45 @@ void PPM::grayFromLinearColorimetric(PPM& dst) const
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			dst.setPixel(i, j, (int)linearColorimetricPixelValue(i, j));
+}
+void PPM::invert(PPM& dst) const // custom
+{
+	dst.setHeight(height);
+	dst.setWidth(width);
+	dst.setMaxColorValue(max_color_value);
+
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			for (int k = 0; k < num_channels; k++)
+				dst.setChannel(i, j, k, max_color_value - getChannel(i, j, k));
+}
+// Blur length must be > 0
+void PPM::motionBlur(const int& blur_length, PPM& dst) const // custom
+{
+	if (blur_length < 0)
+		return;
+
+	dst.setHeight(height);
+	dst.setWidth(width);
+	dst.setMaxColorValue(max_color_value);
+
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+		{
+			int numPixelsToRight = std::min(width - j, blur_length);
+			int r = 0, g = 0, b = 0;
+			for (int a = 0; a < numPixelsToRight; a++)
+			{
+				r += getChannel(i, j + a, 0);
+				g += getChannel(i, j + a, 1);
+				b += getChannel(i, j + a, 2);
+			}
+			r /= numPixelsToRight;
+			g /= numPixelsToRight;
+			b /= numPixelsToRight;
+
+			dst.setPixel(i, j, r, g, b);
+		}
 }
 PPM& PPM::operator=(const PPM& rhs)
 {
