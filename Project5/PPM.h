@@ -40,16 +40,16 @@ public:
 	void invert(PPM& dst) const; // custom
 	void motionBlur(const int& blur_length, PPM& dst) const; // custom
 	PPM& operator= (const PPM& rhs);
-	const PPM operator+ (const PPM& ppm_object) const;
+	PPM operator+ (const PPM& ppm_object) const;
 	PPM& operator+= (const PPM& ppm_object);
-	const PPM operator- (const PPM& ppm_object) const;
+	PPM operator- (const PPM& ppm_object) const;
 	PPM& operator-= (const PPM& ppm_object);	
-	const PPM operator* (const double& value) const;
+	PPM operator* (const double& value) const;
 	PPM& operator*= (const double& value);
-	const PPM operator/ (const double& value) const;
+	PPM operator/ (const double& value) const;
 	PPM& operator/= (const double& value);
-	bool operator== (const PPM& ppm_object);
-	bool operator!= (const PPM& ppm_object);	
+	bool operator== (const PPM& ppm_object) const;
+	bool operator!= (const PPM& ppm_object) const;	
 };
 
 std::ostream& operator<< (std::ostream& os, const PPM& rhs);
