@@ -265,6 +265,11 @@ PPM PPM::operator*(const double& value) const
 			}
 	return ppm3;
 }
+PPM& operator*=(const double& value)
+{
+	*this = (*this * value);
+	return *this;
+}
 // The operator to divide the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 / 0.25;
 PPM PPM::operator/(const double& value) const
 {
