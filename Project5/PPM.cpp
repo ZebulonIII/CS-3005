@@ -200,7 +200,7 @@ PPM& PPM::operator=(const PPM& rhs)
 	return *this;
 }
 // The operator to add the values of two PPM objects, creating a new one. e.g. ppm3 = ppm1 + ppm2; Assume the PPM objects are of the same size.
-const PPM PPM::operator+(const PPM& ppm_object) const
+PPM PPM::operator+(const PPM& ppm_object) const
 {
 	PPM ppm3 = PPM(height, width);
 	ppm3.setMaxColorValue(max_color_value);
@@ -211,16 +211,25 @@ const PPM PPM::operator+(const PPM& ppm_object) const
 				int new_value = getChannel(i, j, k) + ppm_object.getChannel(i, j, k);
 				if (new_value > max_color_value)
 					new_value = max_color_value;
-				else if (new_value < 0)
-					new_value = 0;
 				ppm3.setChannel(i, j, k, new_value);
 			}
 	return ppm3;
 }
 // The operator to subtract the values of two PPM objects, creating a new one. e.g. ppm3 = ppm1 - ppm2; Assume the PPM objects are of the same size.
-const PPM PPM::operator-(const PPM& ppm_object) const
+PPM PPM::operator-(const PPM& ppm_object) const
 {
-	return *this + (ppm_object * -1);
+	PPM ppm3 = PPM(height, width);
+	ppm3.setMaxColorValue(max_color_value);
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			for (int k = 0; k < num_channels; k++)
+			{
+				int new_value = getChannel(i, j, k) + ppm_object.getChannel(i, j, k);
+				if (new_value < 0)
+					new_value = 0;
+				ppm3.setChannel(i, j, k, new_value);
+			}
+	return ppm3;
 }
 /* The operator to add one PPM object into another. e.g. ppm1 += ppm2. This should add each pixel of the images.
    A pixel addition is completed by adding the red channels, adding the green channels and adding the blue channels.
@@ -239,7 +248,7 @@ PPM& PPM::operator-=(const PPM& ppm_object)
 	return *this;
 }
 // The operator to multiply the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 * 0.67;
-const PPM PPM::operator*(const double& value) const
+PPM PPM::operator*(const double& value) const
 {
 	PPM ppm3 = PPM(height, width);
 	ppm3.setMaxColorValue(max_color_value);
@@ -257,7 +266,7 @@ const PPM PPM::operator*(const double& value) const
 	return ppm3;
 }
 // The operator to divide the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 / 0.25;
-const PPM PPM::operator/(const double& value) const
+PPM PPM::operator/(const double& value) const
 {
 	return *this * (1 / value);
 }
@@ -269,7 +278,7 @@ PPM& PPM::operator/=(const double& value)
 	*this = (*this / value);
 	return *this;
 }
-bool PPM::operator== (const PPM& ppm_object)
+bool PPM::operator== (const PPM& ppm_object) const
 {
 	/*for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
@@ -279,7 +288,7 @@ bool PPM::operator== (const PPM& ppm_object)
 	return true;*/
 	return std::memcmp(image, ppm_object.image, sizeOfImage()) == 0;
 }
-bool PPM::operator!= (const PPM& ppm_object)
+bool PPM::operator!= (const PPM& ppm_object) const
 {
 	return !(*this == ppm_object);
 }
