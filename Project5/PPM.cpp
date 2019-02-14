@@ -224,7 +224,7 @@ PPM PPM::operator-(const PPM& ppm_object) const
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
 			{
-				int new_value = getChannel(i, j, k) + ppm_object.getChannel(i, j, k);
+				int new_value = getChannel(i, j, k) - ppm_object.getChannel(i, j, k);
 				if (new_value < 0)
 					new_value = 0;
 				ppm3.setChannel(i, j, k, new_value);
@@ -234,7 +234,7 @@ PPM PPM::operator-(const PPM& ppm_object) const
 /* The operator to add one PPM object into another. e.g. ppm1 += ppm2. This should add each pixel of the images.
    A pixel addition is completed by adding the red channels, adding the green channels and adding the blue channels.
    If any channel exceeds the maximum color value, set the channel to the maximum color value. Assume the PPM objects are of the same size.*/
-PPM& operator+=(const PPM& ppm_object)
+PPM& PPM::operator+=(const PPM& ppm_object)
 {
 	*this = (*this + ppm_object);
 	return *this;
@@ -265,7 +265,7 @@ PPM PPM::operator*(const double& value) const
 			}
 	return ppm3;
 }
-PPM& operator*=(const double& value)
+PPM& PPM::operator*=(const double& value)
 {
 	*this = (*this * value);
 	return *this;
@@ -283,20 +283,14 @@ PPM& PPM::operator/=(const double& value)
 	*this = (*this / value);
 	return *this;
 }
-bool PPM::operator== (const PPM& ppm_object) const
+/*bool PPM::operator== (const PPM& ppm_object)
 {
-	/*for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			for (int k = 0; k < num_channels; k++)
-				if (getChannel(i, j, k) != ppm_object.getChannel(i, j, k))
-					return false;
-	return true;*/
 	return std::memcmp(image, ppm_object.image, sizeOfImage()) == 0;
 }
 bool PPM::operator!= (const PPM& ppm_object) const
 {
 	return !(*this == ppm_object);
-}
+}*/
 std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {
 	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;

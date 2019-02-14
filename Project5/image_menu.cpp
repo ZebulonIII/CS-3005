@@ -181,6 +181,7 @@ void showMenu(std::ostream& os)
 {
 	os << "\nActions available:\n\n"
 		"read1) Read file into input image 1.\n"
+		"read2) Read file into input image 2.\n"
 		"write) Write output image to file.\n"
 		"copy) Copy input image 1 to output image.\n"
 		"red-gray) Set output image from input image 1's grayscale from red.\n"
@@ -189,6 +190,10 @@ void showMenu(std::ostream& os)
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
 		"invert) Set output image to inverted input image 1.\n"
 		"motionblur) Set output image to a motionblured input image 1.\n"
+		"add) Set output image to image1 + image2.\n"
+		"sub) Set output image to image1 - image2.\n"
+		"multiply) Set output image to image1 * value.\n"
+		"divide) Set output image to image1 / value.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -202,10 +207,10 @@ void showMenu(std::ostream& os)
 }
 void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image)
 {
-	(void)input_image2; // eliminates unused parameter warning
-
 	if (choice == "read1")
 		readUserImage(is, os, input_image1);
+	else if (choice == "read2")
+		readUserImage(is, os, input_image2);
 	else if (choice == "write")
 		writeUserImage(is, os, output_image);
 	else if (choice == "copy")
@@ -222,6 +227,14 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.invert(output_image);
 	else if (choice == "motionblur")
 		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image); // custom
+	else if (choice == "add")
+		output_image = input_image1 + input_image2;
+	else if (choice == "sub")
+		output_image = input_image1 - input_image2;
+	else if (choice == "multiply")
+		output_image = input_image1 * getDouble(is, os, "Value? ");
+	else if (choice == "divide")
+		output_image = input_image1 / getDouble(is, os, "Value? ");
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
