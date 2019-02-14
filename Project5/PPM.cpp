@@ -15,7 +15,7 @@ PPM::~PPM()
 		delete[] image;
 }
 // Returns amount of memory needed to store the image
-size_t PPM::sizeOfImage()
+size_t PPM::sizeOfImage() const
 {
 	return height * width * num_channels * sizeof(byte);
 }
@@ -283,14 +283,14 @@ PPM& PPM::operator/=(const double& value)
 	*this = (*this / value);
 	return *this;
 }
-/*bool PPM::operator== (const PPM& ppm_object)
+bool PPM::operator== (const PPM& ppm_object) const
 {
 	return std::memcmp(image, ppm_object.image, sizeOfImage()) == 0;
 }
 bool PPM::operator!= (const PPM& ppm_object) const
 {
 	return !(*this == ppm_object);
-}*/
+}
 std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {
 	os << "P6 " << rhs.getWidth() << ' ' << rhs.getHeight() << ' ' << rhs.getMaxColorValue() << std::endl;
@@ -319,7 +319,7 @@ std::istream& operator>>(std::istream& is, PPM& rhs)
 			is.read((char*)pixel, 3);
 			rhs.setPixel(i, j, pixel[0], pixel[1], pixel[2]);
 		}
-	
+
 	delete[] pixel;
 	return is;
 }

@@ -17,7 +17,7 @@ public:
 	PPM();
 	PPM(const int& height, const int& width);
 	~PPM();
-	size_t sizeOfImage();
+	size_t sizeOfImage() const;
 	bool indexValid(const int& row, const int& column, const int& channel) const;
 	int index(const int& row, const int& column, const int& channel) const;
 	bool valueValid(const int& value) const;
@@ -43,13 +43,13 @@ public:
 	PPM operator+ (const PPM& ppm_object) const;
 	PPM& operator+= (const PPM& ppm_object);
 	PPM operator- (const PPM& ppm_object) const;
-	PPM& operator-= (const PPM& ppm_object);	
+	PPM& operator-= (const PPM& ppm_object);
 	PPM operator* (const double& value) const;
 	PPM& operator*= (const double& value);
 	PPM operator/ (const double& value) const;
 	PPM& operator/= (const double& value);
 	bool operator== (const PPM& ppm_object) const;
-	bool operator!= (const PPM& ppm_object) const;	
+	bool operator!= (const PPM& ppm_object) const;
 };
 
 std::ostream& operator<< (std::ostream& os, const PPM& rhs);
