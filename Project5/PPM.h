@@ -41,9 +41,15 @@ public:
 	void motionBlur(const int& blur_length, PPM& dst) const; // custom
 	PPM& operator= (const PPM& rhs);
 	PPM operator+ (const PPM& ppm_object) const;
+	PPM operator+ (const int& value) const;
+	friend PPM operator+ (const int& value, const PPM& ppm_object);
 	PPM& operator+= (const PPM& ppm_object);
+	PPM& operator+= (const int& value);
 	PPM operator- (const PPM& ppm_object) const;
+	PPM operator- (const int& value) const;
+	friend PPM operator- (const int& value, const PPM& ppm_object);
 	PPM& operator-= (const PPM& ppm_object);
+	PPM& operator-= (const int& value);
 	PPM operator* (const double& value) const;
 	PPM& operator*= (const double& value);
 	PPM operator/ (const double& value) const;

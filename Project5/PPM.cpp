@@ -202,7 +202,7 @@ PPM& PPM::operator=(const PPM& rhs)
 // The operator to add the values of two PPM objects, creating a new one. e.g. ppm3 = ppm1 + ppm2; Assume the PPM objects are of the same size.
 PPM PPM::operator+(const PPM& ppm_object) const
 {
-	PPM ppm3 = PPM(height, width);
+	/*PPM ppm3 = PPM(height, width);
 	ppm3.setMaxColorValue(max_color_value);
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
@@ -213,15 +213,25 @@ PPM PPM::operator+(const PPM& ppm_object) const
 					new_value = max_color_value;
 				ppm3.setChannel(i, j, k, new_value);
 			}
-	return ppm3;
-	/*PPM ppm = *this;
+	return ppm3;*/
+	PPM ppm = *this;
 	ppm += ppm_object;
-	return ppm;*/
+	return ppm;
+}
+PPM PPM::operator+(const int& value) const
+{
+	PPM ppm = *this;
+	ppm += value;
+	return ppm;
+}
+PPM operator+(const int& value, const PPM& ppm_object)
+{
+	return ppm_object + value;
 }
 // The operator to subtract the values of two PPM objects, creating a new one. e.g. ppm3 = ppm1 - ppm2; Assume the PPM objects are of the same size.
 PPM PPM::operator-(const PPM& ppm_object) const
 {
-	PPM ppm3 = PPM(height, width);
+	/*PPM ppm3 = PPM(height, width);
 	ppm3.setMaxColorValue(max_color_value);
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
@@ -232,44 +242,72 @@ PPM PPM::operator-(const PPM& ppm_object) const
 					new_value = 0;
 				ppm3.setChannel(i, j, k, new_value);
 			}
-	return ppm3;
-	/*PPM ppm = *this;
+	return ppm3;*/
+	PPM ppm = *this;
 	ppm -= ppm_object;
-	return ppm;*/
+	return ppm;
+}
+PPM PPM::operator-(const int& value) const
+{
+	PPM ppm = *this;
+	ppm -= value;
+	return ppm;
+}
+PPM operator-(const int& value, const PPM& ppm_object)
+{
+	return ppm_object - value;
 }
 /* The operator to add one PPM object into another. e.g. ppm1 += ppm2. This should add each pixel of the images.
    A pixel addition is completed by adding the red channels, adding the green channels and adding the blue channels.
    If any channel exceeds the maximum color value, set the channel to the maximum color value. Assume the PPM objects are of the same size.*/
 PPM& PPM::operator+=(const PPM& ppm_object)
 {
-	 *this = (*this + ppm_object);
-	return *this;
+	/* *this = (*this + ppm_object);
+	return *this;*/
 	// If the sizes are guarenteed to be equal, I could use this since I wouldn't need the safety checks of getChannel
-	/*for (size_t i = 0; i < sizeOfImage(); i++)
+	for (size_t i = 0; i < sizeOfImage(); i++)
 	{
 		int new_value = image[i] + ppm_object.image[i];
 		image[i] = (new_value > max_color_value ? max_color_value : new_value);
 	}
-	return *this;*/
+	return *this;
+}
+PPM& PPM::operator+=(const int& value)
+{
+	for (size_t i = 0; i < sizeOfImage(); i++)
+	{
+		int new_value = image[i] + value;
+		image[i] = (new_value > max_color_value ? max_color_value : new_value);
+	}
+	return *this;
 }
 /* The operator to subtract one PPM object from another. e.g. ppm1 -= ppm2. This should subtract each pixel of the images.
    A pixel subtraction is completed by subtracting the red channels, subtracting the green channels and subtracting the blue channels.
    If any channel is less than 0, set the channel to 0. Assume the PPM objects are of the same size.*/
 PPM& PPM::operator-=(const PPM& ppm_object)
 {
-	*this = (*this - ppm_object);
-	return *this;
-	/*for (size_t i = 0; i < sizeOfImage(); i++)
+	/* *this = (*this - ppm_object);
+	return *this;*/
+	for (size_t i = 0; i < sizeOfImage(); i++)
 	{
 		int new_value = image[i] - ppm_object.image[i];
 		image[i] = (new_value < 0 ? 0 : new_value);
 	}
-	return ppm*/
+	return *this;
+}
+PPM& PPM::operator-=(const int& value)
+{
+	for (size_t i = 0; i < sizeOfImage(); i++)
+	{
+		int new_value = image[i] - value;
+		image[i] = (new_value < 0 ? 0 : new_value);
+	}
+	return *this;
 }
 // The operator to multiply the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 * 0.67;
 PPM PPM::operator*(const double& value) const
 {
-	PPM ppm3 = PPM(height, width);
+	/*PPM ppm3 = PPM(height, width);
 	ppm3.setMaxColorValue(max_color_value);
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
@@ -282,23 +320,23 @@ PPM PPM::operator*(const double& value) const
 					new_value = 0;
 				ppm3.setChannel(i, j, k, new_value);
 			}
-	return ppm3;
-	/*PPM ppm = *this;
+	return ppm3;*/
+	PPM ppm = *this;
 	ppm *= value;
-	return ppm;*/
+	return ppm;
 }
 PPM& PPM::operator*=(const double& value)
 {
-	*this = (*this * value);
-	return *this;
-	/*for (size_t i = 0; i < sizeOfImage(); i++)
+	/* *this = (*this * value);
+	return *this;*/
+	for (size_t i = 0; i < sizeOfImage(); i++)
 	{
 		int new_value = image[i] * value;
 		if (new_value > max_color_value) new_value = max_color_value;
 		else if (new_value < 0) new_value = 0;
 		image[i] = new_value;
 	}
-	return *this;*/
+	return *this;
 }
 // The operator to divide the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 / 0.25;
 PPM PPM::operator/(const double& value) const
