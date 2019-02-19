@@ -31,12 +31,12 @@ int imageMenu(std::istream& is, std::ostream& os);
 void readUserImage(std::istream& is, std::ostream& os, PPM& ppm);
 // Project5
 void plus(std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2, PPM& dst);
-void plusEquals( std::istream& is, std::ostream& os, PPM& src1, const PPM& src2 );
-void minus( std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2, PPM& dst );
-void minusEquals( std::istream& is, std::ostream& os, PPM& src1, const PPM& src2 );
-void times( std::istream& is, std::ostream& os, const PPM& src, PPM& dst );
-void timesEquals( std::istream& is, std::ostream& os, PPM& src );
-void divide( std::istream& is, std::ostream& os, const PPM& src, PPM& dst );
-void divideEquals( std::istream& is, std::ostream& os, PPM& src );
+void plusEquals(std::istream& is, std::ostream& os, PPM& src1, const PPM& src2);
+void minus(std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2, PPM& dst);
+void minusEquals(std::istream& is, std::ostream& os, PPM& src1, const PPM& src2);
+void times(std::istream& is, std::ostream& os, const PPM& src, PPM& dst);
+void timesEquals(std::istream& is, std::ostream& os, PPM& src);
+void divide(std::istream& is, std::ostream& os, const PPM& src, PPM& dst);
+void divideEquals(std::istream& is, std::ostream& os, PPM& src);
 
 #endif // _IMAGE_MENU_H_

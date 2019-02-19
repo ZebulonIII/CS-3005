@@ -40,6 +40,7 @@ public:
 	void grayFromLinearColorimetric(PPM& dst) const;
 	void invert(PPM& dst) const; // custom
 	void motionBlur(const int& blur_length, PPM& dst) const; // custom
+	bool equals(const PPM& rhs) const; // custom
 	PPM& operator= (const PPM& rhs);
 	PPM operator+ (const PPM& rhs) const;
 	PPM operator+ (const int& value) const;
