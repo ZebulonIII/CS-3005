@@ -188,12 +188,14 @@ void showMenu(std::ostream& os)
 		"green-gray) Set output image from input image 1's grayscale from green.\n"
 		"blue-gray) Set output image from input image 1's grayscale from blue.\n"
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
-		"invert) Set output image to inverted input image 1.\n"
-		"motionblur) Set output image to a motionblured input image 1.\n"
-		"add) Set output image to image1 + image2.\n"
-		"sub) Set output image to image1 - image2.\n"
-		"multiply) Set output image to image1 * value.\n"
-		"divide) Set output image to image1 / value.\n"
+		"+) Set output image from sum of input image 1 and input image 2\n"
+		"+=) Set input image 1 by adding in input image 2\n"
+		"-) Set output image from difference of input image 1 and input image 2\n"
+		"-=) Set input image 1 by subtracting input image 2\n"
+		"*) Set output image from input image 1 multiplied by a number\n"
+		"*=) Set input image 1 by multiplying by a number\n"
+		"/) Set output image from input image 1 divided by a number\n"
+		"/=) Set input image 1 by dividing by a number\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -225,16 +227,24 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.grayFromLinearColorimetric(output_image);
 	else if (choice == "invert") // custom
 		input_image1.invert(output_image);
-	else if (choice == "motionblur")
-		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image); // custom
-	else if (choice == "add")
-		output_image = input_image1 + input_image2;
-	else if (choice == "sub")
-		output_image = input_image1 - input_image2;
-	else if (choice == "multiply")
-		output_image = input_image1 * getDouble(is, os, "Value? ");
-	else if (choice == "divide")
-		output_image = input_image1 / getDouble(is, os, "Value? ");
+	else if (choice == "motionblur") // custom
+		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image);
+	else if (choice == "+")
+		plus(is, os, input_image1, input_image2, output_image);
+	else if (choice == "+=")
+		plusEquals(is, os, input_image1, input_image2);
+	else if (choice == "-")
+		minus(is, os, input_image1, input_image2, output_image);
+	else if (choice == "-=")
+		minusEquals(is, os, input_image1, input_image2);
+	else if (choice == "*")
+		times(is, os, input_image1, output_image);
+	else if (choice == "*=")
+		timesEquals(is, os, input_image1);
+	else if (choice == "/")
+		divide(is, os, input_image1, output_image);
+	else if (choice == "/=")
+		divideEquals(is, os, input_image1);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -264,4 +274,45 @@ void readUserImage(std::istream& is, std::ostream& os, PPM& ppm)
 	std::ifstream ifs(filename);
 	ifs >> ppm;
 	ifs.close();
+}
+// Project 5
+void plus(std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2, PPM& dst)
+{
+	(void) is;
+	(void) os;
+	dst = src1 + src2;
+}
+void plusEquals(std::istream& is, std::ostream& os, PPM& src1, const PPM& src2 )
+{
+	(void) is;
+	(void) os;
+	src1 += src2;
+}
+void minus(std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2, PPM& dst)
+{
+	(void) is;
+	(void) os;
+	dst = src1 - src2;
+}
+void minusEquals(std::istream& is, std::ostream& os, PPM& src1, const PPM& src2)
+{
+	(void) is;
+	(void) os;
+	src1 -= src2;
+}
+void times(std::istream& is, std::ostream& os, const PPM& src, PPM& dst)
+{
+	dst = src * getDouble(is, os, "Factor? ");
+}
+void timesEquals(std::istream& is, std::ostream& os, PPM& src)
+{
+	src *= getDouble(is, os, "Factor? ");
+}
+void divide(std::istream& is, std::ostream& os, const PPM& src, PPM& dst)
+{
+	dst = src / getDouble(is, os, "Factor? ");
+}
+void divideEquals(std::istream& is, std::ostream& os, PPM& src)
+{
+	src /= getDouble(is, os, "Factor? ");
 }

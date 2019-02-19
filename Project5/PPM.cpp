@@ -19,6 +19,11 @@ size_t PPM::sizeOfImage() const
 {
 	return height * width * num_channels * sizeof(byte);
 }
+// Returns the number of pixels in the image
+size_t PPM::numPixels() const
+{
+	return height * width;
+}
 // Checks if row, column and channel are all within the legal limits. Returns true if they all are, and false otherwise.
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
 {
@@ -189,6 +194,14 @@ void PPM::motionBlur(const int& blur_length, PPM& dst) const // custom
 			dst.setPixel(i, j, r, g, b);
 		}
 }
+// Returns true if the two images have the same meta data and every pixel is equivalent
+bool equals(const PPM& ppm_object) const
+{
+	if (height != ppm_object.getHeight()) return false;
+	else if (width != ppm_object.getWidth()) return false;
+	else if (max_color_value != ppm_object.getMaxColorValue()) return false;
+	else return std::memcmp(image, ppm_object.image, sizeOfImage()) == 0;
+}
 PPM& PPM::operator=(const PPM& rhs)
 {
 	this->height = rhs.height;
@@ -305,16 +318,31 @@ PPM& PPM::operator/=(const double& value)
 {
 	return *this *= (1 / value);
 }
-bool PPM::operator== (const PPM& ppm_object) const
+// Returns true if *this has the same number of pixels as rhs. Otherwise returns false.
+bool PPM::operator== (const PPM& rhs) const
 {
-	if (height != ppm_object.getHeight()) return false;
-	else if (width != ppm_object.getWidth()) return false;
-	else if (max_color_value != ppm_object.getMaxColorValue()) return false;
-	else return std::memcmp(image, ppm_object.image, sizeOfImage()) == 0;
+	return numPixels() == rhs.numPixels();
 }
+// Returns true if *this has a different number of pixels than rhs. Otherwise returns false.
 bool PPM::operator!= (const PPM& ppm_object) const
 {
 	return !(*this == ppm_object);
+}
+bool PPM::operator< (const PPM& rhs) const
+{
+	return numPixels() < rhs.numPixels();
+}
+bool PPM::operator<= (const PPM& rhs) const
+{
+	return numPixels() <= rhs.numPixels();
+}
+bool PPM::operator> (const PPM& rhs) const
+{
+	return !(*this <= rhs);
+}
+bool PPM::operator>= (const PPM& rhs) const
+{
+	return !(*this < rhs);
 }
 std::ostream& operator<<(std::ostream& os, const PPM& rhs)
 {

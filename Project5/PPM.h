@@ -18,6 +18,7 @@ public:
 	PPM(const int& height, const int& width);
 	~PPM();
 	size_t sizeOfImage() const;
+	size_t numPixels() const;
 	bool indexValid(const int& row, const int& column, const int& channel) const;
 	int index(const int& row, const int& column, const int& channel) const;
 	bool valueValid(const int& value) const;
@@ -40,22 +41,26 @@ public:
 	void invert(PPM& dst) const; // custom
 	void motionBlur(const int& blur_length, PPM& dst) const; // custom
 	PPM& operator= (const PPM& rhs);
-	PPM operator+ (const PPM& ppm_object) const;
+	PPM operator+ (const PPM& rhs) const;
 	PPM operator+ (const int& value) const;
-	friend PPM operator+ (const int& value, const PPM& ppm_object);
-	PPM& operator+= (const PPM& ppm_object);
+	friend PPM operator+ (const int& value, const PPM& rhs);
+	PPM& operator+= (const PPM& rhs);
 	PPM& operator+= (const int& value);
-	PPM operator- (const PPM& ppm_object) const;
+	PPM operator- (const PPM& rhs) const;
 	PPM operator- (const int& value) const;
-	friend PPM operator- (const int& value, const PPM& ppm_object);
-	PPM& operator-= (const PPM& ppm_object);
+	friend PPM operator- (const int& value, const PPM& rhs);
+	PPM& operator-= (const PPM& rhs);
 	PPM& operator-= (const int& value);
 	PPM operator* (const double& value) const;
 	PPM& operator*= (const double& value);
 	PPM operator/ (const double& value) const;
 	PPM& operator/= (const double& value);
-	bool operator== (const PPM& ppm_object) const;
-	bool operator!= (const PPM& ppm_object) const;
+	bool operator== (const PPM& rhs) const;
+	bool operator!= (const PPM& rhs) const;
+	bool operator< (const PPM& rhs) const;
+	bool operator<= (const PPM& rhs) const;
+	bool operator> (const PPM& rhs) const;
+	bool operator>= (const PPM& rhs) const;
 };
 
 std::ostream& operator<< (std::ostream& os, const PPM& rhs);
