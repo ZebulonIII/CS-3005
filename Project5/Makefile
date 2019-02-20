@@ -1,6 +1,5 @@
 GCC := g++ -std=c++11
-G := -g
-C := -c
+C := -c -g
 O := -o
 
 all: ppm_menu

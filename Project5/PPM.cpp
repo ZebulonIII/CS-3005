@@ -11,8 +11,8 @@ PPM::PPM(const int& height, const int& width) : height(height), width(width), ma
 }
 PPM::~PPM()
 {
-	if (image != nullptr)
-		delete[] image;
+	delete[] image;
+	image = nullptr;
 }
 // Returns amount of memory needed to store the image
 size_t PPM::sizeOfImage() const
@@ -71,6 +71,7 @@ void PPM::setHeight(const int& height)
 	{
 		this->height = height;
 		delete[] image;
+		image = nullptr;
 		image = new byte[sizeOfImage()];
 	}
 }
@@ -83,6 +84,7 @@ void PPM::setWidth(const int& width)
 	{
 		this->width = width;
 		delete[] image;
+		image = nullptr;
 		image = new byte[sizeOfImage()];
 	}
 }
@@ -195,7 +197,7 @@ void PPM::motionBlur(const int& blur_length, PPM& dst) const // custom
 		}
 }
 // Returns true if the two images have the same meta data and every pixel is equivalent
-bool equals(const PPM& ppm_object) const
+bool PPM::equals(const PPM& ppm_object) const
 {
 	if (height != ppm_object.getHeight()) return false;
 	else if (width != ppm_object.getWidth()) return false;
@@ -204,12 +206,13 @@ bool equals(const PPM& ppm_object) const
 }
 PPM& PPM::operator=(const PPM& rhs)
 {
-	this->height = rhs.height;
-	this->width = rhs.width;
-	this->max_color_value = rhs.max_color_value;
-	delete image;
-	this->image = new byte[sizeOfImage()];
-	std::memcpy(this->image, rhs.image, this->sizeOfImage());
+	setHeight(rhs.getHeight());
+	setWidth(rhs.getWidth());
+	setMaxColorValue(rhs.getMaxColorValue());
+	delete[] image;
+	image = nullptr;
+	image = new byte[sizeOfImage()];
+	std::memcpy(image, rhs.image, sizeOfImage());
 	return *this;
 }
 // The operator to add the values of two PPM objects, creating a new one. e.g. ppm3 = ppm1 + ppm2; Assume the PPM objects are of the same size.
@@ -360,10 +363,12 @@ std::istream& operator>>(std::istream& is, PPM& rhs)
 	byte* pixel = new byte[3];
 
 	is >> p6 >> width >> height >> max_color_value;
-	is.ignore(); //ignore newline
+	//is.ignore(); //ignore newline
+	is.read((char*)pixel, 1); // ignore newline
 
-	rhs.setHeight(height);
-	rhs.setWidth(width);
+	//rhs.setHeight(height);
+	//rhs.setWidth(width);
+	rhs = PPM(height, width);
 	rhs.setMaxColorValue(max_color_value);
 
 	for (int i = 0; i < height; i++)

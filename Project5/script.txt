@@ -1,0 +1,12 @@
+read1
+monet.ppm
+read2
+van.ppm
++
+write
+plus.ppm
+#-
+#write
+#minus.ppm
+quit
+
