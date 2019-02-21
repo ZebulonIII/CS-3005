@@ -177,6 +177,14 @@ int imageMenu(std::istream& is, std::ostream& os)
 	return 0;
 }
 // Project 4
+void readUserImage(std::istream& is, std::ostream& os, PPM& ppm)
+{
+	std::string filename = getString(is, os, "Input filename? ");
+	std::ifstream ifs(filename);
+	ifs >> ppm;
+	ifs.close();
+}
+// Project 5
 void showMenu(std::ostream& os)
 {
 	os << "\nActions available:\n\n"
@@ -270,19 +278,11 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 	else
 		os << "Unkown action '" << choice << "'.\n";
 }
-void readUserImage(std::istream& is, std::ostream& os, PPM& ppm)
-{
-	std::string filename = getString(is, os, "Input filename? ");
-	std::ifstream ifs(filename);
-	ifs >> ppm;
-	ifs.close();
-}
-// Project 5
 void plus(std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2, PPM& dst)
 {
 	(void) is;
 	(void) os;
-	dst = src1 + src2;
+	dst = (src1 + src2);
 }
 void plusEquals(std::istream& is, std::ostream& os, PPM& src1, const PPM& src2 )
 {
@@ -294,7 +294,7 @@ void minus(std::istream& is, std::ostream& os, const PPM& src1, const PPM& src2,
 {
 	(void) is;
 	(void) os;
-	dst = src1 - src2;
+	dst = (src1 - src2);
 }
 void minusEquals(std::istream& is, std::ostream& os, PPM& src1, const PPM& src2)
 {

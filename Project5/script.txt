@@ -2,11 +2,21 @@ read1
 monet.ppm
 read2
 van.ppm
-+
+*
+1.5
 write
-plus.ppm
+times.ppm
+#+
+#write
+#plus.ppm
 #-
 #write
 #minus.ppm
+#-=
+#write
+#minus_equals.ppm
+#+=
+#write
+#plus_equals.ppm
 quit
 
