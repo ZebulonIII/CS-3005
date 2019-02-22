@@ -33,8 +33,11 @@ size_t PPM::numPixels() const
 void PPM::initializeImage()
 {
 	delete[] image;
-	image = new byte[sizeOfImage()];
-	std::fill_n(image, sizeOfImage(), 0);
+	if (height > 0 && width > 0)
+	{
+		image = new byte[sizeOfImage()];
+		std::fill_n(image, sizeOfImage(), 0);
+	}
 }
 // Checks if row, column and channel are all within the legal limits. Returns true if they all are, and false otherwise.
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
@@ -82,8 +85,7 @@ void PPM::setHeight(const int& height)
 	if (height >= 0)
 	{
 		this->height = height;
-		if (width > 0)
-			initializeImage();
+		initializeImage();
 	}
 }
 /* Change the width of the PPM. The state of any new or existing pixels after this call is undetermined.
@@ -94,8 +96,7 @@ void PPM::setWidth(const int& width)
 	if (width >= 0)
 	{
 		this->width = width;
-		if (height > 0)
-			initializeImage();
+		initializeImage();
 	}
 }
 /* Change the maximum color value of the PPM. Only values 0 to 255, inclusive should be accepted.
@@ -248,6 +249,7 @@ PPM PPM::operator+ (const PPM& rhs) const
 }
 PPM& PPM::operator+= (const PPM& rhs)
 {
+	std::printf("%d %d %d %d %d %d", height, width, max_color_value, rhs.height, rhs.width, rhs.max_color_value);
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
