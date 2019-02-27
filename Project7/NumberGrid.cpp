@@ -68,14 +68,11 @@ void NumberGrid::setPPM(PPM& ppm) const
 {
 	ppm.setHeight(height);
 	ppm.setWidth(width);
-	//std::cout << "Max " << max_number << std::endl;
-	ppm.setMaxColorValue(max_number);
-
+	ppm.setMaxColorValue(63);
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 		{
 			int number = getNumber(i, j);
-			//std::printf("Number: %d\n", number);
 			int r, g, b;
 
 			if (number == 0)
@@ -102,7 +99,6 @@ void NumberGrid::setPPM(PPM& ppm) const
 				}
 			}
 			ppm.setPixel(i, j, r, g, b);
-			//std::printf("r: %d, g: %d, b: %d", r, g, b);
 		}
 }
 
