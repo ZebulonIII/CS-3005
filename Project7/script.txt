@@ -1,0 +1,35 @@
+# Load input image 1
+read1
+common-monet-water-lilies.ppm
+# Load input image 2
+read2
+common-van-gogh-starry-night.ppm
+
+# Save the sum
++
+write
+plus.ppm
+
+# Save the difference
+-
+write
+common-monet-vangogh.ppm
+
+# brighten the Monet
+*=
+1.5
+copy
+write
+common-monet-bright.ppm
+
+# dim the Van Gogh
+read1
+common-van-gogh-starry-night.ppm
+/=
+2.0
+copy
+write
+common-vangogh-dim.ppm
+
+# Quit
+quit
