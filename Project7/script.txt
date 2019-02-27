@@ -1,35 +1,92 @@
-# Load input image 1
-read1
-common-monet-water-lilies.ppm
-# Load input image 2
-read2
-common-van-gogh-starry-night.ppm
+# Configure the grid
+grid 5 15 11
 
-# Save the sum
-+
-write
-plus.ppm
+# Set some of the numbers in the grid
+grid-set 0 0 11
+grid-set 0 1 11
+grid-set 0 2 11
+grid-set 0 3 11
+grid-set 0 4 11
+grid-set 0 5 11
+grid-set 0 6 11
+grid-set 0 7 11
+grid-set 0 8 11
+grid-set 0 9 11
+grid-set 0 10 11
+grid-set 0 11 11
+grid-set 0 12 11
+grid-set 0 13 11
+grid-set 0 14 11
 
-# Save the difference
--
-write
-common-monet-vangogh.ppm
+grid-set 1 0 11
+grid-set 1 1 0
+grid-set 1 2 0
+grid-set 1 3 0
+grid-set 1 4 0
+grid-set 1 5 0
+grid-set 1 6 0
+grid-set 1 7 0
+grid-set 1 8 0
+grid-set 1 9 0
+grid-set 1 10 0
+grid-set 1 11 0
+grid-set 1 12 0
+grid-set 1 13 0
+grid-set 1 14 11
 
-# brighten the Monet
-*=
-1.5
-copy
-write
-common-monet-bright.ppm
+grid-set 2 0 11
+grid-set 2 1 0
+grid-set 2 2 1
+grid-set 2 3 2
+grid-set 2 4 3
+grid-set 2 5 4
+grid-set 2 6 5
+grid-set 2 7 6
+grid-set 2 8 7
+grid-set 2 9 8
+grid-set 2 10 9
+grid-set 2 11 10
+grid-set 2 12 8
+grid-set 2 13 0
+grid-set 2 14 11
 
-# dim the Van Gogh
-read1
-common-van-gogh-starry-night.ppm
-/=
-2.0
-copy
-write
-common-vangogh-dim.ppm
+grid-set 3 0 11
+grid-set 3 1 0
+grid-set 3 2 0
+grid-set 3 3 0
+grid-set 3 4 0
+grid-set 3 5 0
+grid-set 3 6 0
+grid-set 3 7 0
+grid-set 3 8 0
+grid-set 3 9 0
+grid-set 3 10 0
+grid-set 3 11 0
+grid-set 3 12 0
+grid-set 3 13 0
+grid-set 3 14 11
+
+grid-set 4 0 11
+grid-set 4 1 11
+grid-set 4 2 11
+grid-set 4 3 11
+grid-set 4 4 11
+grid-set 4 5 11
+grid-set 4 6 11
+grid-set 4 7 11
+grid-set 4 8 11
+grid-set 4 9 11
+grid-set 4 10 11
+grid-set 4 11 11
+grid-set 4 12 11
+grid-set 4 13 11
+grid-set 4 14 11
+
+# Apply grid values to the output PPM
+grid-apply
+
+# Save the image to file
+write sample-grid-image.ppm
 
 # Quit
 quit

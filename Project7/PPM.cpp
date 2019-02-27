@@ -3,24 +3,19 @@
 #include <algorithm>
 
 // The default constructor. A default PPM has 0 height, 0 width, and max color value of 0.
-PPM::PPM() : image(nullptr), height(0), width(0), max_color_value(0) {}
+PPM::PPM() : image(std::vector<byte>()), height(0), width(0), max_color_value(0) {}
 // A constructor with parameters for the height and width. The max color value should be set to 0.
 PPM::PPM(const int& height, const int& width) : height(height), width(width), max_color_value(0)
 {
-	image = nullptr;
 	initializeImage();
 }
-PPM::PPM(const PPM& copy)
+/*PPM::PPM(const PPM& copy)
 {
 	setHeight(copy.getHeight());
 	setWidth(copy.getWidth());
 	setMaxColorValue(copy.getMaxColorValue());
-	std::memcpy(this->image, copy.image, this->sizeOfImage());
-}
-PPM::~PPM()
-{
-	delete[] image;
-}
+	this->image = std::vector<byte>(copy.image());
+}*/
 // Returns amount of memory needed to store the image
 size_t PPM::sizeOfImage() const
 {
@@ -32,9 +27,7 @@ size_t PPM::numPixels() const
 }
 void PPM::initializeImage()
 {
-	delete[] image;
-	image = new byte[sizeOfImage()];
-	std::fill_n(image, sizeOfImage(), 0);
+	image = std::vector<byte>(sizeOfImage(), 0);
 }
 // Checks if row, column and channel are all within the legal limits. Returns true if they all are, and false otherwise.
 bool PPM::indexValid(const int& row, const int& column, const int& channel) const
@@ -82,8 +75,7 @@ void PPM::setHeight(const int& height)
 	if (height >= 0)
 	{
 		this->height = height;
-		if (width > 0)
-			initializeImage();
+		initializeImage();
 	}
 }
 /* Change the width of the PPM. The state of any new or existing pixels after this call is undetermined.
@@ -94,8 +86,7 @@ void PPM::setWidth(const int& width)
 	if (width >= 0)
 	{
 		this->width = width;
-		if (height > 0)
-			initializeImage();
+		initializeImage();
 	}
 }
 /* Change the maximum color value of the PPM. Only values 0 to 255, inclusive should be accepted.
@@ -223,7 +214,7 @@ PPM& PPM::operator=(const PPM& rhs)
 	setHeight(rhs.getHeight());
 	setWidth(rhs.getWidth());
 	setMaxColorValue(rhs.getMaxColorValue());
-	std::memcpy(this->image, rhs.image, this->sizeOfImage());
+	this->image = std::vector<byte>(rhs.image);
 	return *this;
 }
 PPM PPM::operator+ (const PPM& rhs) const

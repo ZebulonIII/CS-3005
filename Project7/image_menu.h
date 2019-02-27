@@ -26,7 +26,7 @@ void clearAll(PPM& src);
 void drawDiamond(std::istream& is, std::ostream& os, PPM& src);
 void drawCircle(std::istream& is, std::ostream& os, PPM& src);
 void drawBox(std::istream& is, std::ostream& os, PPM& src);
-void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image);
+void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image, NumberGrid& grid);
 int imageMenu(std::istream& is, std::ostream& os);
 // Project 4
 void readUserImage(std::istream& is, std::ostream& os, PPM& ppm);

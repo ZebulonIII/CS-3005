@@ -24,6 +24,6 @@ public:
 private:
 	std::vector<int> number_grid;
 	int height, width, max_number;
-}
+};
 
 #endif // _NUMBERGRID_H_

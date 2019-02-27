@@ -8,7 +8,6 @@ NumberGrid::NumberGrid() : max_number(255)
 NumberGrid::NumberGrid(const int& height, const int& width) :  max_number(255)
 {
 	setGridSize(height, width);
-	number_grid = std::vector<int>(height * width, 0);
 }
 int NumberGrid::getHeight() const
 {
@@ -40,9 +39,9 @@ void NumberGrid::setMaxNumber(const int& number)
 }
 const std::vector<int>& NumberGrid::getNumbers() const
 {
-	return &number_grid;
+	return number_grid;
 }
-int NumberGrid::index(const in& row, const int& column) const
+int NumberGrid::index(const int& row, const int& column) const
 {
 	return row * width + column;
 }
@@ -56,7 +55,7 @@ bool NumberGrid::numberValid(const int& number) const
 }
 int NumberGrid::getNumber(const int& row, const int& column) const
 {
-	return (indexValid(row, column) ? number_grid[index(row, column)] : -1);
+	return (indexValid(row, column) ? (int) number_grid[index(row, column)] : -1);
 }
 void NumberGrid::setNumber(const int& row, const int& column, const int& number)
 {
@@ -69,15 +68,20 @@ void NumberGrid::setPPM(PPM& ppm) const
 {
 	ppm.setHeight(height);
 	ppm.setWidth(width);
+	//std::cout << "Max " << max_number << std::endl;
 	ppm.setMaxColorValue(max_number);
 
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 		{
 			int number = getNumber(i, j);
+			//std::printf("Number: %d\n", number);
 			int r, g, b;
+
 			if (number == 0)
+			{
 				r = g = b = 0;
+			}
 			else if (number == max_number)
 			{
 				r = 63;
@@ -98,6 +102,7 @@ void NumberGrid::setPPM(PPM& ppm) const
 				}
 			}
 			ppm.setPixel(i, j, r, g, b);
+			//std::printf("r: %d, g: %d, b: %d", r, g, b);
 		}
 }
 
