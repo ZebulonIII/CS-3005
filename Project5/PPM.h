@@ -3,22 +3,25 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 using byte = unsigned char;
 
 class PPM
 {
 private:
-	byte* image;
+	//byte* image;
+	std::vector<byte> image;
 	int height, width, max_color_value;
 	const int num_channels = 3;
 
 public:
 	PPM();
 	PPM(const int& height, const int& width);
-	~PPM();
+	//PPM(const PPM& copy);
 	size_t sizeOfImage() const;
 	size_t numPixels() const;
+	void initializeImage();
 	bool indexValid(const int& row, const int& column, const int& channel) const;
 	int index(const int& row, const int& column, const int& channel) const;
 	bool valueValid(const int& value) const;
@@ -40,22 +43,16 @@ public:
 	void grayFromLinearColorimetric(PPM& dst) const;
 	void invert(PPM& dst) const; // custom
 	void motionBlur(const int& blur_length, PPM& dst) const; // custom
-	bool equals(const PPM& rhs) const; // custom
+	//bool equals(const PPM& rhs) const;
 	PPM& operator= (const PPM& rhs);
 	PPM operator+ (const PPM& rhs) const;
-	PPM operator+ (const int& value) const;
-	friend PPM operator+ (const int& value, const PPM& rhs);
 	PPM& operator+= (const PPM& rhs);
-	PPM& operator+= (const int& value);
 	PPM operator- (const PPM& rhs) const;
-	PPM operator- (const int& value) const;
-	friend PPM operator- (const int& value, const PPM& rhs);
 	PPM& operator-= (const PPM& rhs);
-	PPM& operator-= (const int& value);
-	PPM operator* (const double& value) const;
-	PPM& operator*= (const double& value);
-	PPM operator/ (const double& value) const;
-	PPM& operator/= (const double& value);
+	PPM operator* (const double& rhs) const;
+	PPM& operator*= (const double& rhs);
+	PPM operator/ (const double& rhs) const;
+	PPM& operator/= (const double& rhs);
 	bool operator== (const PPM& rhs) const;
 	bool operator!= (const PPM& rhs) const;
 	bool operator< (const PPM& rhs) const;

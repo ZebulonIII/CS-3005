@@ -237,8 +237,8 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.invert(output_image);
 	else if (choice == "motionblur") // custom
 		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image);
-	else if (choice == "equals") // custom
-		os << (input_image1.equals(input_image2) ? "Equal\n" : "Not Equal\n");
+	/*else if (choice == "equals") // custom
+		os << (input_image1.equals(input_image2) ? "Equal\n" : "Not Equal\n");*/
 	else if (choice == "+")
 		plus(is, os, input_image1, input_image2, output_image);
 	else if (choice == "+=")
