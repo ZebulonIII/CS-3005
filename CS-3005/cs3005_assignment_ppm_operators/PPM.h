@@ -3,21 +3,22 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 using byte = unsigned char;
 
 class PPM
 {
 private:
-	byte* image;
+	//byte* image;
+	std::vector<byte> image;
 	int height, width, max_color_value;
 	const int num_channels = 3;
 
 public:
 	PPM();
 	PPM(const int& height, const int& width);
-	PPM(const PPM& copy);
-	~PPM();
+	//PPM(const PPM& copy);
 	size_t sizeOfImage() const;
 	size_t numPixels() const;
 	void initializeImage();

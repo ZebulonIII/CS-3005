@@ -3,7 +3,7 @@
     "problems": {
         "cs3005_assignment_ppm_operators": {
             "id": 96,
-            "step": 2,
+            "step": 4,
             "whitelist": {
                 "PPM.cpp": true,
                 "PPM.h": true,
