@@ -200,7 +200,10 @@ void showMenu(std::ostream& os)
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
 		"invert) Set output image from inverted input image 1.\n"
 		"motionblur) Set output image from motionblurred input image 1.\n"
+<<<<<<< HEAD
 		"equals) Determine if input image 1 and input image 2 contain the same data.\n"
+=======
+>>>>>>> e367eeda6dbd271727cf366a1b4330a95bc8c74f
 		"+) Set output image from sum of input image 1 and input image 2\n"
 		"+=) Set input image 1 by adding in input image 2\n"
 		"-) Set output image from difference of input image 1 and input image 2\n"
@@ -212,6 +215,9 @@ void showMenu(std::ostream& os)
 		"grid) Configure the grid.\n"
 		"grid-set) Set a single value in the grid.\n"
 		"grid-apply) Use the grid values to set colors in the output image.\n"
+		"grid-circle) Set values in the grid in the shape of a circle.\n"
+		"grid-diamond) Set values in the grid in the shape of a diamond.\n"
+		"grid-box) Set values in the grid in the shape of a box.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -269,6 +275,12 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		setGrid(is, os, grid);
 	else if (choice == "grid-apply")
 		applyGrid(is, os, grid, output_image);
+	else if (choice == "grid-circle")
+		drawCircle(is, os, grid);
+	else if (choice == "grid-diamond")
+		drawDiamond(is, os, grid);
+	else if (choice == "grid-box")
+		drawBox(is, os, grid);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -355,4 +367,50 @@ void applyGrid(std::istream& is, std::ostream& os, NumberGrid& grid, PPM& dst)
 	(void)is;
 	(void)os;
 	grid.setPPM(dst);
+}
+void drawCircle(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	int center_row = getInteger(is, os, "Center Row? ");
+	int center_col = getInteger(is, os, "Center Column? ");
+	int radius = getInteger(is, os, "Radius? ");
+	int number = getInteger(is, os, "Number? ");
+
+	int lower_i = (center_row - radius < 0 ? 0 : center_row - radius);
+	int upper_i = (center_row + radius >= grid.getHeight() ? grid.getHeight() - 1 : center_row + radius);
+	int lower_j = (center_col - radius < 0 ? 0 : center_col - radius);
+	int upper_j = (center_col + radius >= grid.getWidth() ? grid.getWidth() - 1 : center_col + radius);
+
+	for (int i = lower_i; i <= upper_i; i++)
+		for (int j = lower_j; j <= upper_j; j++)
+			if (std::sqrt(std::pow(i - center_row, 2) + std::pow(j - center_col, 2)) <= radius)
+				grid.setNumber(i, j, number);
+}
+void drawDiamond(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	int center_row = getInteger(is, os, "Center Row? ");
+	int center_col = getInteger(is, os, "Center Column? ");
+	int size = getInteger(is, os, "Size? ");
+	int number = getInteger(is, os, "Number? ");
+
+	int lower_i = (center_row - size < 0 ? 0 : center_row - size);
+	int upper_i = (center_row + size >= grid.getHeight() ? grid.getHeight() - 1 : center_row + size);
+	int lower_j = (center_col - size < 0 ? 0 : center_col - size);
+	int upper_j = (center_col + size >= grid.getWidth() ? grid.getWidth() - 1 : center_col + size);
+
+	for (int i = lower_i; i <= upper_i; i++)
+		for (int j = lower_j; j <= upper_j; j++)
+			if (std::abs(i - center_row) + std::abs(j - center_col) <= size)
+				grid.setNumber(i, j, number);
+}
+void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	int top_row = getInteger(is, os, "Top Row? ");
+	int left_col = getInteger(is, os, "Left Column? ");
+	int bot_row = getInteger(is, os, "Bottom Row? ");
+	int right_col = getInteger(is, os, "Right Column? ");
+	int number = getInteger(is, os, "Number? ");
+
+	for (int i = top_row; i <= bot_row; i++)
+		for (int j = left_col; j <= right_col; j++)
+			grid.setNumber(i, j, number);
 }

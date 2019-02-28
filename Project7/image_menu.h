@@ -39,8 +39,12 @@ void times(std::istream& is, std::ostream& os, const PPM& src, PPM& dst);
 void timesEquals(std::istream& is, std::ostream& os, PPM& src);
 void divide(std::istream& is, std::ostream& os, const PPM& src, PPM& dst);
 void divideEquals(std::istream& is, std::ostream& os, PPM& src);
+// Project 7
 void configureGrid(std::istream& is, std::ostream& os, NumberGrid& grid);
 void setGrid(std::istream& is, std::ostream& os, NumberGrid& grid);
 void applyGrid(std::istream& is, std::ostream& os, NumberGrid& grid, PPM& dst);
+void drawCircle(std::istream& is, std::ostream& os, NumberGrid& grid);
+void drawDiamond(std::istream& is, std::ostream& os, NumberGrid& grid);
+void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid);
 
 #endif // _IMAGE_MENU_H_

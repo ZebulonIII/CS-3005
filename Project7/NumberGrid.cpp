@@ -101,4 +101,3 @@ void NumberGrid::setPPM(PPM& ppm) const
 			ppm.setPixel(i, j, r, g, b);
 		}
 }
-
