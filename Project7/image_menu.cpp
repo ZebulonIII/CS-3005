@@ -200,10 +200,7 @@ void showMenu(std::ostream& os)
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
 		"invert) Set output image from inverted input image 1.\n"
 		"motionblur) Set output image from motionblurred input image 1.\n"
-<<<<<<< HEAD
 		"equals) Determine if input image 1 and input image 2 contain the same data.\n"
-=======
->>>>>>> e367eeda6dbd271727cf366a1b4330a95bc8c74f
 		"+) Set output image from sum of input image 1 and input image 2\n"
 		"+=) Set input image 1 by adding in input image 2\n"
 		"-) Set output image from difference of input image 1 and input image 2\n"
