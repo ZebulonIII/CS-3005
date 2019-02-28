@@ -10,18 +10,15 @@ using byte = unsigned char;
 class PPM
 {
 private:
-	//byte* image;
 	std::vector<byte> image;
 	int height, width, max_color_value;
 	const int num_channels = 3;
-
-public:
-	PPM();
-	PPM(const int& height, const int& width);
-	//PPM(const PPM& copy);
 	size_t sizeOfImage() const;
 	size_t numPixels() const;
 	void initializeImage();
+public:
+	PPM();
+	PPM(const int& height, const int& width);
 	bool indexValid(const int& row, const int& column, const int& channel) const;
 	int index(const int& row, const int& column, const int& channel) const;
 	bool valueValid(const int& value) const;
@@ -43,7 +40,7 @@ public:
 	void grayFromLinearColorimetric(PPM& dst) const;
 	void invert(PPM& dst) const; // custom
 	void motionBlur(const int& blur_length, PPM& dst) const; // custom
-	//bool equals(const PPM& rhs) const;
+	bool equals(const PPM& rhs) const; // custom
 	PPM& operator= (const PPM& rhs);
 	PPM operator+ (const PPM& rhs) const;
 	PPM& operator+= (const PPM& rhs);

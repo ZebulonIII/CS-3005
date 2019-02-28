@@ -9,13 +9,6 @@ PPM::PPM(const int& height, const int& width) : height(height), width(width), ma
 {
 	initializeImage();
 }
-/*PPM::PPM(const PPM& copy)
-{
-	setHeight(copy.getHeight());
-	setWidth(copy.getWidth());
-	setMaxColorValue(copy.getMaxColorValue());
-	this->image = std::vector<byte>(copy.image());
-}*/
 // Returns amount of memory needed to store the image
 size_t PPM::sizeOfImage() const
 {
@@ -198,20 +191,15 @@ void PPM::motionBlur(const int& blur_length, PPM& dst) const // custom
 			dst.setPixel(i, j, r, g, b);
 		}
 }
-/*bool PPM::equals(const PPM& rhs) const
+bool PPM::equals(const PPM& rhs) const
 {
 	if (height != rhs.getHeight()) return false;
 	else if (width != rhs.getWidth()) return false;
 	else if (max_color_value != rhs.getMaxColorValue()) return false;
-	else return std::memcmp(image, rhs.image, sizeOfImage()) == 0;
-}*/
+	else return image == rhs.image;
+}
 PPM& PPM::operator=(const PPM& rhs)
 {
-	//this->height = rhs.height;
-	//this->width = rhs.width;
-	//this->max_color_value = rhs.max_color_value;
-	//delete[] image;
-	//this->image = new byte[sizeOfImage()];
 	setHeight(rhs.getHeight());
 	setWidth(rhs.getWidth());
 	setMaxColorValue(rhs.getMaxColorValue());
@@ -220,19 +208,6 @@ PPM& PPM::operator=(const PPM& rhs)
 }
 PPM PPM::operator+ (const PPM& rhs) const
 {
-	/*PPM temp(height, width);
-	temp.setMaxColorValue(max_color_value);
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			for (int k = 0; k < num_channels; k++)
-			{
-				int new_value = getChannel(i, j, k) + rhs.getChannel(i, j, k);
-				if (new_value > max_color_value)
-					new_value = max_color_value;
-				temp.setChannel(i, j, k, new_value);
-			}
-	return temp;*/
-
 	PPM temp;
 	temp = *this;
 	temp += rhs;
@@ -250,14 +225,6 @@ PPM& PPM::operator+= (const PPM& rhs)
 				setChannel(i, j, k, new_value);
 			}
 	return *this;
-	/*for (size_t i = 0; i < sizeOfImage(); i++)
-	{
-		int new_value = image[i] + rhs.image[i];
-		if (new_value > max_color_value)
-			new_value = max_color_value;
-		image[i] = new_value;
-	}
-	return *this;*/
 }
 PPM PPM::operator- (const PPM& rhs) const
 {
@@ -268,14 +235,6 @@ PPM PPM::operator- (const PPM& rhs) const
 }
 PPM& PPM::operator-= (const PPM& rhs)
 {
-	/*for (size_t i = 0; i < sizeOfImage(); i++)
-	{
-		int new_value = image[i] - rhs.image[i];
-		if (new_value < 0)
-			new_value = 0;
-		image[i] = new_value;
-	}
-	return *this;*/
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
@@ -297,14 +256,6 @@ PPM PPM::operator* (const double& value) const
 }
 PPM& PPM::operator*= (const double& value)
 {
-	/*for (size_t i = 0; i < sizeOfImage(); i++)
-	{
-		int new_value = image[i] * value;
-		if (new_value > max_color_value) new_value = max_color_value;
-		else if (new_value < 0) new_value = 0;
-		image[i] = new_value;
-	}
-	return *this;*/
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)

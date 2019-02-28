@@ -198,6 +198,9 @@ void showMenu(std::ostream& os)
 		"green-gray) Set output image from input image 1's grayscale from green.\n"
 		"blue-gray) Set output image from input image 1's grayscale from blue.\n"
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
+		"invert) Set output image from inverted input image 1.\n"
+		"motionblur) Set output image from motionblurred input image 1.\n"
+		"equals) Determine if input image 1 and input image 2 contain the same data.\n"
 		"+) Set output image from sum of input image 1 and input image 2\n"
 		"+=) Set input image 1 by adding in input image 2\n"
 		"-) Set output image from difference of input image 1 and input image 2\n"
@@ -242,8 +245,8 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.invert(output_image);
 	else if (choice == "motionblur") // custom
 		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image);
-	/*else if (choice == "equals") // custom
-		os << (input_image1.equals(input_image2) ? "Equal\n" : "Not Equal\n");*/
+	else if (choice == "equals") // custom
+		os << (input_image1.equals(input_image2) ? "Equal\n" : "Not Equal\n");
 	else if (choice == "+")
 		plus(is, os, input_image1, input_image2, output_image);
 	else if (choice == "+=")
