@@ -9,6 +9,7 @@ NumberGrid::NumberGrid(const int& height, const int& width) :  max_number(255)
 {
 	setGridSize(height, width);
 }
+NumberGrid::~NumberGrid() {}
 int NumberGrid::getHeight() const
 {
 	return height;
@@ -100,4 +101,10 @@ void NumberGrid::setPPM(PPM& ppm) const
 			}
 			ppm.setPixel(i, j, r, g, b);
 		}
+}
+void NumberGrid::calculateAllNumbers()
+{
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			setNumber(i, j, calculateNumber(i, j));
 }
