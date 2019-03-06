@@ -5,6 +5,7 @@
 #include <iostream>
 #include "PPM.h"
 #include "NumberGrid.h"
+#include "JuliaSet.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt);
@@ -46,5 +47,9 @@ void applyGrid(std::istream& is, std::ostream& os, NumberGrid& grid, PPM& dst);
 void drawCircle(std::istream& is, std::ostream& os, NumberGrid& grid);
 void drawDiamond(std::istream& is, std::ostream& os, NumberGrid& grid);
 void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid);
+// Project 8
+void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid);
+void calculateFractal(std::istream& is, std::ostream& os, NumberGrid& grid);
+void setJuliaParameters(std::istream& is, std::ostream& os, NumberGrid& grid);
 
 #endif // _IMAGE_MENU_H_

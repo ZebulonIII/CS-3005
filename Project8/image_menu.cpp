@@ -411,3 +411,19 @@ void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid)
 		for (int j = left_col; j <= right_col; j++)
 			grid.setNumber(i, j, number);
 }
+// Project 8
+void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	double min_x = getDouble(is, os, "Min X? ");
+	double max_x = getDouble(is, os, "Max X? ");
+	double min_y = getDouble(is, os, "Min Y? ");
+	double max_y = getDouble(is, os, "Max Y? ");
+
+	try {
+		grid.setPlaneSize(min_x, max_x, min_y, max_y);
+	}
+	catch (...) {
+		os << "Not a JuliaSet object";
+	}
+}
+

@@ -30,9 +30,15 @@ public:
 	int calculatePlaneEscapeCount(const double& x0, const double& y0) const;
 	virtual int calculateNumber(const int& row, const int& column) const;
 private:
-	int min_x, min_y, max_x, max_y;
-	int gap_value_x, gap_value_y;
-	int a, b;
+	double min_x, min_y, max_x, max_y;
+	double delta_x, delta_y;
+	double a, b;
+	
+	template<class T>
+	bool betweenTwos(const T& value) const
+	{
+		return value >= -2.0 and value <= 2.0;
+	}
 };
 
 #endif // _JULIA_SET_H_

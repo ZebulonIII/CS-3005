@@ -4,7 +4,7 @@ O := -o
 
 all: ppm_menu
 
-ppm_menu: ppm_menu.o image_menu.o PPM.o NumberGrid.o
+ppm_menu: ppm_menu.o image_menu.o PPM.o NumberGrid.o JuliaSet.o
 	$(GCC) $^ $(O) ppm_menu
 
 ppm_menu.o: ppm_menu.cpp
@@ -17,6 +17,9 @@ PPM.o: PPM.cpp
 	$(GCC) $(C) $<
 
 NumberGrid.o: NumberGrid.cpp PPM.h
+	$(GCC) $(C) $<
+
+JuliaSet.o: JuliaSet.cpp JuliaSet.h
 	$(GCC) $(C) $<
 
 clean:
