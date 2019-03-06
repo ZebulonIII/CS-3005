@@ -79,7 +79,7 @@ void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const doub
 		}
 		setDeltas(calculateDeltaX(), calculateDeltaY());
 	}
-}	
+}
 void JuliaSet::setParameters(const double& a, const double& b)
 {
 	if (betweenTwos(a) && betweenTwos(b))
@@ -116,21 +116,21 @@ double JuliaSet::calculatePlaneYFromPixelRow(const int& row) const
 {
 	if (row < 0 || row >= height)
 		return 0.0;
-	
-	return calculateDeltaY() * row + min_y;
+
+	return max_y - delta_y * row;
 }
 double JuliaSet::calculatePlaneXFromPixelColumn(const int& column) const
 {
 	if (column < 0 || column >= width)
 		return 0.0;
-	
-	return calculateDeltaX() * column + min_x;
+
+	return delta_x * column + min_x;
 }
 void JuliaSet::calculatePlaneCoordinatesFromPixelCoordinates(const int& row, const int& column, double& x, double& y) const
 {
 	if (row < 0 || row >= height || column < 0 || column >= width)
 		x = y = 0.0;
-	
+
 	x = calculatePlaneXFromPixelColumn(column);
 	y = calculatePlaneYFromPixelRow(row);
 }
@@ -156,6 +156,6 @@ int JuliaSet::calculateNumber(const int& row, const int& column) const
 {
 	if (row < 0 || row >= height || column < 0 || column >= width)
 		return -1;
-	
+
 	return calculatePlaneEscapeCount(calculatePlaneXFromPixelColumn(row), calculatePlaneYFromPixelRow(row));
 }
