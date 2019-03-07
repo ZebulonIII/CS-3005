@@ -1,5 +1,3 @@
-// y = max_y - row * delta_y
-// x = min_x + col * delta_x
 #include "JuliaSet.h"
 
 JuliaSet::JuliaSet()
@@ -57,7 +55,9 @@ void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const doub
 	if (betweenTwos(min_x) && betweenTwos(max_x) && betweenTwos(min_y) && betweenTwos(max_y) &&
 		min_x != max_x && min_y != max_y)
 	{
-		if (min_x > max_x)
+		this->min_x = (min_x > max_x ? max_x : min_x);
+		this->max_x = (min_x > max_x ? max_x : min_x);
+		/*if (min_x > max_x)
 		{
 			this->min_x = max_x;
 			this->max_x = min_x;
@@ -66,8 +66,10 @@ void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const doub
 		{
 			this->min_x = min_x;
 			this->max_x = max_x;
-		}
-		if (min_y > max_y)
+		}*/
+		this->min_y = (min_y > max_y ? max_y : min_y);
+		this->max_y = (min_y > max_y ? max_y : min_y);
+		/*if (min_y > max_y)
 		{
 			this->min_y = max_y;
 			this->max_y = min_y;
@@ -76,7 +78,7 @@ void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const doub
 		{
 			this->min_y = min_y;
 			this->max_y = max_y;
-		}
+		}*/
 		setDeltas(calculateDeltaX(), calculateDeltaY());
 	}
 }
