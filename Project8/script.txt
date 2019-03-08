@@ -20,6 +20,12 @@ grid-apply
 # Save the image to file
 write sample-julia-image-1.ppm
 
+##################################### custom
+julia-parameters -.7269 .1889
+fractal-calculate
+grid-apply
+write sams.ppm
+
 ############################################
 # Make a second image
 ############################################

@@ -171,12 +171,16 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM output_image = PPM();
 	NumberGrid* gptr = new JuliaSet();
 	std::string choice;
+
 	do {
 		showMenu(os);
 		choice = getChoice(is, os);
 		takeAction(is, os, choice, input_image1, input_image2, output_image, *gptr);
 	} while (choice != "quit");
-	delete gptr;
+
+	if (gptr != nullptr)
+		delete gptr;
+
 	return 0;
 }
 // Project 4
@@ -429,10 +433,12 @@ void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid)
 	double min_y = getDouble(is, os, "Min Y? ");
 	double max_y = getDouble(is, os, "Max Y? ");
 
-	try {
-		static_cast<JuliaSet*>(&grid)->setPlaneSize(min_x, max_x, min_y, max_y);
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr) {
+		js->setPlaneSize(min_x, max_x, min_y, max_y);
 	}
-	catch (...) {
+	else {
 		os << "Not a JuliaSet object. Can't set plane size.";
 	}
 }
@@ -448,10 +454,12 @@ void setJuliaParameters(std::istream& is, std::ostream& os, NumberGrid& grid)
 	double a = getDouble(is, os, "Parameter a? ");
 	double b = getDouble(is, os, "Parameter b? ");
 
-	try {
-		static_cast<JuliaSet*>(&grid)->setParameters(a, b);
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr) {
+		js->setParameters(a, b);
 	}
-	catch (...) {
+	else {
 		os << "Not a JuliaSet object. Can't set parameters.";
 	}
 }
