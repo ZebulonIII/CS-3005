@@ -29,16 +29,11 @@ public:
 	virtual void calculateNextPoint(const double x0, const double y0, double& x1, double &y1) const;
 	int calculatePlaneEscapeCount(const double& x0, const double& y0) const;
 	virtual int calculateNumber(const int& row, const int& column) const;
-private:
-	double min_x, min_y, max_x, max_y;
+protected:
+	double min_x, max_x, min_y, max_y;
 	double delta_x, delta_y;
 	double a, b;
-	
-	template<class T>
-	bool betweenTwos(const T& value) const
-	{
-		return value >= -2.0 and value <= 2.0;
-	}
+	bool betweenTwos(const double& value) const;
 };
 
 #endif // _JULIA_SET_H_

@@ -1,21 +1,27 @@
-// y = max_y - row * delta_y
-// x = min_x + col * delta_x
 #include "JuliaSet.h"
 
 JuliaSet::JuliaSet()
 {
 	a = -.650492;
 	b = -.478235;
-	NumberGrid::setGridSize(300, 200);
+	NumberGrid::setGridSize(200, 300);
 	NumberGrid::setMaxNumber(255);
 	delta_x = delta_y = .01;
+	min_x = -1.5;
+	max_x = 1.5;
+	min_y = -1;
+	max_y = 1;
 }
 JuliaSet::JuliaSet(const int& height, const int& width, const double& min_x, const double& max_x, const double& min_y, const double& max_y, const double& a, const double& b)
 : min_x(min_x), max_x(max_x), min_y(min_y), max_y(max_y), a(a), b(b)
 {
-	NumberGrid::NumberGrid(height, width);
+	setGridSize(height, width);
 }
 JuliaSet::~JuliaSet() {}
+bool JuliaSet::betweenTwos(const double& value) const
+{
+	return value >= -2.0 && value <= 2.0;
+}
 double JuliaSet::getMinX() const
 {
 	return min_x;
@@ -45,8 +51,7 @@ void JuliaSet::setGridSize(const int& height, const int& width)
 	if (height >= 2 && width >= 2)
 	{
 		NumberGrid::setGridSize(height, width);
-		delta_x = calculateDeltaX();
-		delta_y = calculateDeltaY();
+		setDeltas(calculateDeltaX(), calculateDeltaY());
 	}
 }
 void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const double& min_y, const double& max_y)
@@ -62,7 +67,7 @@ void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const doub
 		else
 		{
 			this->min_x = min_x;
-			this->max_x = ma_x;
+			this->max_x = max_x;
 		}
 		if (min_y > max_y)
 		{
@@ -74,10 +79,9 @@ void JuliaSet::setPlaneSize(const double& min_x, const double& max_x, const doub
 			this->min_y = min_y;
 			this->max_y = max_y;
 		}
-		delta_x = calculateDeltaX();
-		delta_y = calculateDeltaY();
+		setDeltas(calculateDeltaX(), calculateDeltaY());
 	}
-}	
+}
 void JuliaSet::setParameters(const double& a, const double& b)
 {
 	if (betweenTwos(a) && betweenTwos(b))
@@ -114,34 +118,39 @@ double JuliaSet::calculatePlaneYFromPixelRow(const int& row) const
 {
 	if (row < 0 || row >= height)
 		return 0.0;
-	
-	return calculateDeltaY() * row + min_y;
+
+	return max_y - delta_y * row;
 }
 double JuliaSet::calculatePlaneXFromPixelColumn(const int& column) const
 {
 	if (column < 0 || column >= width)
 		return 0.0;
-	
-	return calculateDeltaX() * column + min_x;
+
+	return delta_x * column + min_x;
 }
 void JuliaSet::calculatePlaneCoordinatesFromPixelCoordinates(const int& row, const int& column, double& x, double& y) const
 {
 	if (row < 0 || row >= height || column < 0 || column >= width)
-		x = y = 0.0;
-	
-	x = calculatePlaneXFromPixelColumn(column);
-	y = calculatePlaneYFromPixelRow(row);
+	{
+		x = 0.0;
+		y = 0.0;
+	}
+	else
+	{
+		x = calculatePlaneXFromPixelColumn(column);
+		y = calculatePlaneYFromPixelRow(row);
+	}
 }
 void JuliaSet::calculateNextPoint(const double x0, const double y0, double& x1, double &y1) const
 {
 	x1 = x0 * x0 - y0 * y0 + a;
 	y1 = 2.0 * x0 * y0 + b;
 }
-int JuliaSet::calculatePlaneEscapeCount(const double& x0, const double& y0) const
+int JuliaSet::calculatePlaneEscapeCount(const double& x, const double& y) const
 {
 	int count = 0;
-	double x1 = 0.0, y1 = 0.0;
-	while (count < maxNumber && (x0 * x0 + y0 * y0 <= 4))
+	double x0 = x, y0 = y, x1 = 0.0, y1 = 0.0;
+	while (count < max_number && (x0 * x0 + y0 * y0 <= 4))
 	{
 		calculateNextPoint(x0, y0, x1, y1);
 		x0 = x1;
@@ -154,6 +163,6 @@ int JuliaSet::calculateNumber(const int& row, const int& column) const
 {
 	if (row < 0 || row >= height || column < 0 || column >= width)
 		return -1;
-	
-	return calculatePlaneEscapeCount(calculatePlaneXFromPixelColumn(row), calculatePlaneYFromPixelRow(row));
+
+	return calculatePlaneEscapeCount(calculatePlaneXFromPixelColumn(column), calculatePlaneYFromPixelRow(row));
 }

@@ -35,7 +35,6 @@ int PPM::index(const int& row, const int& column, const int& channel) const
 // Checks if value is a legal color value for this image. Returns true if it is legal, false otherwise.
 bool PPM::valueValid(const int& value) const
 {
-	std::cout << value << std::endl;
 	return value <= max_color_value && value >= 0;
 }
 // Returns the height of the PPM.

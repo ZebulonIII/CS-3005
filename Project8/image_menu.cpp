@@ -169,13 +169,14 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM input_image1 = PPM();
 	PPM input_image2 = PPM();
 	PPM output_image = PPM();
-	NumberGrid grid = NumberGrid();
+	NumberGrid* gptr = new JuliaSet();
 	std::string choice;
 	do {
 		showMenu(os);
 		choice = getChoice(is, os);
-		takeAction(is, os, choice, input_image1, input_image2, output_image, grid);
+		takeAction(is, os, choice, input_image1, input_image2, output_image, *gptr);
 	} while (choice != "quit");
+	delete gptr;
 	return 0;
 }
 // Project 4
@@ -215,6 +216,9 @@ void showMenu(std::ostream& os)
 		"grid-circle) Set values in the grid in the shape of a circle.\n"
 		"grid-diamond) Set values in the grid in the shape of a diamond.\n"
 		"grid-box) Set values in the grid in the shape of a box.\n"
+		"fractal-plane-size) Set the dimensions of the grid in the complex plane.\n"
+		"fractal-calculate) Calculate the escape values for the fractal.\n"
+		"julia-parameters) Set the parameters of the Julia Set function.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -278,6 +282,12 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		drawDiamond(is, os, grid);
 	else if (choice == "grid-box")
 		drawBox(is, os, grid);
+	else if (choice == "fractal-plane-size")
+		setFractalPlaneSize(is, os, grid);
+	else if (choice == "fractal-calculate")
+		calculateFractal(is, os, grid);
+	else if (choice == "julia-parameters")
+		setJuliaParameters(is, os, grid);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -420,10 +430,28 @@ void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid)
 	double max_y = getDouble(is, os, "Max Y? ");
 
 	try {
-		grid.setPlaneSize(min_x, max_x, min_y, max_y);
+		static_cast<JuliaSet*>(&grid)->setPlaneSize(min_x, max_x, min_y, max_y);
 	}
 	catch (...) {
-		os << "Not a JuliaSet object";
+		os << "Not a JuliaSet object. Can't set plane size.";
 	}
 }
+void calculateFractal(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	(void)is;
+	(void)os;
 
+	grid.calculateAllNumbers();
+}
+void setJuliaParameters(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	double a = getDouble(is, os, "Parameter a? ");
+	double b = getDouble(is, os, "Parameter b? ");
+
+	try {
+		static_cast<JuliaSet*>(&grid)->setParameters(a, b);
+	}
+	catch (...) {
+		os << "Not a JuliaSet object. Can't set parameters.";
+	}
+}

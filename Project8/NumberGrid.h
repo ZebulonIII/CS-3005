@@ -24,7 +24,7 @@ public:
 	void setPPM(PPM& ppm) const;
 	virtual int calculateNumber(const int& row, const int& column) const = 0;
 	virtual void calculateAllNumbers();
-private:
+protected:
 	std::vector<int> number_grid;
 	int height, width, max_number;
 };

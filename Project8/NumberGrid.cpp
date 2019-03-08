@@ -34,9 +34,7 @@ void NumberGrid::setGridSize(const int& height, const int& width)
 void NumberGrid::setMaxNumber(const int& number)
 {
 	if (number >= 0)
-	{
 		max_number = number;
-	}
 }
 const std::vector<int>& NumberGrid::getNumbers() const
 {
@@ -61,9 +59,7 @@ int NumberGrid::getNumber(const int& row, const int& column) const
 void NumberGrid::setNumber(const int& row, const int& column, const int& number)
 {
 	if (indexValid(row, column) && numberValid(number))
-	{
 		number_grid[index(row, column)] = number;
-	}
 }
 void NumberGrid::setPPM(PPM& ppm) const
 {
