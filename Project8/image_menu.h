@@ -51,5 +51,6 @@ void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid);
 void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid);
 void calculateFractal(std::istream& is, std::ostream& os, NumberGrid& grid);
 void setJuliaParameters(std::istream& is, std::ostream& os, NumberGrid& grid);
+void zoom(std::istream& is, std::ostream& os, NumberGrid& grid);
 
 #endif // _IMAGE_MENU_H_

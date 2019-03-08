@@ -223,6 +223,7 @@ void showMenu(std::ostream& os)
 		"fractal-plane-size) Set the dimensions of the grid in the complex plane.\n"
 		"fractal-calculate) Calculate the escape values for the fractal.\n"
 		"julia-parameters) Set the parameters of the Julia Set function.\n"
+		"zoom) Zoom on center of Julia Set (plane multiplied by factor).\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -292,6 +293,8 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		calculateFractal(is, os, grid);
 	else if (choice == "julia-parameters")
 		setJuliaParameters(is, os, grid);
+	else if (choice == "zoom")
+		zoom(is, os, grid);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -435,12 +438,10 @@ void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid)
 
 	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
 
-	if (js != nullptr) {
+	if (js != nullptr)
 		js->setPlaneSize(min_x, max_x, min_y, max_y);
-	}
-	else {
+	else
 		os << "Not a JuliaSet object. Can't set plane size.";
-	}
 }
 void calculateFractal(std::istream& is, std::ostream& os, NumberGrid& grid)
 {
@@ -456,10 +457,16 @@ void setJuliaParameters(std::istream& is, std::ostream& os, NumberGrid& grid)
 
 	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
 
-	if (js != nullptr) {
+	if (js != nullptr)
 		js->setParameters(a, b);
-	}
-	else {
+	else
 		os << "Not a JuliaSet object. Can't set parameters.";
-	}
+}
+void zoom(std::istream& is, std::ostream& os, NumberGrid& grid) // custom
+{
+	double percentage = getDouble(is, os, "Zoom by what factor? ");
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr)
+		js->zoom(percentage);
 }

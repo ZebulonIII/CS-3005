@@ -166,3 +166,7 @@ int JuliaSet::calculateNumber(const int& row, const int& column) const
 
 	return calculatePlaneEscapeCount(calculatePlaneXFromPixelColumn(column), calculatePlaneYFromPixelRow(row));
 }
+void JuliaSet::zoom(const double& factor) // custom
+{
+	setPlaneSize(min_x * factor, max_x * factor, min_y * factor, max_y * factor);
+}
