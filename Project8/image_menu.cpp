@@ -223,7 +223,7 @@ void showMenu(std::ostream& os)
 		"fractal-plane-size) Set the dimensions of the grid in the complex plane.\n"
 		"fractal-calculate) Calculate the escape values for the fractal.\n"
 		"julia-parameters) Set the parameters of the Julia Set function.\n"
-		"zoom) Zoom on center of Julia Set (plane multiplied by factor).\n"
+		"zoom) Zoom on center of Julia Set (< 1 zoom in, > 1 zoom out).\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
