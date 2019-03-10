@@ -16,15 +16,34 @@ grid-apply
 # Save the image to file
 write original.ppm
 
-#ZOOM IN
-zoom .1
+# ZOOM IN
+zoom .4
 fractal-calculate
 grid-apply
 write zoom-in.ppm
 
-zoom 1.5
+# MOVE LEFT
+left .5
 fractal-calculate
 grid-apply
-write zoom-out.ppm
+write left.ppm
+
+# MOVE RIGHT
+right .5
+fractal-calculate
+grid-apply
+write right.ppm
+
+# MOVE UP
+up .5
+fractal-calculate
+grid-apply
+write up.ppm
+
+# MOVE DOWN
+down 1
+fractal-calculate
+grid-apply
+write down.ppm
 
 quit

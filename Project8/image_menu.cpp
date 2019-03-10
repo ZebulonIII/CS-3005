@@ -224,6 +224,10 @@ void showMenu(std::ostream& os)
 		"fractal-calculate) Calculate the escape values for the fractal.\n"
 		"julia-parameters) Set the parameters of the Julia Set function.\n"
 		"zoom) Zoom on center of Julia Set (< 1 zoom in, > 1 zoom out).\n"
+		"left) Translate Julia Set to the left.\n"
+		"right) Translate Julia Set to the right.\n"
+		"up) Translate Julia Set up.\n"
+		"down) Translate Julia Set down.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -295,6 +299,14 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		setJuliaParameters(is, os, grid);
 	else if (choice == "zoom")
 		zoom(is, os, grid);
+	else if (choice == "left")
+		left(is, os, grid);
+	else if (choice == "right")
+		right(is, os, grid);
+	else if (choice == "up")
+		up(is, os, grid);
+	else if (choice == "down")
+		down(is, os, grid);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -469,4 +481,36 @@ void zoom(std::istream& is, std::ostream& os, NumberGrid& grid) // custom
 
 	if (js != nullptr)
 		js->zoom(percentage);
+}
+void left(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	double factor = getDouble(is, os, "Shift by? ");
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr)
+		js->translatePlaneLeft(factor);
+}
+void right(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	double factor = getDouble(is, os, "Shift by? ");
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr)
+		js->translatePlaneRight(factor);
+}
+void up(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	double factor = getDouble(is, os, "Shift by? ");
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr)
+		js->translatePlaneUp(factor);
+}
+void down(std::istream& is, std::ostream& os, NumberGrid& grid)
+{
+	double factor = getDouble(is, os, "Shift by? ");
+	JuliaSet* js = dynamic_cast<JuliaSet*>(&grid);
+
+	if (js != nullptr)
+		js->translatePlaneDown(factor);
 }

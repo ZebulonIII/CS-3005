@@ -30,6 +30,10 @@ public:
 	int calculatePlaneEscapeCount(const double& x0, const double& y0) const;
 	virtual int calculateNumber(const int& row, const int& column) const;
 	void zoom(const double& factor);  // custom
+	void translatePlaneLeft(const double& factor); // custom
+	void translatePlaneRight(const double& factor); //custom
+	void translatePlaneUp(const double& factor); //custom
+	void translatePlaneDown(const double& factor); //custom
 protected:
 	double min_x, max_x, min_y, max_y;
 	double delta_x, delta_y;

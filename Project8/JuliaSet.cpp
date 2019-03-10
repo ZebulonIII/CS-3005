@@ -170,3 +170,43 @@ void JuliaSet::zoom(const double& factor) // custom
 {
 	setPlaneSize(min_x * factor, max_x * factor, min_y * factor, max_y * factor);
 }
+void JuliaSet::translatePlaneLeft(const double& factor) // custom
+{
+	if (factor >= 0)
+	{
+		double new_factor = (min_x - factor <= -2.0 ? 2.0 + min_x : factor);
+		setPlaneSize(min_x - new_factor, max_x - new_factor, min_y, max_y);
+	}
+	else
+		translatePlaneRight(factor * -1.0);
+}
+void JuliaSet::translatePlaneRight(const double& factor) // custom
+{
+	if (factor >= 0)
+	{
+		double new_factor = (max_x + factor >= 2.0 ? 2.0 - max_x : factor);
+		setPlaneSize(min_x + new_factor, max_x + new_factor, min_y, max_y);
+	}
+	else
+		translatePlaneLeft(factor * -1.0);
+}
+void JuliaSet::translatePlaneDown(const double& factor) // custom
+{
+	if (factor >= 0)
+	{
+		double new_factor = (min_y - factor <= -2.0 ? 2.0 + min_y : factor);
+		setPlaneSize(min_x, max_x, min_y - new_factor, max_y - new_factor);
+	}
+	else
+		translatePlaneUp(factor * -1.0);
+}
+void JuliaSet::translatePlaneUp(const double& factor) // custom
+{
+	if (factor >= 0)
+	{
+		double new_factor = (max_y + factor >= 2.0 ? 2.0 - max_y : factor);
+		setPlaneSize(min_x, max_x, min_y + new_factor, max_y + new_factor);
+	}
+	else
+		translatePlaneDown(factor * -1.0);
+}
