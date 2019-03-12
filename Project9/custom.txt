@@ -1,0 +1,49 @@
+# Configure the grid
+grid 500 500 255
+
+# Configure the fractal plane
+fractal-plane-size -2.0 2.0 -2.0 2.0
+
+# Configure the Julia parameters
+julia-parameters -0.279412 -0.658824
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply
+
+# Save the image to file
+write original.ppm
+
+# ZOOM IN
+zoom .4
+fractal-calculate
+grid-apply
+write zoom-in.ppm
+
+# MOVE LEFT
+left .5
+fractal-calculate
+grid-apply
+write left.ppm
+
+# MOVE RIGHT
+right .5
+fractal-calculate
+grid-apply
+write right.ppm
+
+# MOVE UP
+up .5
+fractal-calculate
+grid-apply
+write up.ppm
+
+# MOVE DOWN
+down 1
+fractal-calculate
+grid-apply
+write down.ppm
+
+quit

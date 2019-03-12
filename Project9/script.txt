@@ -1,0 +1,64 @@
+############################################
+# Make a first image
+############################################
+
+# Choose Mandelbrot
+mandelbrot
+
+# Configure the grid
+grid 500 500 255
+
+# Configure the fractal plane
+fractal-plane-size -2.0 2.0 -2.0 2.0
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply
+
+# Save the image to file
+write sample-mandelbrot-image-1.ppm
+
+############################################
+# Make a second image
+############################################
+
+# Configure the fractal plane
+fractal-plane-size -1.0 1.0 -1.0 1.0
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply
+
+# Save the image to file
+write sample-mandelbrot-image-2.ppm
+
+############################################
+# Make a third image
+############################################
+
+# Configure the max number
+grid 500 500 500
+
+# Configure the fractal plane
+fractal-plane-size -0.748376 -0.747888 -0.0843348 -0.0838465
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply
+
+# Save the image to file
+write sample-mandelbrot-image-3.ppm
+
+
+############################################
+# Done
+############################################
+
+# Quit
+quit
