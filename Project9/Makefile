@@ -29,4 +29,4 @@ MandelbrotSet.o: MandelbrotSet.cpp MandelbrotSet.h
 	$(GCC) $(C) $<
 
 clean:
-	rm *.o *.ppm ppm_menu
+	rm *.o ppm_menu

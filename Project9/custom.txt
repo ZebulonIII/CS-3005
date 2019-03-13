@@ -1,11 +1,15 @@
+############################################
+# Make a first image
+############################################
+
+# Choose Mandelbrot
+mandelbrot
+
 # Configure the grid
 grid 500 500 255
 
 # Configure the fractal plane
 fractal-plane-size -2.0 2.0 -2.0 2.0
-
-# Configure the Julia parameters
-julia-parameters -0.279412 -0.658824
 
 # Calculate the escape values
 fractal-calculate
@@ -14,7 +18,7 @@ fractal-calculate
 grid-apply
 
 # Save the image to file
-write original.ppm
+write sample-mandelbrot-image-1.ppm
 
 # ZOOM IN
 zoom .4
@@ -29,7 +33,7 @@ grid-apply
 write left.ppm
 
 # MOVE RIGHT
-right .5
+right 1
 fractal-calculate
 grid-apply
 write right.ppm
