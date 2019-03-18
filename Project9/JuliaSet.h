@@ -15,8 +15,8 @@ public:
 	virtual void calculateNextPoint(const double x0, const double y0, double& x1, double &y1) const;
 	int calculatePlaneEscapeCount(const double& x0, const double& y0) const;
 	virtual int calculateNumber(const int& row, const int& column) const;
-protected:	
-	double a, b;	
+protected:
+	double a, b;
 };
 
 #endif // _JULIA_SET_H_

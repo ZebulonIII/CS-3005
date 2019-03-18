@@ -3,7 +3,7 @@
 
 #include "ComplexFractal.h"
 
-class MandelbrotSet : public ComplexFractal 
+class MandelbrotSet : public ComplexFractal
 {
 public:
 	MandelbrotSet();
