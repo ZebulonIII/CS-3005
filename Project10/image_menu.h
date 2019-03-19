@@ -5,7 +5,6 @@
 #include <iostream>
 #include "PPM.h"
 #include "NumberGrid.h"
-#include "ColorTable.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt);
@@ -27,7 +26,7 @@ void clearAll(PPM& src);
 void drawDiamond(std::istream& is, std::ostream& os, PPM& src);
 void drawCircle(std::istream& is, std::ostream& os, PPM& src);
 void drawBox(std::istream& is, std::ostream& os, PPM& src);
-void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image, NumberGrid& grid, ColorTable& table);
+void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image, NumberGrid& grid);
 int imageMenu(std::istream& is, std::ostream& os);
 // Project 4
 void readUserImage(std::istream& is, std::ostream& os, PPM& ppm);
@@ -59,11 +58,5 @@ void down(std::istream& is, std::ostream& os, NumberGrid& grid); // custom
 // Project 9
 void setJuliaFractal(std::istream& is, std::ostream& os, NumberGrid*& grid);
 void setMandelbrotFractal(std::istream& is, std::ostream& os, NumberGrid*& grid);
-// Project 10
-void applyGridColorTable(std::istream& is, std::ostream& os, NumberGrid& grid, ColorTable& table, PPM& dst);
-void setColorTableSize(std::istream& is, std::ostream& os, ColorTable& table);
-void setColor(std::istream& is, std::ostream& os, ColorTable& table);
-void setRandomColor(std::istream& is, std::ostream& os, ColorTable& table);
-void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table);
 
 #endif // _IMAGE_MENU_H_

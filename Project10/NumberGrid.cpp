@@ -1,6 +1,5 @@
 #include "NumberGrid.h"
 #include "PPM.h"
-#include "ColorTable.h"
 
 NumberGrid::NumberGrid() : max_number(255)
 {
@@ -104,28 +103,4 @@ void NumberGrid::calculateAllNumbers()
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			setNumber(i, j, calculateNumber(i, j));
-}
-void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
-{
-	if (colors.getNumberOfColors() >= 3)
-	{
-		ppm.setHeight(height);
-		ppm.setWidth(width);
-		ppm.setMaxColorValue(colors.getMaxChannelValue());
-		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++)
-			{
-				int number = getNumber(i, j);
-				int color_table_index;
-				if (number == max_number)
-					color_table_index = colors.getNumberOfColors() - 1;
-				else if (number == 0)
-					color_table_index = colors.getNumberOfColors() - 2;
-				else
-					color_table_index = number % (colors.getNumberOfColors() - 2);
-
-				for (int k = 0; k < 3; k++)
-					ppm.setChannel(i, j, k, colors[color_table_index].getChannel(k));
-			}
-	}
 }
