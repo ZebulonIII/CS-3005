@@ -1,3 +1,4 @@
+#include <cmath>
 #include "MandelbrotSet.h"
 
 MandelbrotSet::MandelbrotSet() : ComplexFractal() {}
@@ -12,8 +13,8 @@ void MandelbrotSet::calculateNextPoint(const double x0, const double y0, const d
 int MandelbrotSet::calculatePlaneEscapeCount(const double& a, const double& b) const
 {
 	double x0 = 0.0, y0 = 0.0, x1, y1;
-	int count = 0;
-
+	int count = -1;
+	
 	while (count < max_number && (x0*x0 + y0*y0 <= 4.0))
 	{
 		calculateNextPoint(x0, y0, a, b, x1, y1);
