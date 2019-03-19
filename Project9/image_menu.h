@@ -5,6 +5,8 @@
 #include <iostream>
 #include "PPM.h"
 #include "NumberGrid.h"
+#include "JuliaSet.h"
+#include "MandelbrotSet.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt);
