@@ -1,4 +1,3 @@
-#include <cmath>
 #include "MandelbrotSet.h"
 
 MandelbrotSet::MandelbrotSet() : ComplexFractal() {}

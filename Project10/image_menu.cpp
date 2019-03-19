@@ -172,12 +172,14 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM input_image2 = PPM();
 	PPM output_image = PPM();
 	NumberGrid* gptr = nullptr;
+	ColorTable table = ColorTable(16);
+	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 13);
 	std::string choice;
 
 	do {
 		showMenu(os);
 		choice = getChoice(is, os);
-		takeAction(is, os, choice, input_image1, input_image2, output_image, *gptr);
+		takeAction(is, os, choice, input_image1, input_image2, output_image, *gptr, table);
 		if (choice == "julia")
 			setJuliaFractal(is, os, gptr);
 		else if (choice == "mandelbrot")
@@ -236,6 +238,11 @@ void showMenu(std::ostream& os)
 		"right) Translate Complex Fractal plane to the right.\n"
 		"up) Translate Complex Fractal plane up.\n"
 		"down) Translate Complex Fractal plane down.\n"
+		"grid-apply-color-table) Use the grid values to set colors in the output image using the color table.\n"
+		"set-color-table-size) Change the number of slots in the color table.\n"
+		"set-color) Set the RGB values for one slot in the color table.\n"
+		"set-random-color) Randomly set the RGB values for one slot in the color table.\n"
+		"set-color-gradient) Smoothly set the RGB values for a range of slots in the color table.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -247,7 +254,7 @@ void showMenu(std::ostream& os)
 		"box) Draw a box shape in input image 1\n"
 		"quit) Quit\n\n";
 }
-void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image, NumberGrid& grid)
+void takeAction(std::istream& is, std::ostream& os, const std::string& choice, PPM& input_image1, PPM& input_image2, PPM& output_image, NumberGrid& grid, ColorTable& table)
 {
 	if (choice == "read1")
 		readUserImage(is, os, input_image1);
@@ -319,6 +326,16 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		up(is, os, grid);
 	else if (choice == "down")
 		down(is, os, grid);
+	else if ("grid-apply-color-table")
+		applyGridColorTable(is, os, grid, table, output_image);
+	else if ("set-color-table-size")
+		setColorTableSize(is, os, table);
+	else if ("set-color")
+		setColor(is, os, table);
+	else if ("set-random-color")
+		setRandomColor(is, os, table);
+	else if ("set-color-gradient")
+		setColorGradient(is, os, table);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -546,4 +563,49 @@ void setMandelbrotFractal(std::istream& is, std::ostream& os, NumberGrid*& grid)
 		delete grid;
 
 	grid = new MandelbrotSet();
+}
+// Project 10
+void applyGridColorTable(std::istream& is, std::ostream& os, NumberGrid& grid, ColorTable& table, PPM& dst)
+{
+	(void)is;
+	(void)os;
+
+	grid.setPPM(dst, table);
+}
+void setColorTableSize(std::istream& is, std::ostream& os, ColorTable& table)
+{
+	int size = getInteger(is, os, "Size? ");
+	table.setNumberOfColors(size);
+}
+void setColor(std::istream& is, std::ostream& os, ColorTable& table)
+{
+	int pos = getInteger(is, os, "Position? ");
+	int red = getInteger(is, os, "Red? ");
+	int gre = getInteger(is, os, "Green? ");
+	int blu = getInteger(is, os, "Blue? ");
+
+	Color& color = table[pos];
+	color.setRed(red);
+	color.setGreen(gre);
+	color.setBlue(blu);
+}
+void setRandomColor(std::istream& is, std::ostream& os, ColorTable& table)
+{
+	int position = getInteger(is, os, "Position? ");
+	table.setRandomColor(table.getMaxChannelValue(), position);
+}
+void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table)
+{
+	int fir_pos = getInteger(is, os, "First position? ");
+	int fir_red = getInteger(is, os, "First red? ");
+	int fir_gre = getInteger(is, os, "First green? ");
+	int fir_blu = getInteger(is, os, "First blue? ");
+	int sec_pos = getInteger(is, os, "Second position? ");
+	int sec_red = getInteger(is, os, "Second red? ");
+	int sec_gre = getInteger(is, os, "Second green? ");
+	int sec_blu = getInteger(is, os, "Second blue? ");
+
+	Color color1 = Color(fir_red, fir_gre, fir_blu);
+	Color color2 = Color(sec_red, sec_gre, sec_blu);
+	table.insertGradient(color1, color2, fir_pos, sec_pos);
 }
