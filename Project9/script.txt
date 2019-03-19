@@ -18,7 +18,7 @@ fractal-calculate
 grid-apply
 
 # Save the image to file
-write sample-mandelbrot-image-1.ppm
+write mandelbrot-1.ppm
 
 ############################################
 # Make a second image
@@ -34,7 +34,7 @@ fractal-calculate
 grid-apply
 
 # Save the image to file
-write sample-mandelbrot-image-2.ppm
+write mandelbrot-2.ppm
 
 ############################################
 # Make a third image
@@ -53,7 +53,7 @@ fractal-calculate
 grid-apply
 
 # Save the image to file
-write sample-mandelbrot-image-3.ppm
+write mandelbrot-3.ppm
 
 
 ############################################

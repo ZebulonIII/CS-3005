@@ -18,7 +18,7 @@ fractal-calculate
 grid-apply
 
 # Save the image to file
-write sample-mandelbrot-image-1.ppm
+write mandelbrot-1.ppm
 
 # ZOOM IN
 zoom .4
