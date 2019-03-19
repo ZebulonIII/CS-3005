@@ -21,6 +21,10 @@ bool ComplexFractal::betweenTwos(const double& value) const
 {
 	return value >= -2.0 && value <= 2.0;
 }
+double ComplexFractal::distanceFromOriginSquared(const double& x, const double& y) const
+{
+	return x*x + y*y;
+}
 double ComplexFractal::getMinX() const
 {
 	return min_x;

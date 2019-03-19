@@ -32,6 +32,7 @@ protected:
 	double min_x, max_x, min_y, max_y;
 	double delta_x, delta_y;
 	bool betweenTwos(const double& value) const;
+	double distanceFromOriginSquared(const double& x, const double& y) const;
 };
 
 #endif // _COMPLEX_FRACTAL_H_

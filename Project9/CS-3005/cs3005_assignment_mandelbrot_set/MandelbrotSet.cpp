@@ -13,14 +13,16 @@ void MandelbrotSet::calculateNextPoint(const double x0, const double y0, const d
 int MandelbrotSet::calculatePlaneEscapeCount(const double& a, const double& b) const
 {
 	double x0 = 0.0, y0 = 0.0, x1, y1;
-	int count = -1;
+	double distance = distanceFromOriginSquared(a, b);
+	int count = 0;
 	
-	while (count < max_number && (x0*x0 + y0*y0 <= 4.0))
+	while (count < max_number && distance <= 4.0)
 	{
 		calculateNextPoint(x0, y0, a, b, x1, y1);
 		x0 = x1;
 		y0 = y1;
 		count++;
+		distance = distanceFromOriginSquared(x0, y0);
 	}
 
 	return count;
