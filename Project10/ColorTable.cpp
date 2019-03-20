@@ -1,10 +1,12 @@
 #include <stddef.h>
 #include <time.h>
+#include <algorithm>
 #include "ColorTable.h"
+#include "Color.h"
 
 ColorTable::ColorTable(const size_t& num_color)
 {
-	mColors = std::vector<Color>(num_color);
+	mColors.resize(num_color);
 	srand(time(NULL));
 }
 size_t ColorTable::getNumberOfColors() const

@@ -1,0 +1,38 @@
+############################################
+# Make a first image
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 257
+set-color 255 255 255 255
+set-color 256 255 255 255
+set-color-gradient 0 247 107 171   10  193 251 108
+set-color-gradient 11 247 107 171  20  193 251 108
+set-color-gradient 21 247 107 171 254  193 251 108
+
+
+# Choose Mandelbrot
+mandelbrot
+
+# Configure the grid
+grid 500 500 255
+
+# Configure the fractal plane
+fractal-plane-size -2.0 2.0 -2.0 2.0
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-1.ppm
+
+############################################
+# Done
+############################################
+
+# Quit
+quit

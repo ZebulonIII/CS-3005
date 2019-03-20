@@ -173,7 +173,9 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM output_image = PPM();
 	NumberGrid* gptr = nullptr;
 	ColorTable table = ColorTable(16);
-	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 13);
+	Color color1 = Color(0, 255, 0);
+	Color color2 = Color(255, 0, 255);
+	table.insertGradient(color1, color2, 0, 13);
 	std::string choice;
 
 	do {
@@ -326,15 +328,15 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		up(is, os, grid);
 	else if (choice == "down")
 		down(is, os, grid);
-	else if ("grid-apply-color-table")
+	else if (choice == "grid-apply-color-table")
 		applyGridColorTable(is, os, grid, table, output_image);
-	else if ("set-color-table-size")
+	else if (choice == "set-color-table-size")
 		setColorTableSize(is, os, table);
-	else if ("set-color")
+	else if (choice == "set-color")
 		setColor(is, os, table);
-	else if ("set-random-color")
+	else if (choice == "set-random-color")
 		setRandomColor(is, os, table);
-	else if ("set-color-gradient")
+	else if (choice == "set-color-gradient")
 		setColorGradient(is, os, table);
 	else if (choice[0] == '#')
 		commentLine(is);
