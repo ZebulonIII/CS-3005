@@ -13,7 +13,7 @@ int MandelbrotSet::calculatePlaneEscapeCount(const double& a, const double& b) c
 {
 	double x0 = a, y0 = b, x1, y1;
 	int count = 0;
-	
+
 	while (count < max_number && distanceFromOriginSquared(x0, y0) <= 4.0)
 	{
 		calculateNextPoint(x0, y0, a, b, x1, y1);

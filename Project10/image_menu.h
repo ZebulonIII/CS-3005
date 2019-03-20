@@ -67,5 +67,7 @@ void setColorTableSize(std::istream& is, std::ostream& os, ColorTable& table);
 void setColor(std::istream& is, std::ostream& os, ColorTable& table);
 void setRandomColor(std::istream& is, std::ostream& os, ColorTable& table);
 void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table);
+void horizontalEdges(const PPM& input_image1, PPM& dst);
+void verticalEdges(const PPM& input_image1, PPM& dst);
 
 #endif // _IMAGE_MENU_H_

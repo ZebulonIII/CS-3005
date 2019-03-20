@@ -1,13 +1,11 @@
-#include <stddef.h>
-#include <time.h>
-#include <algorithm>
+#include <vector>
+#include <cstdlib>
 #include "ColorTable.h"
 #include "Color.h"
 
 ColorTable::ColorTable(const size_t& num_color)
 {
-	mColors.resize(num_color);
-	srand(time(NULL));
+	mColors = std::vector<Color>(num_color);
 }
 size_t ColorTable::getNumberOfColors() const
 {
@@ -51,7 +49,7 @@ void ColorTable::setRandomColor(const int& max_color_value, const size_t& positi
 	{
 		Color& color = mColors[position];
 		for (int i = 0; i < 3; i++)
-			color.setChannel(i, rand() % (max_color_value + 1));
+			color.setChannel(i, std::rand() % (max_color_value + 1));
 	}
 }
 void ColorTable::insertGradient(const Color& color1, const Color& color2, const size_t& position1, const size_t& position2)
@@ -69,6 +67,11 @@ void ColorTable::insertGradient(const Color& color1, const Color& color2, const 
 			color.setRed(color1.getRed() + (red_delta * i));
 			color.setGreen(color1.getGreen() + (green_delta * i));
 			color.setBlue(color1.getBlue() + (blue_delta * i));
+
+			/*mColors[position1 + i].setRed(color1.getRed() + (red_delta * i));
+			mColors[position1 + i].setGreen(color1.getGreen() + (green_delta * i));
+			mColors[position1 + i].setBlue(color1.getBlue() + (blue_delta * i));*/
+
 		}
 	}
 }
@@ -77,7 +80,7 @@ int ColorTable::getMaxChannelValue() const
 	int max_color = 0;
 	for (size_t i = 0; i < mColors.size(); i++)
 	{
-		Color color = mColors[i];
+		const Color& color = mColors[i];
 		for (int k = 0; k < 3; k++)
 			if (color.getChannel(k) > max_color)
 				max_color = color.getChannel(k);

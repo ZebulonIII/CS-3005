@@ -132,5 +132,5 @@ void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
 }
 int NumberGrid::getMaximumNumber() const // custom
 {
-	return *std::max_element(std::begin(number_grid), std::end(number_grid));
+	return *std::max_element(number_grid.begin(), number_grid.end());
 }

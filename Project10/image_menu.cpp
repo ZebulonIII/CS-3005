@@ -173,8 +173,8 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM output_image = PPM();
 	NumberGrid* gptr = nullptr;
 	ColorTable table = ColorTable(16);
-	Color color1 = Color(0, 255, 0);
-	Color color2 = Color(255, 0, 255);
+	Color color1(0, 255, 0);
+	Color color2(255, 0, 255);
 	table.insertGradient(color1, color2, 0, 13);
 	std::string choice;
 
@@ -215,6 +215,8 @@ void showMenu(std::ostream& os)
 		"linear-gray) Set output image from input image 1's grayscale from linear colorimetric.\n"
 		"invert) Set output image from inverted input image 1.\n"
 		"motionblur) Set output image from motionblurred input image 1.\n"
+		"horizontal-edges) Set output image from edge detection of input image 1.\n"
+		"vertical-edges) Set output image from edge detection of input image 1.\n"
 		"equals) Determine if input image 1 and input image 2 contain the same data.\n"
 		"+) Set output image from sum of input image 1 and input image 2\n"
 		"+=) Set input image 1 by adding in input image 2\n"
@@ -280,6 +282,10 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		input_image1.motionBlur(getInteger(is, os, "How much blur? "), output_image);
 	else if (choice == "equals") // custom
 		os << (input_image1.equals(input_image2) ? "Equal\n" : "Not Equal\n");
+	else if (choice == "horizontal-edges") // custom
+		horizontalEdges(input_image1, output_image);
+	else if (choice == "vertical-edges") //custom
+		verticalEdges(input_image1, output_image);
 	else if (choice == "+")
 		plus(is, os, input_image1, input_image2, output_image);
 	else if (choice == "+=")
@@ -607,7 +613,39 @@ void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table)
 	int sec_gre = getInteger(is, os, "Second green? ");
 	int sec_blu = getInteger(is, os, "Second blue? ");
 
-	Color color1 = Color(fir_red, fir_gre, fir_blu);
-	Color color2 = Color(sec_red, sec_gre, sec_blu);
+	Color color1(fir_red, fir_gre, fir_blu);
+	Color color2(sec_red, sec_gre, sec_blu);
 	table.insertGradient(color1, color2, fir_pos, sec_pos);
+}
+void horizontalEdges(const PPM& input_image1, PPM& output_image) // custom
+{
+	output_image = PPM(input_image1.getHeight(), input_image1.getWidth());
+	output_image.setMaxColorValue(input_image1.getMaxColorValue());
+
+	for (int i = 1; i < input_image1.getHeight(); i++)
+		for (int j = 0; j < input_image1.getWidth(); j++)
+		{
+			double v2 = input_image1.linearColorimetricPixelValue(i, j);
+			double v1 = input_image1.linearColorimetricPixelValue(i - 1, j);
+			if (std::abs(v1 - v2) > (input_image1.getMaxColorValue() * 0.1))
+				output_image.setPixel(i, j, input_image1.getMaxColorValue());
+			else
+				output_image.setPixel(i, j, 0);
+		}
+}
+void verticalEdges(const PPM& input_image1, PPM& output_image) // custom
+{
+	output_image = PPM(input_image1.getHeight(), input_image1.getWidth());
+	output_image.setMaxColorValue(input_image1.getMaxColorValue());
+
+	for (int i = 0; i < input_image1.getHeight(); i++)
+		for (int j = 1; j < input_image1.getWidth(); j++)
+		{
+			double v2 = input_image1.linearColorimetricPixelValue(i, j);
+			double v1 = input_image1.linearColorimetricPixelValue(i, j - 1);
+			if (std::abs(v1 - v2) > (input_image1.getMaxColorValue() * 0.1))
+				output_image.setPixel(i, j, input_image1.getMaxColorValue());
+			else
+				output_image.setPixel(i, j, 0);
+		}
 }
