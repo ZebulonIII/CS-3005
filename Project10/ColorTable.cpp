@@ -1,5 +1,6 @@
 #include <vector>
 #include <cstdlib>
+#include <cmath>
 #include "ColorTable.h"
 #include "Color.h"
 
@@ -25,9 +26,7 @@ const Color& ColorTable::operator[] (const int& i) const
 		return c;
 	}
 	else
-	{
 		return mColors[i];
-	}
 }
 Color& ColorTable::operator[] (const int& i)
 {
@@ -39,9 +38,7 @@ Color& ColorTable::operator[] (const int& i)
 		return c;
 	}
 	else
-	{
 		return mColors[i];
-	}
 }
 void ColorTable::setRandomColor(const int& max_color_value, const size_t& position)
 {
