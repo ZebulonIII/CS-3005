@@ -30,7 +30,7 @@ int JuliaSet::calculatePlaneEscapeCount(const double& x, const double& y) const
 {
 	int count = 0;
 	double x0 = x, y0 = y, x1 = 0.0, y1 = 0.0;
-	while (count < max_number && (x0 * x0 + y0 * y0 <= 4))
+	while (count < max_number && distanceFromOriginSquared(x0, y0) <= 4)
 	{
 		calculateNextPoint(x0, y0, x1, y1);
 		x0 = x1;

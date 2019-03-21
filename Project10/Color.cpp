@@ -64,6 +64,11 @@ bool Color::operator== (const Color& rhs) const
 {
 	return mRed == rhs.getRed() && mGreen == rhs.getGreen() && mBlue == rhs.getBlue();
 }
+int Color::getMaxColorValue() const // custom
+{
+	int max = (mRed > mGreen) ? mRed : mGreen;
+	return (mBlue > max) ? mBlue : max;
+}
 std::ostream& operator<<(std::ostream& os, const Color& color)
 {
 	os << color.getRed() << ':' << color.getGreen() << ':' << color.getBlue();

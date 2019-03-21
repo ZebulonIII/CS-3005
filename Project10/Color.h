@@ -18,6 +18,7 @@ public:
 	void setChannel(const int& channel, const int& value);
 	void invert(const int& max_color_value);
 	bool operator== (const Color& rhs) const;
+	int getMaxColorValue() const; // custom
 private:
 	int mRed, mGreen, mBlue;
 };

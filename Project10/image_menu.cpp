@@ -7,6 +7,8 @@
 #include "NumberGrid.h"
 #include "JuliaSet.h"
 #include "MandelbrotSet.h"
+#include "ColorTable.h"
+#include "Color.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt)
@@ -173,9 +175,10 @@ int imageMenu(std::istream& is, std::ostream& os)
 	PPM output_image = PPM();
 	NumberGrid* gptr = nullptr;
 	ColorTable table = ColorTable(16);
-	Color color1(0, 255, 0);
+	/*Color color1(0, 255, 0);
 	Color color2(255, 0, 255);
-	table.insertGradient(color1, color2, 0, 13);
+	table.insertGradient(color1, color2, 0, 13);*/
+	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 15);
 	std::string choice;
 
 	do {

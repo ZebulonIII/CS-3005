@@ -53,22 +53,21 @@ void ColorTable::insertGradient(const Color& color1, const Color& color2, const 
 {
 	if (position2 > position1 && position1 >= 0 && position1 < getNumberOfColors() && position2 >= 0 && position2 < getNumberOfColors())
 	{
-		int pos_diff = position2 - position1;
-		double red_delta = (color2.getRed() - color1.getRed()) / pos_diff;
-		double green_delta  = (color2.getGreen() - color1.getGreen()) / pos_diff;
-		double blue_delta = (color2.getBlue() - color1.getBlue()) / pos_diff;
+		int n = position2 - position1 + 1;
+		double red_step = (color2.getRed() - color1.getRed()) / (n - 1);
+		double green_step  = (color2.getGreen() - color1.getGreen()) / (n - 1);
+		double blue_step = (color2.getBlue() - color1.getBlue()) / (n - 1);
 
-		for (int i = 0; i <= pos_diff; i++)
+		for (int i = 0; i < n; i++)
 		{
+			int red = color1.getRed() + red_step * i;
+			int green = color1.getGreen() + green_step * i;
+			int blue = color1.getBlue() + blue_step * i;
+
 			Color& color = mColors[position1 + i];
-			color.setRed(color1.getRed() + (red_delta * i));
-			color.setGreen(color1.getGreen() + (green_delta * i));
-			color.setBlue(color1.getBlue() + (blue_delta * i));
-
-			/*mColors[position1 + i].setRed(color1.getRed() + (red_delta * i));
-			mColors[position1 + i].setGreen(color1.getGreen() + (green_delta * i));
-			mColors[position1 + i].setBlue(color1.getBlue() + (blue_delta * i));*/
-
+			color.setRed(red);
+			color.setGreen(green);
+			color.setBlue(blue);
 		}
 	}
 }
@@ -77,10 +76,9 @@ int ColorTable::getMaxChannelValue() const
 	int max_color = 0;
 	for (size_t i = 0; i < mColors.size(); i++)
 	{
-		const Color& color = mColors[i];
-		for (int k = 0; k < 3; k++)
-			if (color.getChannel(k) > max_color)
-				max_color = color.getChannel(k);
+		int max = mColors[i].getMaxColorValue();
+		if (max > max_color)
+			max_color = max;
 	}
 	return max_color;
 }
