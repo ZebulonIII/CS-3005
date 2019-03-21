@@ -8,22 +8,39 @@ class HSVColor
 {
 public:
 	HSVColor();
-	HSVColor(const double&, const double&, const double&);
-	HSVColor(const Color&);
-	double getHue() const;
+	HSVColor(const int& hue, const double& saturation, const double& value);
+	HSVColor(const Color& color);
+	int getHue() const;
 	double getSaturation() const;
 	double getValue() const;
-	void setHue(const double&);
-	void setSaturation(const double&);
-	void setValue(const double&);
-	void setChannel(const int&, const double&);
+	double getChannel(const int& channel) const;
+	void setHue(const int& hue);
+	void setSaturation(const double& saturation);
+	void setValue(const double& value);
+	void setChannel(const int& channel, const double& amount);
 	void invert();
 	Color toRGB() const;
-	static Color toRGB(const double&, const double&, const double&);
-	bool operator== (const HSVColor&) const;
-	bool operator== (const Color&) const;
+	static Color HSVtoRGB(const int& hue, const double& saturation, const double& value);
+	static HSVColor RGBtoHSV(const int& red, const int& green, const int& blue);
+	static HSVColor RGBtoHSV(const Color& color);
+	bool operator== (const HSVColor& rhs) const;
+	bool operator== (const Color& rhs) const;
 private:
-	double hue, saturation, value;
+	int mHue;
+	double mSaturation, mValue;
+
+	template<class T>
+	static T maximum(const T& a, const T& b, const T& c)
+	{
+		T max = (a < b) ? b : a;
+		return ((max < c) ? c : max);
+	}
+	template<class T>
+	static T minimum(const T& a, const T& b, const T& c)
+	{
+		T min = (a < b) ? a : b;
+		return ((min < c) ? min : c);
+	}
 };
 
 std::ostream& operator<< (std::ostream&, const HSVColor&);
