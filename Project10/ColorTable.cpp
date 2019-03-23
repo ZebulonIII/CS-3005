@@ -18,7 +18,7 @@ void ColorTable::setNumberOfColors(const size_t& num_color)
 }
 const Color& ColorTable::operator[] (const int& i) const
 {
-	if (i < 0 || i >= mColors.size())
+	if (i < 0 || i >= (int)mColors.size())
 	{
 		static Color ec(-1, -1, -1);
 		static Color c(-1, -1, -1);
@@ -30,7 +30,7 @@ const Color& ColorTable::operator[] (const int& i) const
 }
 Color& ColorTable::operator[] (const int& i)
 {
-	if (i < 0 || i >= mColors.size())
+	if (i < 0 || i >= (int)mColors.size())
 	{
 		static Color ec(-1, -1, -1);
 		static Color c(-1, -1, -1);

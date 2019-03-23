@@ -13,7 +13,7 @@ void HSVColorTable::setNumberOfColors(const size_t& num_color)
 }
 const HSVColor& HSVColorTable::operator[] (const int& i) const
 {
-	if (i < 0 || i >= mColors.size())
+	if (i < 0 || i >= (int)mColors.size())
 	{
 		static HSVColor ec(-1, -1, -1);
 		static HSVColor c(-1, -1, -1);
@@ -25,7 +25,7 @@ const HSVColor& HSVColorTable::operator[] (const int& i) const
 }
 HSVColor& HSVColorTable::operator[] (const int& i)
 {
-	if (i < 0 || i >= mColors.size())
+	if (i < 0 || i >= (int)mColors.size())
 	{
 		static HSVColor ec(-1, -1, -1);
 		static HSVColor c(-1, -1, -1);

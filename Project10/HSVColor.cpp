@@ -28,10 +28,10 @@ double HSVColor::getChannel(const int& channel) const
 {
 	switch (channel)
 	{
-	case 0: return getHue();
-	case 1: return getSaturation();
-	case 2: return getValue();
-	default: return 0.0;
+		case 0: return getHue();
+		case 1: return getSaturation();
+		case 2: return getValue();
+		default: return 0.0;
 	}
 }
 void HSVColor::setHue(const int& hue)
@@ -53,10 +53,10 @@ void HSVColor::setChannel(const int& channel, const double& amount)
 {
 	switch (channel)
 	{
-	case 0: setHue(amount); break;
-	case 1: setSaturation(amount); break;
-	case 2: setValue(amount); break;
-	default: break;
+		case 0: setHue(amount); break;
+		case 1: setSaturation(amount); break;
+		case 2: setValue(amount); break;
+		default: break;
 	}
 }
 void HSVColor::invert()
@@ -102,7 +102,7 @@ Color HSVColor::HSVtoRGB(const int& hue, const double& saturation, const double&
 	int green = (g + m) * 255;
 	int blue = (b + m) * 255;
 
-	return Color(r, g, b);
+	return Color(red, green, blue);
 }
 HSVColor HSVColor::RGBtoHSV(const int& red, const int& green, const int& blue)
 {

@@ -1,38 +1,51 @@
-GCC := g++ -std=c++11
-C := -c
-O := -o
+CXX := g++
+CXXFLAGS := -Wall -std=c++11 -Werror
+SRCS    := $(sort $(wildcard *.cpp))
+OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
+TARGETS := ppm_menu
 
-all: ppm_menu
+all: $(TARGETS)
 
-ppm_menu: ppm_menu.o image_menu.o PPM.o NumberGrid.o ComplexFractal.o JuliaSet.o MandelbrotSet.o Color.o ColorTable.o
-	$(GCC) $^ $(O) ppm_menu
+ppm_menu: $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-ppm_menu.o: ppm_menu.cpp
-	$(GCC) $(C) $<
+######################################
+# automatic dependency generation
+#
+DEPDIR := .d
+$(shell mkdir -p $(DEPDIR) >/dev/null)
+DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-image_menu.o: image_menu.cpp PPM.h NumberGrid.h JuliaSet.h MandelbrotSet.h ColorTable.h Color.h
-	$(GCC) $(C) $<
+COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
-PPM.o: PPM.cpp
-	$(GCC) $(C) $<
+%.o : %.cpp
+%.o : %.cpp $(DEPDIR)/%.d
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
 
-NumberGrid.o: NumberGrid.cpp PPM.h
-	$(GCC) $(C) $<
+$(DEPDIR)/%.d: ;
+.PRECIOUS: $(DEPDIR)/%.d
 
-ComplexFractal.o: ComplexFractal.cpp NumberGrid.h
-	$(GCC) $(C) $<
+include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
+#
+#
+######################################
 
-JuliaSet.o: JuliaSet.cpp ComplexFractal.h
-	$(GCC) $(C) $<
-
-MandelbrotSet.o: MandelbrotSet.cpp ComplexFractal.h
-	$(GCC) $(C) $<
-
-Color.o: Color.cpp
-	$(GCC) $(C) $<
-
-ColorTable.o: ColorTable.cpp Color.h
-	$(GCC) $(C) $<
-
+######################################
+#
+#
 clean:
-	rm *.o ppm_menu
+	-rm -f $(TARGETS)
+	-rm -f *.o
+	-rm -f *~
+	-rm -rf $(DEPDIR)
+#
+#
+######################################
+
+
+
+# Local Variables:
+# mode:makefile
+# End:
