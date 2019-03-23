@@ -53,12 +53,12 @@ void ColorTable::insertGradient(const Color& color1, const Color& color2, const 
 {
 	if (position2 > position1 && position1 >= 0 && position1 < getNumberOfColors() && position2 >= 0 && position2 < getNumberOfColors())
 	{
-		int n = position2 - position1 + 1;
-		double red_step = (color2.getRed() - color1.getRed()) / (n - 1);
-		double green_step  = (color2.getGreen() - color1.getGreen()) / (n - 1);
-		double blue_step = (color2.getBlue() - color1.getBlue()) / (n - 1);
+		int n = position2 - position1;
+		double red_step = (double)(color2.getRed() - color1.getRed()) / n;
+		double green_step  = (double)(color2.getGreen() - color1.getGreen()) / n;
+		double blue_step = (double)(color2.getBlue() - color1.getBlue()) / n;
 
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i <= n; i++)
 		{
 			int red = color1.getRed() + red_step * i;
 			int green = color1.getGreen() + green_step * i;

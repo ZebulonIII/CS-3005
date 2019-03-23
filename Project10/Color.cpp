@@ -19,10 +19,10 @@ int Color::getChannel(const int& channel) const
 {
 	switch (channel)
 	{
-	case 0: return mRed;
-	case 1: return mGreen;
-	case 2: return mBlue;
-	default: return -1;
+		case 0: return mRed;
+		case 1: return mGreen;
+		case 2: return mBlue;
+		default: return -1;
 	}
 }
 void Color::setRed(const int& value)
@@ -45,10 +45,10 @@ void Color::setChannel(const int& channel, const int& value)
 	if (value >= 0)
 		switch (channel)
 		{
-		case 0: mRed = value; break;
-		case 1: mGreen = value; break;
-		case 2: mBlue = value; break;
-		default: break;
+			case 0: setRed(value); break;
+			case 1: setGreen(value); break;
+			case 2: setBlue(value); break;
+			default: break;
 		}
 }
 void Color::invert(const int& max_color_value)

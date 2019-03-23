@@ -106,9 +106,9 @@ Color HSVColor::HSVtoRGB(const int& hue, const double& saturation, const double&
 }
 HSVColor HSVColor::RGBtoHSV(const int& red, const int& green, const int& blue)
 {
-	double r = red / 255;
-	double g = green / 255;
-	double b = blue / 255;
+	double r = red / 255.;
+	double g = green / 255.;
+	double b = blue / 255.;
 
 	double Cmax = maximum<double>(r, g, b);
 	double Cmin = minimum<double>(r, g, b);
@@ -144,7 +144,7 @@ bool HSVColor::operator== (const Color& color) const
 }
 std::ostream& operator<< (std::ostream& os, const HSVColor& color)
 {
-	std::setprecision(3);
+	//std::setprecision(3);
 	os << color.getHue() << ':' << color.getSaturation() << ':' << color.getValue();
 	return os;
 }
