@@ -1,0 +1,25 @@
+{
+    "assignmentID": 1706,
+    "problems": {
+        "cs3005_assignment_color_table": {
+            "id": 108,
+            "step": 4,
+            "whitelist": {
+                "ColorTable.cpp": true,
+                "ColorTable.h": true,
+                "ComplexFractal.cpp": true,
+                "ComplexFractal.h": true,
+                "JuliaSet.cpp": true,
+                "JuliaSet.h": true,
+                "MandelbrotSet.cpp": true,
+                "MandelbrotSet.h": true,
+                "NumberGrid.cpp": true,
+                "NumberGrid.h": true,
+                "PPM.cpp": true,
+                "PPM.h": true,
+                "image_menu.cpp": true,
+                "image_menu.h": true
+            }
+        }
+    }
+}

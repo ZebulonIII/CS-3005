@@ -117,7 +117,7 @@ Color& ColorTable::operator[] (const int& i)
 }
 void ColorTable::setRandomColor(const int& max_color_value, const size_t& position)
 {
-	if (position >= 0 && position < mColors.size() && max_color_value >= 0)
+	if (position < mColors.size() && max_color_value >= 0)
 	{
 		Color& color = mColors[position];
 		for (int i = 0; i < 3; i++)
@@ -126,7 +126,7 @@ void ColorTable::setRandomColor(const int& max_color_value, const size_t& positi
 }
 void ColorTable::insertGradient(const Color& color1, const Color& color2, const size_t& position1, const size_t& position2)
 {
-	if (position2 > position1 && position1 >= 0 && position1 < getNumberOfColors() && position2 >= 0 && position2 < getNumberOfColors())
+	if (position2 > position1 &&position1 < getNumberOfColors() && position2 < getNumberOfColors())
 	{
 		int n = position2 - position1;
 		double red_step = (double)(color2.getRed() - color1.getRed()) / n;

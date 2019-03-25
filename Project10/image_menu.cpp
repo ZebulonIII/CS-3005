@@ -2,13 +2,14 @@
 #include <fstream>
 #include <cmath>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include "image_menu.h"
 #include "PPM.h"
 #include "NumberGrid.h"
 #include "JuliaSet.h"
 #include "MandelbrotSet.h"
 #include "ColorTable.h"
-#include "Color.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt)
@@ -170,6 +171,7 @@ void drawBox(std::istream& is, std::ostream& os, PPM& src)
 }
 int imageMenu(std::istream& is, std::ostream& os)
 {
+	srand(std::time(0));
 	PPM input_image1 = PPM();
 	PPM input_image2 = PPM();
 	PPM output_image = PPM();
