@@ -8,6 +8,7 @@
 #include "JuliaSet.h"
 #include "MandelbrotSet.h"
 #include "ColorTable.h"
+#include "HSVColorTable.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt);
@@ -49,6 +50,8 @@ void applyGrid(std::istream& is, std::ostream& os, NumberGrid& grid, PPM& dst);
 void drawCircle(std::istream& is, std::ostream& os, NumberGrid& grid);
 void drawDiamond(std::istream& is, std::ostream& os, NumberGrid& grid);
 void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid);
+void horizontalEdges(const PPM& input_image1, PPM& dst);
+void verticalEdges(const PPM& input_image1, PPM& dst);
 // Project 8
 void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid);
 void calculateFractal(std::istream& is, std::ostream& os, NumberGrid& grid);
@@ -67,7 +70,10 @@ void setColorTableSize(std::istream& is, std::ostream& os, ColorTable& table);
 void setColor(std::istream& is, std::ostream& os, ColorTable& table);
 void setRandomColor(std::istream& is, std::ostream& os, ColorTable& table);
 void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table);
-void horizontalEdges(const PPM& input_image1, PPM& dst);
-void verticalEdges(const PPM& input_image1, PPM& dst);
+void applyGridHSVColorTable(std::istream& is, std::ostream& os, NumberGrid& grid, HSVColorTable& table, PPM& dst); // custom
+void setHSVColorTableSize(std::istream& is, std::ostream& os, HSVColorTable& table); // custom
+void setHSVColor(std::istream& is, std::ostream& os, HSVColorTable& table); // custom
+void setHSVRandomColor(std::istream& is, std::ostream& os, HSVColorTable& table); // custom
+void setHSVColorGradient(std::istream& is, std::ostream& os, HSVColorTable& table); // custom
 
 #endif // _IMAGE_MENU_H_

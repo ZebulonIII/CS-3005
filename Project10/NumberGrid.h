@@ -4,6 +4,7 @@
 #include <vector>
 #include "PPM.h"
 #include "ColorTable.h"
+#include "HSVColorTable.h"
 
 class NumberGrid
 {
@@ -27,6 +28,7 @@ public:
 	virtual void calculateAllNumbers();
 	void setPPM(PPM& ppm, const ColorTable& colors) const;
 	int getMaximumNumber() const; // custom
+	void setPPM(PPM& dst, const HSVColorTable& colors) const; // custom
 protected:
 	std::vector<int> number_grid;
 	int height, width, max_number;

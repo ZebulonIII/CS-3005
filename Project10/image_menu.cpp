@@ -179,7 +179,7 @@ int imageMenu(std::istream& is, std::ostream& os)
 	NumberGrid* gptr = new JuliaSet();
 	ColorTable table = ColorTable(16);
 	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 15);
-	HSVColorTable hsv_table = HSVColorTable();
+	HSVColorTable hsv_table = HSVColorTable(16);
 	std::string choice;
 
 	do {
@@ -190,6 +190,16 @@ int imageMenu(std::istream& is, std::ostream& os)
 			setJuliaFractal(is, os, gptr);
 		else if (choice == "mandelbrot")
 			setMandelbrotFractal(is, os, gptr);
+		else if (choice == "grid-apply-hsvcolor-table")
+			applyGridHSVColorTable(is, os, *gptr, hsv_table, output_image);
+		else if (choice == "set-hsvcolor-table-size")
+			setHSVColorTableSize(is, os, hsv_table);
+		else if (choice == "set-hsvcolor")
+			setHSVColor(is, os, hsv_table);
+		else if (choice == "set-random-hsvcolor")
+			setHSVRandomColor(is, os, hsv_table);
+		else if (choice == "set-hsvcolor-gradient")
+			setHSVColorGradient(is, os, hsv_table);
 	} while (choice != "quit");
 
 	if (gptr != nullptr)
@@ -251,6 +261,11 @@ void showMenu(std::ostream& os)
 		"set-color) Set the RGB values for one slot in the color table.\n"
 		"set-random-color) Randomly set the RGB values for one slot in the color table.\n"
 		"set-color-gradient) Smoothly set the RGB values for a range of slots in the color table.\n"
+		"grid-apply-hsvcolor-table) Use the grid values to set colors in the output image using the HSV color table.\n"
+		"set-hsvcolor-table-size) Change the number of slots in the HSV color table.\n"
+		"set-hsvcolor) Set the HSV values for one slot in the HSV color table.\n"
+		"set-random-hsvcolor) Randomly set the HSV values for one slot in the HSV color table.\n"
+		"set-hsvcolor-gradient) Smoothly set the HSV values for a range of slots in the HSV color table.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -348,6 +363,16 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		setRandomColor(is, os, table);
 	else if (choice == "set-color-gradient")
 		setColorGradient(is, os, table);
+	else if (choice == "grid-apply-hsvcolor-table")
+		return;
+	else if (choice == "set-hsvcolor-table-size")
+		return;
+	else if (choice == "set-hsvcolor")
+		return;
+	else if (choice == "set-random-hsvcolor")
+		return;
+	else if (choice == "set-hsvcolor-gradient")
+		return;
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -653,4 +678,46 @@ void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table)
 	Color color1(fir_red, fir_gre, fir_blu);
 	Color color2(sec_red, sec_gre, sec_blu);
 	table.insertGradient(color1, color2, fir_pos, sec_pos);
+}
+void applyGridHSVColorTable(std::istream& is, std::ostream& os, NumberGrid& grid, HSVColorTable& table, PPM& dst) // custom
+{
+	(void)is;
+	(void)os;
+
+	grid.setPPM(dst, table);
+}
+void setHSVColorTableSize(std::istream& is, std::ostream& os, HSVColorTable& table) // custom
+{
+	int size = getInteger(is, os, "Size? ");
+	table.setNumberOfColors(size);
+}
+void setHSVColor(std::istream& is, std::ostream& os, HSVColorTable& table) // custom
+{
+	int pos = getInteger(is, os, "Position? ");
+	int hue = getInteger(is, os, "Hue? ");
+	double sat = getDouble(is, os, "Saturation? ");
+	double val = getDouble(is, os, "Value? ");
+
+	HSVColor& color = table[pos];
+	color.setHue(hue);
+	color.setSaturation(sat);
+	color.setValue(val);
+}
+void setHSVRandomColor(std::istream& is, std::ostream& os, HSVColorTable& table) // custom
+{
+	int position = getInteger(is, os, "Position? ");
+	table.setRandomColor(table.getMaxChannelValue(), position);
+}
+void setHSVColorGradient(std::istream& is, std::ostream& os, HSVColorTable& table) // custom
+{
+	int fir_pos = getInteger(is, os, "First position? ");
+	int fir_hue = getInteger(is, os, "First hue? ");
+	double fir_sat = getDouble(is, os, "First saturation? ");
+	double fir_val = getDouble(is, os, "First value? ");
+	int sec_pos = getInteger(is, os, "Second position? ");
+	int sec_hue = getInteger(is, os, "Second hue? ");
+	double sec_sat = getDouble(is, os, "Second saturation? ");
+	double sec_val = getDouble(is, os, "Second value? ");
+
+	table.insertGradient(HSVColor(fir_hue, fir_sat, fir_val), HSVColor(sec_hue, sec_sat, sec_val), fir_pos, sec_pos);
 }

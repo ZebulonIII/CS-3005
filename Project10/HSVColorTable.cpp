@@ -151,7 +151,6 @@ std::ostream& operator<< (std::ostream& os, const HSVColor& color)
 }
 
 // HSVColorTable
-HSVColorTable::HSVColorTable() : mColors(std::vector<HSVColor>()) {}
 HSVColorTable::HSVColorTable(const size_t& num_color) : mColors(std::vector<HSVColor>(num_color)) {}
 size_t HSVColorTable::getNumberOfColors() const
 {
@@ -223,4 +222,11 @@ int HSVColorTable::getMaxChannelValue() const
 				max_color = color.getChannel(k);
 	}
 	return max_color;
+}
+ColorTable HSVColorTable::toColorTable() const
+{
+	ColorTable table(mColors.size());
+	for (size_t i = 0; i < mColors.size(); i++)
+		table[i] = mColors[i].toRGB();
+	return table;
 }

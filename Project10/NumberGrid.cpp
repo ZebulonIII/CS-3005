@@ -2,6 +2,7 @@
 #include <vector>
 #include "NumberGrid.h"
 #include "PPM.h"
+#include "HSVColorTable.h"
 
 NumberGrid::NumberGrid() : height(300), width(400), max_number(255)
 {
@@ -134,4 +135,8 @@ void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
 int NumberGrid::getMaximumNumber() const // custom
 {
 	return *std::max_element(number_grid.begin(), number_grid.end());
+}
+void NumberGrid::setPPM(PPM& dst, const HSVColorTable& colors) const // custom
+{
+	setPPM(dst, colors.toColorTable());
 }

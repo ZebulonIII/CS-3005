@@ -30,6 +30,7 @@ class ColorTable
 {
 public:
 	ColorTable(const size_t& num_color);
+	~ColorTable();
 	size_t getNumberOfColors() const;
 	void setNumberOfColors(const size_t& num_color);
 	const Color& operator[] (const int& i) const;

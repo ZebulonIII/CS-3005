@@ -83,6 +83,7 @@ ColorTable::ColorTable(const size_t& num_color)
 {
 	mColors = std::vector<Color>(num_color);
 }
+ColorTable::~ColorTable() {}
 size_t ColorTable::getNumberOfColors() const
 {
 	return mColors.size();
