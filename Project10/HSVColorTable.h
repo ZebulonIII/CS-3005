@@ -46,6 +46,7 @@ std::ostream& operator<< (std::ostream&, const HSVColor&);
 class HSVColorTable
 {
 public:
+	HSVColorTable();
 	HSVColorTable(const size_t& num_color);
 	size_t getNumberOfColors() const;
 	void setNumberOfColors(const size_t& num_color);

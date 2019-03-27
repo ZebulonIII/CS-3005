@@ -10,6 +10,7 @@
 #include "JuliaSet.h"
 #include "MandelbrotSet.h"
 #include "ColorTable.h"
+#include "HSVColorTable.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt)
@@ -178,6 +179,7 @@ int imageMenu(std::istream& is, std::ostream& os)
 	NumberGrid* gptr = new JuliaSet();
 	ColorTable table = ColorTable(16);
 	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 15);
+	HSVColorTable hsv_table = HSVColorTable();
 	std::string choice;
 
 	do {

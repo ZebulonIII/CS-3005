@@ -151,6 +151,7 @@ std::ostream& operator<< (std::ostream& os, const HSVColor& color)
 }
 
 // HSVColorTable
+HSVColorTable::HSVColorTable() : mColors(std::vector<HSVColor>()) {}
 HSVColorTable::HSVColorTable(const size_t& num_color) : mColors(std::vector<HSVColor>(num_color)) {}
 size_t HSVColorTable::getNumberOfColors() const
 {
