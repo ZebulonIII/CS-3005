@@ -1,5 +1,6 @@
 #include <vector>
 #include "HSVColorTable.h"
+#include "ColorTable.h"
 
 // HSVColor
 HSVColor::HSVColor() : mHue(0.0), mSaturation(0.0), mValue(0.0) {}

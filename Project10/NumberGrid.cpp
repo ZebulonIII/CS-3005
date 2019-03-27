@@ -1,14 +1,15 @@
 #include <algorithm>
+#include <vector>
 #include "NumberGrid.h"
 #include "PPM.h"
 
-NumberGrid::NumberGrid() : max_number(255)
+NumberGrid::NumberGrid() : height(300), width(400), max_number(255)
 {
-	setGridSize(300, 400);
+	number_grid = std::vector<int>(300 * 400, 0);
 }
-NumberGrid::NumberGrid(const int& height, const int& width) :  max_number(255)
+NumberGrid::NumberGrid(const int& height, const int& width) : height(height), width(width), max_number(255)
 {
-	setGridSize(height, width);
+	number_grid = std::vector<int>(height * width, 0);
 }
 NumberGrid::~NumberGrid() {}
 int NumberGrid::getHeight() const
@@ -28,8 +29,8 @@ void NumberGrid::setGridSize(const int& height, const int& width)
 	if (height >= 2 && width >= 2)
 	{
 		this->height = height;
-		this->width = width;
-		number_grid = std::vector<int>(height * width, 0);
+		this->width = width;		
+		number_grid.resize(height * width);
 	}
 }
 void NumberGrid::setMaxNumber(const int& number)

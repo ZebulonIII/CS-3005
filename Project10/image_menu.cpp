@@ -171,15 +171,12 @@ void drawBox(std::istream& is, std::ostream& os, PPM& src)
 }
 int imageMenu(std::istream& is, std::ostream& os)
 {
-	srand(std::time(0));
+	srand(time(0));
 	PPM input_image1 = PPM();
 	PPM input_image2 = PPM();
 	PPM output_image = PPM();
-	NumberGrid* gptr = nullptr;
+	NumberGrid* gptr = new JuliaSet();
 	ColorTable table = ColorTable(16);
-	/*Color color1(0, 255, 0);
-	Color color2(255, 0, 255);
-	table.insertGradient(color1, color2, 0, 13);*/
 	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 15);
 	std::string choice;
 
@@ -419,7 +416,7 @@ void configureGrid(std::istream& is, std::ostream& os, NumberGrid& grid)
 	int width = getInteger(is, os, "Grid Width? ");
 	int max_value = getInteger(is, os, "Grid Max Value? ");
 
-	grid.setGridSize(height, width);
+	grid.setGridSize(height, width);	
 	grid.setMaxNumber(max_value);
 }
 void setGrid(std::istream& is, std::ostream& os, NumberGrid& grid)
@@ -482,6 +479,39 @@ void drawBox(std::istream& is, std::ostream& os, NumberGrid& grid)
 		for (int j = left_col; j <= right_col; j++)
 			grid.setNumber(i, j, number);
 }
+void horizontalEdges(const PPM& input_image1, PPM& output_image) // custom
+{
+	output_image = PPM(input_image1.getHeight(), input_image1.getWidth());
+	output_image.setMaxColorValue(input_image1.getMaxColorValue());
+
+	for (int i = 1; i < input_image1.getHeight(); i++)
+		for (int j = 0; j < input_image1.getWidth(); j++)
+		{
+			double v2 = input_image1.linearColorimetricPixelValue(i, j);
+			double v1 = input_image1.linearColorimetricPixelValue(i - 1, j);
+			if (std::abs(v1 - v2) > (input_image1.getMaxColorValue() * 0.1))
+				output_image.setPixel(i, j, input_image1.getMaxColorValue());
+			else
+				output_image.setPixel(i, j, 0);
+		}
+}
+void verticalEdges(const PPM& input_image1, PPM& output_image) // custom
+{
+	output_image = PPM(input_image1.getHeight(), input_image1.getWidth());
+	output_image.setMaxColorValue(input_image1.getMaxColorValue());
+
+	for (int i = 0; i < input_image1.getHeight(); i++)
+		for (int j = 1; j < input_image1.getWidth(); j++)
+		{
+			double v2 = input_image1.linearColorimetricPixelValue(i, j);
+			double v1 = input_image1.linearColorimetricPixelValue(i, j - 1);
+			if (std::abs(v1 - v2) > (input_image1.getMaxColorValue() * 0.1))
+				output_image.setPixel(i, j, input_image1.getMaxColorValue());
+			else
+				output_image.setPixel(i, j, 0);
+		}
+}
+
 // Project 8
 void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid)
 {
@@ -621,36 +651,4 @@ void setColorGradient(std::istream& is, std::ostream& os, ColorTable& table)
 	Color color1(fir_red, fir_gre, fir_blu);
 	Color color2(sec_red, sec_gre, sec_blu);
 	table.insertGradient(color1, color2, fir_pos, sec_pos);
-}
-void horizontalEdges(const PPM& input_image1, PPM& output_image) // custom
-{
-	output_image = PPM(input_image1.getHeight(), input_image1.getWidth());
-	output_image.setMaxColorValue(input_image1.getMaxColorValue());
-
-	for (int i = 1; i < input_image1.getHeight(); i++)
-		for (int j = 0; j < input_image1.getWidth(); j++)
-		{
-			double v2 = input_image1.linearColorimetricPixelValue(i, j);
-			double v1 = input_image1.linearColorimetricPixelValue(i - 1, j);
-			if (std::abs(v1 - v2) > (input_image1.getMaxColorValue() * 0.1))
-				output_image.setPixel(i, j, input_image1.getMaxColorValue());
-			else
-				output_image.setPixel(i, j, 0);
-		}
-}
-void verticalEdges(const PPM& input_image1, PPM& output_image) // custom
-{
-	output_image = PPM(input_image1.getHeight(), input_image1.getWidth());
-	output_image.setMaxColorValue(input_image1.getMaxColorValue());
-
-	for (int i = 0; i < input_image1.getHeight(); i++)
-		for (int j = 1; j < input_image1.getWidth(); j++)
-		{
-			double v2 = input_image1.linearColorimetricPixelValue(i, j);
-			double v1 = input_image1.linearColorimetricPixelValue(i, j - 1);
-			if (std::abs(v1 - v2) > (input_image1.getMaxColorValue() * 0.1))
-				output_image.setPixel(i, j, input_image1.getMaxColorValue());
-			else
-				output_image.setPixel(i, j, 0);
-		}
 }

@@ -1,6 +1,6 @@
 #include <vector>
 #include <ostream>
-#include "HSVColor.h"
+#include "ColorTable.h"
 
 class HSVColor
 {
