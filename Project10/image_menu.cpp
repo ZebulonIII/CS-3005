@@ -180,6 +180,7 @@ int imageMenu(std::istream& is, std::ostream& os)
 	ColorTable table = ColorTable(16);
 	table.insertGradient(Color(0, 255, 0), Color(255, 0, 255), 0, 15);
 	HSVColorTable hsv_table = HSVColorTable(16);
+	hsv_table.insertGradient(HSVColor(120, 1.0, 1.0), HSVColor(300, 1.0, 1.0), 0, 15);
 	std::string choice;
 
 	do {
@@ -363,15 +364,7 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		setRandomColor(is, os, table);
 	else if (choice == "set-color-gradient")
 		setColorGradient(is, os, table);
-	else if (choice == "grid-apply-hsvcolor-table")
-		return;
-	else if (choice == "set-hsvcolor-table-size")
-		return;
-	else if (choice == "set-hsvcolor")
-		return;
-	else if (choice == "set-random-hsvcolor")
-		return;
-	else if (choice == "set-hsvcolor-gradient")
+	else if (choice.find("hsv") != std::string::npos)
 		return;
 	else if (choice[0] == '#')
 		commentLine(is);

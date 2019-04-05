@@ -81,10 +81,10 @@ Color HSVColor::HSVtoRGB(const int& hue, const double& saturation, const double&
 
 	double r, g, b;
 	if (hue < 60) {
-		r = C; g = X, b = 0;
+		r = C; g = X; b = 0;
 	}
 	else if (hue < 120) {
-		r = X, g = C, b = 0;
+		r = X; g = C; b = 0;
 	}
 	else if (hue < 180) {
 		r = 0; g = C; b = X;
@@ -93,7 +93,7 @@ Color HSVColor::HSVtoRGB(const int& hue, const double& saturation, const double&
 		r = 0; g = X; b = C;
 	}
 	else if (hue < 300) {
-		r = X, g = 0; b = C;
+		r = X; g = 0; b = C;
 	}
 	else {
 		r = C; g = 0; b = X;
@@ -197,17 +197,17 @@ void HSVColorTable::insertGradient(const HSVColor& color1, const HSVColor& color
 {
 	if (position2 > position1 && position1 >= 0 && position1 < getNumberOfColors() && position2 >= 0 && position2 < getNumberOfColors())
 	{
-		int pos_diff = position2 - position1;
-		double hue_delta = (color2.getHue() - color1.getHue()) / pos_diff;
-		double saturation_delta = (color2.getSaturation() - color1.getSaturation()) / pos_diff;
-		double value_delta = (color2.getValue() - color1.getValue()) / pos_diff;
+		int n = position2 - position1;
+		double hue_delta = (color2.getHue() - color1.getHue()) / n;
+		double saturation_delta = (color2.getSaturation() - color1.getSaturation()) / n;
+		double value_delta = (color2.getValue() - color1.getValue()) / n;
 
-		for (int i = 0; i <= pos_diff; i++)
+		for (int i = 0; i <= n; i++)
 		{
 			HSVColor& color = mColors[position1 + i];
-			color.setHue(color1.getHue() + (hue_delta * i));
-			color.setSaturation(color1.getSaturation() + (saturation_delta * i));
-			color.setValue(color1.getValue() + (value_delta * i));
+			color.setHue(color1.getHue() + hue_delta * i);
+			color.setSaturation(color1.getSaturation() + saturation_delta * i);
+			color.setValue(color1.getValue() + value_delta * i);
 		}
 	}
 }

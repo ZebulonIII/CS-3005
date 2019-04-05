@@ -30,7 +30,7 @@ void NumberGrid::setGridSize(const int& height, const int& width)
 	if (height >= 2 && width >= 2)
 	{
 		this->height = height;
-		this->width = width;		
+		this->width = width;
 		number_grid.resize(height * width);
 	}
 }
