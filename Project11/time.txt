@@ -1,0 +1,10 @@
+It took me 0.0875685 seconds to complete the normal workload.
+It took me 0.534287 seconds to complete the normal workload.
+It took me 0.891954 seconds to complete the normal workload.
+
+Num threads: 16
+It took me 0.0112195 seconds to complete the threaded workload.
+Num threads: 16
+It took me 0.0710581 seconds to complete the threaded workload.
+Num threads: 16
+It took me 0.0939198 seconds to complete the threaded workload.
