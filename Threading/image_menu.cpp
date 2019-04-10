@@ -454,6 +454,7 @@ void applyGrid(std::istream& is, std::ostream& os, NumberGrid& grid, PPM& dst)
 {
 	(void)is;
 	(void)os;
+
 	grid.setPPM(dst);
 }
 void drawCircle(std::istream& is, std::ostream& os, NumberGrid& grid)
@@ -534,7 +535,6 @@ void verticalEdges(const PPM& input_image1, PPM& output_image) // custom
 				output_image.setPixel(i, j, 0);
 		}
 }
-
 // Project 8
 void setFractalPlaneSize(std::istream& is, std::ostream& os, NumberGrid& grid)
 {

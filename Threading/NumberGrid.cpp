@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <fstream>
 #include <vector>
 #include "NumberGrid.h"
 #include "PPM.h"
@@ -64,7 +65,7 @@ void NumberGrid::setNumber(const int& row, const int& column, const int& number)
 	if (indexValid(row, column) && numberValid(number))
 		number_grid[index(row, column)] = number;
 }
-void NumberGrid::setPPM(PPM& ppm) const
+void NumberGrid::setPPM(PPM& ppm)
 {
 	ppm.setHeight(height);
 	ppm.setWidth(width);
@@ -107,7 +108,7 @@ void NumberGrid::calculateAllNumbers()
 		for (int j = 0; j < width; j++)
 			setNumber(i, j, calculateNumber(i, j));
 }
-void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
+void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors)
 {
 	if (colors.getNumberOfColors() >= 3)
 	{
@@ -136,7 +137,7 @@ int NumberGrid::getMaximumNumber() const // custom
 {
 	return *std::max_element(number_grid.begin(), number_grid.end());
 }
-void NumberGrid::setPPM(PPM& dst, const HSVColorTable& colors) const // custom
+void NumberGrid::setPPM(PPM& dst, const HSVColorTable& colors) // custom
 {
 	setPPM(dst, colors.toColorTable());
 }
