@@ -1,4 +1,5 @@
 #include <thread>
+#include <fstream>
 #include "ThreadedGrid.h"
 #include "ThreadedVector.h"
 #include "PPM.h"
@@ -36,7 +37,7 @@ void ThreadedGrid::worker()
 		value.clear();
 	}
 }
-void ThreadedGrid::setPPM(PPM& ppm) const
+void ThreadedGrid::setPPM(PPM& ppm)
 {
 	ppm.setHeight(height);
 	ppm.setWidth(width);
@@ -51,12 +52,12 @@ void ThreadedGrid::setPPM(PPM& ppm) const
 	std::thread threads[num_threads];
 
 	for (unsigned int i = 0; i < num_threads; i++)
-		threads[i] = std::thread(&ThreadedGrid::ppm_worker, this);
+		threads[i] = std::thread(&ThreadedGrid::ppm_worker, this, std::ref(ppm));
 
 	for (unsigned int i = 0; i < num_threads; i++)
-		threads[i].join();	
+		threads[i].join();
 }
-void ThreadedGrid::ppm_worker()
+void ThreadedGrid::ppm_worker(PPM& ppm)
 {
 	std::vector<int> value;
 	while (!mWorkQueue.empty())
@@ -96,7 +97,7 @@ void ThreadedGrid::ppm_worker()
 		value.clear();
 	}
 }
-void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors) const
+void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors)
 {
 	if (colors.getNumberOfColors() >= 3)
 	{
@@ -113,13 +114,13 @@ void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors) const
 		std::thread threads[num_threads];
 
 		for (unsigned int i = 0; i < num_threads; i++)
-			threads[i] = std::thread(&ThreadedGrid::ppm_color_worker, this);
+			threads[i] = std::thread(&ThreadedGrid::ppm_color_worker, this, std::ref(ppm), std::ref(colors));
 
 		for (unsigned int i = 0; i < num_threads; i++)
 			threads[i].join();
 	}
 }
-void ThreadedGrid::ppm_color_worker()
+void ThreadedGrid::ppm_color_worker(PPM& ppm, const ColorTable& colors)
 {
 	std::vector<int> value;
 	while (!mWorkQueue.empty())
@@ -140,9 +141,10 @@ void ThreadedGrid::ppm_color_worker()
 			for (int k = 0; k < 3; k++)
 				ppm.setChannel(i, j, k, colors[color_table_index].getChannel(k));
 		}
+		value.clear();
 	}
 }
-void ThreadedGrid::setPPM(PPM& ppm, const HSVColorTable& colors) const
+void ThreadedGrid::setPPM(PPM& ppm, const HSVColorTable& colors)
 {
-
+	setPPM(ppm, colors.toColorTable());
 }

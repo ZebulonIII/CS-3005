@@ -15,11 +15,11 @@ public:
 	virtual ~ThreadedGrid();
 	virtual void calculateAllNumbers();
 	virtual void worker();
-	virtual void setPPM(PPM& ppm) const;
-	virtual void ppm_worker();
-	virtual void setPPM(PPM& ppm, const ColorTable& colors) const;
-	virtual void ppm_color_worker();
-	virtual void setPPM(PPM& dst, const HSVColorTable& colors) const;
+	virtual void setPPM(PPM& ppm);
+	virtual void ppm_worker(PPM& ppm);
+	virtual void setPPM(PPM& ppm, const ColorTable& colors);
+	virtual void ppm_color_worker(PPM& ppm, const ColorTable& colors);
+	virtual void setPPM(PPM& dst, const HSVColorTable& colors);
 private:
 	ThreadedVector<int> mWorkQueue;
 };

@@ -1,6 +1,0 @@
-Took 0.0860645 seconds to complete the single-thread workload.
-Took 0.52393 seconds to complete the single-thread workload.
-Took 0.85117 seconds to complete the single-thread workload.
-Took 0.086055 seconds to complete the single-thread workload.
-Took 0.520867 seconds to complete the single-thread workload.
-Took 0.837515 seconds to complete the single-thread workload.
