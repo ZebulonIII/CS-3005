@@ -1,5 +1,6 @@
 CXX := g++
-CXXFLAGS := -Wall -std=c++11 -Werror -pthread
+CXXFLAGS := -Wall -std=c++11 -Werror
+LDFLAGS := -lpthread
 SRCS    := $(sort $(wildcard *.cpp))
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
 TARGETS := ppm_menu
@@ -7,7 +8,7 @@ TARGETS := ppm_menu
 all: $(TARGETS)
 
 ppm_menu: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 ######################################
 # automatic dependency generation
