@@ -113,7 +113,7 @@ void calculate_all_numbers_worker(NumberGrid& grid, int start, int num_threads)
 void NumberGrid::calculateAllNumbers()
 {
 	std::vector<std::thread> threads;
-	unsigned int num_threads = std::thread::hardware_concurrency();
+	unsigned int num_threads = std::thread::hardware_concurrency() - 1;
 	std::ofstream time_output("time.txt", std::ios::app);
 
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -144,24 +144,6 @@ void NumberGrid::calculateAllNumbers()
 	time_output << "It took me " << time_span.count() << " seconds to complete the normal workload.\n";*/
 	time_output.close();
 }
-void set_ppm_colortable_worker(NumberGrid& grid, PPM& ppm, const ColorTable& colors, int start, int offset)
-{
-	for (int i = start; i < ppm.getHeight(); i += offset)
-		for (int j = 0; j < ppm.getWidth(); j++)
-		{
-			int number = grid.getNumber(i, j);
-			int color_table_index;
-			if (number == grid.getMaxNumber())
-				color_table_index = colors.getNumberOfColors() - 1;
-			else if (number == 0)
-				color_table_index = colors.getNumberOfColors() - 2;
-			else
-				color_table_index = number % (colors.getNumberOfColors() - 2);
-
-			for (int k = 0; k < 3; k++)
-				ppm.setChannel(i, j, k, colors[color_table_index].getChannel(k));
-		}
-}
 void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
 {
 	if (colors.getNumberOfColors() >= 3)
@@ -170,14 +152,21 @@ void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
 		ppm.setWidth(width);
 		ppm.setMaxColorValue(colors.getMaxChannelValue());
 
-		unsigned int num_threads = std::thread::hardware_concurrency();
-		std::thread threads[num_threads];		
+		for (int i = 0; i < ppm.getHeight(); i++)
+			for (int j = 0; j < ppm.getWidth(); j++)
+			{
+				int number = getNumber(i, j);
+				int color_table_index;
+				if (number == getMaxNumber())
+					color_table_index = colors.getNumberOfColors() - 1;
+				else if (number == 0)
+					color_table_index = colors.getNumberOfColors() - 2;
+				else
+					color_table_index = number % (colors.getNumberOfColors() - 2);
 
-		for (unsigned int i = 0; i < num_threads; i++)
-			threads[i] = std::thread(set_ppm_colortable_worker, std::ref(*this), std::ref(ppm), std::ref(colors), i, num_threads);
-
-		for (unsigned int i = 0; i < num_threads; i++)
-			threads[i].join();
+				for (int k = 0; k < 3; k++)
+					ppm.setChannel(i, j, k, colors[color_table_index].getChannel(k));
+			}
 	}
 }
 int NumberGrid::getMaximumNumber() const // custom
