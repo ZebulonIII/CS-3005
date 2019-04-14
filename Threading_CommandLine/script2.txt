@@ -1,0 +1,36 @@
+quiet
+# Silence the output
+
+# Load input image 1
+read1 common-monet-water-lilies.ppm
+
+# Create Vertical Lines
+v-edge
+write common-monet-water-lilies-vertical.ppm
+
+# Create Horizontal Lines
+h-edge
+write common-monet-water-lilies-horizontal.ppm
+
+
+
+# Load input image 1
+read1 common-van-gogh-starry-night.ppm
+
+# Create Vertical Lines
+v-edge
+write common-van-gogh-starry-night-vertical.ppm
+
+# Create Horizontal Lines
+h-edge
+write common-van-gogh-starry-night-horizontal.ppm
+
+# Add the van gogh edges
+run ppm_menu_assignment_06_add_van_gogh.txt
+
+# Re-enable output,
+# Then, Add the van monet edges
+# And, end the script
+quiet
+run ppm_menu_assignment_06_add_monet.txt
+quit

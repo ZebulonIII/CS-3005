@@ -1,0 +1,91 @@
+############################################
+# Make a different Turing pattern,
+# Attempt at "zebra lines"
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 258
+set-color 256 255   0   0
+set-color 257   0   0 255
+set-color-gradient   0 200 200 200  100 255 255 255
+set-color-gradient 101 255 255 255  154   0   0   0
+set-color-gradient 155   0   0   0  255  55  55  55
+
+# Choose Turing pattern
+turing
+
+# Configure the grid
+grid 20 500 255
+
+# Configure the Turing pattern
+turing-parameters 1.0 0.001 -0.050 5.0 10.0 200.0
+
+# Initialize the concentrations
+turing-randomize
+
+# Save the current image
+turing-calculate
+grid-apply-color-table
+write zl010.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl011.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl012.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl013.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl014.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl015.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl016.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl017.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl018.ppm
+
+# Update and save the new image
+turing-update 500
+turing-calculate
+grid-apply-color-table
+write zl019.ppm
+
+############################################
+# Done
+############################################
+
+# Quit
+quit
