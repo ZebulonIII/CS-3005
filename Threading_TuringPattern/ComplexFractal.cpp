@@ -95,29 +95,29 @@ void ComplexFractal::setDeltas(const double& delta_x, const double& delta_y)
 }
 double ComplexFractal::calculateDeltaX() const
 {
-	return (max_x - min_x) / (width - 1);
+	return (max_x - min_x) / (mWidth - 1);
 }
 double ComplexFractal::calculateDeltaY() const
 {
-	return (max_y - min_y) / (height - 1);
+	return (max_y - min_y) / (mHeight - 1);
 }
 double ComplexFractal::calculatePlaneYFromPixelRow(const int& row) const
 {
-	if (row < 0 || row >= height)
+	if (row < 0 || row >= mHeight)
 		return 0.0;
 
 	return max_y - delta_y * row;
 }
 double ComplexFractal::calculatePlaneXFromPixelColumn(const int& column) const
 {
-	if (column < 0 || column >= width)
+	if (column < 0 || column >= mWidth)
 		return 0.0;
 
 	return delta_x * column + min_x;
 }
 void ComplexFractal::calculatePlaneCoordinatesFromPixelCoordinates(const int& row, const int& column, double& x, double& y) const
 {
-	if (row < 0 || row >= height || column < 0 || column >= width)
+	if (row < 0 || row >= mHeight || column < 0 || column >= mWidth)
 	{
 		x = 0.0;
 		y = 0.0;

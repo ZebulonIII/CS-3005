@@ -30,7 +30,7 @@ public:
 	virtual int calculateNumber(const int& row, const int& column) const;
 	virtual void calculateAllNumbers();
 private:
-	std::vector< std::vector< std::vector< double > > > mData;
+	std::vector<std::vector<std::vector<double> > > mData;
 	int mCurr, mPrev;
 	double mDx, mDt;
 	double mAlpha, mBeta;

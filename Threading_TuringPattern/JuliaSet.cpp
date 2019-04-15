@@ -30,7 +30,7 @@ int JuliaSet::calculatePlaneEscapeCount(const double& x, const double& y) const
 {
 	int count = 0;
 	double x0 = x, y0 = y, x1 = 0.0, y1 = 0.0;
-	while (count < max_number && distanceFromOriginSquared(x0, y0) <= 4)
+	while (count < mMaxNumber && distanceFromOriginSquared(x0, y0) <= 4)
 	{
 		calculateNextPoint(x0, y0, x1, y1);
 		x0 = x1;
@@ -41,7 +41,7 @@ int JuliaSet::calculatePlaneEscapeCount(const double& x, const double& y) const
 }
 int JuliaSet::calculateNumber(const int& row, const int& column) const
 {
-	if (row < 0 || row >= height || column < 0 || column >= width)
+	if (row < 0 || row >= mHeight || column < 0 || column >= mWidth)
 		return -1;
 
 	return calculatePlaneEscapeCount(calculatePlaneXFromPixelColumn(column), calculatePlaneYFromPixelRow(row));

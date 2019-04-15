@@ -12,6 +12,7 @@
 #include "MandelbrotSet.h"
 #include "ColorTable.h"
 #include "HSVColorTable.h"
+#include "TuringPattern.h"
 
 // Project 1
 std::string getString(std::istream& is, std::ostream& os, const std::string& prompt)
@@ -197,6 +198,8 @@ int imageMenu(std::istream& is, std::ostream& os)
 			setJuliaFractal(is, os, gptr);
 		else if (choice == "mandelbrot")
 			setMandelbrotFractal(is, os, gptr);
+		else if (choice == "turing")
+			setTuringPattern(is, os, gptr);
 		else if (choice == "grid-apply-hsvcolor-table")
 			applyGridHSVColorTable(is, os, *gptr, hsv_table, output_image);
 		else if (choice == "set-hsvcolor-table-size")
@@ -381,10 +384,15 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 	else if (choice == "fractal-calculate-single-thread")
 		calculateFractalSingleThread(is, os, grid);
 	else if (choice == "turing")
+		return;
 	else if (choice == "turing-parameters")
+		setTuringParameters(is, os, grid);
 	else if (choice == "turing-randomize")
+		randomizeTuringValues(is, os, grid);
 	else if (choice == "turing-update")
+		updateTuringValues(is, os, grid);
 	else if (choice == "turing-calculate")
+		calculateTuring(is, os, grid);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -455,7 +463,7 @@ void configureGrid(std::istream& is, std::ostream& os, NumberGrid& grid)
 	int width = getInteger(is, os, "Grid Width? ");
 	int max_value = getInteger(is, os, "Grid Max Value? ");
 
-	grid.setGridSize(height, width);	
+	grid.setGridSize(height, width);
 	grid.setMaxNumber(max_value);
 }
 void setGrid(std::istream& is, std::ostream& os, NumberGrid& grid)
@@ -740,4 +748,59 @@ void calculateFractalSingleThread(std::istream& is, std::ostream& os, NumberGrid
 	(void)os;
 
 	grid.NumberGrid::calculateAllNumbers();
+}
+// Project 12
+void setTuringParameters(std::istream& is, std::ostream& os, NumberGrid& grid) {
+	TuringPattern* tp = dynamic_cast<TuringPattern*>(&grid);
+
+	if (tp != nullptr) {
+		double dx = getDouble(is, os, "Parameter dx? ");
+		double dt = getDouble(is, os, "Parameter dt? ");
+		double al = getDouble(is, os, "Parameter alpha? ");
+		double be = getDouble(is, os, "Parameter beta? ");
+		double Da = getDouble(is, os, "Parameter Da? ");
+		double Db = getDouble(is, os, "Parameter Db? ");
+
+		tp->setParameters(dx, dt, al, be, Da, Db);
+	}
+	else
+		os << "Grid object is not a Turing object\n";
+}
+void randomizeTuringValues(std::istream& is, std::ostream& os, NumberGrid& grid) {
+	TuringPattern* tp = dynamic_cast<TuringPattern*>(&grid);
+
+	if (tp != nullptr) {
+		tp->randomizeValues();
+	}
+	else
+		os << "Grid object is not a Turing object.\n";
+}
+void updateTuringValues(std::istream& is, std::ostream& os, NumberGrid& grid) {
+	TuringPattern* tp = dynamic_cast<TuringPattern*>(&grid);
+
+	if (tp != nullptr) {
+		int steps = getInteger(is, os, "Steps? ");
+		tp->updateValues(steps);
+	}
+	else
+		os << "Grid object is not a Turing object.\n";
+
+}
+void calculateTuring(std::istream& is, std::ostream& os, NumberGrid& grid) {
+	TuringPattern* tp = dynamic_cast<TuringPattern*>(&grid);
+
+	if (tp != nullptr) {
+		tp->calculateAllNumbers();
+	}
+	else
+		os << "Grid object is not a Turing object.\n";
+}
+void setTuringPattern(std::istream& is, std::ostream& os, NumberGrid*& grid) {
+	(void)is;
+	(void)os;
+
+	if (grid != nullptr)
+		delete grid;
+
+	grid = new TuringPattern();
 }

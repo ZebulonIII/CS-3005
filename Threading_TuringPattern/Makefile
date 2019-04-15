@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -Wall -std=c++11 -Werror
+CXXFLAGS := -Wall -std=c++11 -Werror -g
 LDFLAGS := -lpthread
 SRCS    := $(sort $(wildcard *.cpp))
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))

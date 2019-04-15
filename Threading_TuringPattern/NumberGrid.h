@@ -31,7 +31,7 @@ public:
 	virtual void setPPM(PPM& dst, const HSVColorTable& colors) = 0; // custom
 protected:
 	std::vector<int> number_grid;
-	int height, width, max_number;
+	int mHeight, mWidth, mMaxNumber;
 };
 
 #endif // _NUMBERGRID_H_

@@ -13,7 +13,7 @@ void ThreadedGrid::calculateAllNumbers()
 {
 	// Create workload
 	mWorkQueue.clear();
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < getHeight(); i++)
 		mWorkQueue.push_back(i);
 
 	unsigned int num_threads = std::thread::hardware_concurrency();
@@ -39,13 +39,13 @@ void ThreadedGrid::worker()
 }
 void ThreadedGrid::setPPM(PPM& ppm)
 {
-	ppm.setHeight(height);
-	ppm.setWidth(width);
+	ppm.setHeight(getHeight());
+	ppm.setWidth(getWidth());
 	ppm.setMaxColorValue(63);
 
 	// Create workload
 	mWorkQueue.clear();
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < getHeight(); i++)
 		mWorkQueue.push_back(i);
 
 	unsigned int num_threads = std::thread::hardware_concurrency();
@@ -64,7 +64,7 @@ void ThreadedGrid::ppm_worker(PPM& ppm)
 	{
 		mWorkQueue.pop_back(value, 1);
 		int i = value[0];
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < getWidth(); j++)
 		{
 			int number = getNumber(i, j);
 			int r, g, b;
@@ -73,7 +73,7 @@ void ThreadedGrid::ppm_worker(PPM& ppm)
 			{
 				r = g = b = 0;
 			}
-			else if (number == max_number)
+			else if (number == getMaxNumber())
 			{
 				r = 63;
 				g = b = 31;
@@ -101,13 +101,13 @@ void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors)
 {
 	if (colors.getNumberOfColors() >= 3)
 	{
-		ppm.setHeight(height);
-		ppm.setWidth(width);
+		ppm.setHeight(getHeight());
+		ppm.setWidth(getWidth());
 		ppm.setMaxColorValue(colors.getMaxChannelValue());
 
 		// Create workload
 		mWorkQueue.clear();
-		for (int i = 0; i < height; i++)
+		for (int i = 0; i < getHeight(); i++)
 			mWorkQueue.push_back(i);
 
 		unsigned int num_threads = std::thread::hardware_concurrency();
@@ -127,11 +127,11 @@ void ThreadedGrid::ppm_color_worker(PPM& ppm, const ColorTable& colors)
 	{
 		mWorkQueue.pop_back(value, 1);
 		int i = value[0];
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < getWidth(); j++)
 		{
 			int number = getNumber(i, j);
 			int color_table_index;
-			if (number == max_number)
+			if (number == getMaxNumber())
 				color_table_index = colors.getNumberOfColors() - 1;
 			else if (number == 0)
 				color_table_index = colors.getNumberOfColors() - 2;

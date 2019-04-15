@@ -5,40 +5,40 @@
 #include "PPM.h"
 #include "HSVColorTable.h"
 
-NumberGrid::NumberGrid() : height(300), width(400), max_number(255)
+NumberGrid::NumberGrid() : mHeight(300), mWidth(400), mMaxNumber(255)
 {
 	number_grid = std::vector<int>(300 * 400, 0);
 }
-NumberGrid::NumberGrid(const int& height, const int& width) : height(height), width(width), max_number(255)
+NumberGrid::NumberGrid(const int& height, const int& width) : mHeight(height), mWidth(width), mMaxNumber(255)
 {
 	number_grid = std::vector<int>(height * width, 0);
 }
 NumberGrid::~NumberGrid() {}
 int NumberGrid::getHeight() const
 {
-	return height;
+	return mHeight;
 }
 int NumberGrid::getWidth() const
 {
-	return width;
+	return mWidth;
 }
 int NumberGrid::getMaxNumber() const
 {
-	return max_number;
+	return mMaxNumber;
 }
 void NumberGrid::setGridSize(const int& height, const int& width)
 {
 	if (height >= 2 && width >= 2)
 	{
-		this->height = height;
-		this->width = width;
+		mHeight = height;
+		mWidth = width;
 		number_grid.resize(height * width);
 	}
 }
 void NumberGrid::setMaxNumber(const int& number)
 {
 	if (number >= 0)
-		max_number = number;
+		mMaxNumber = number;
 }
 const std::vector<int>& NumberGrid::getNumbers() const
 {
@@ -46,15 +46,15 @@ const std::vector<int>& NumberGrid::getNumbers() const
 }
 int NumberGrid::index(const int& row, const int& column) const
 {
-	return row * width + column;
+	return row * mWidth + column;
 }
 bool NumberGrid::indexValid(const int& row, const int& column) const
 {
-	return row >= 0 && row < height && column >= 0 && column < width;
+	return row >= 0 && row < mHeight && column >= 0 && column < mWidth;
 }
 bool NumberGrid::numberValid(const int& number) const
 {
-	return number >= 0 && number <= max_number;
+	return number >= 0 && number <= mMaxNumber;
 }
 int NumberGrid::getNumber(const int& row, const int& column) const
 {
@@ -67,11 +67,11 @@ void NumberGrid::setNumber(const int& row, const int& column, const int& number)
 }
 void NumberGrid::setPPM(PPM& ppm)
 {
-	ppm.setHeight(height);
-	ppm.setWidth(width);
+	ppm.setHeight(mHeight);
+	ppm.setWidth(mWidth);
 	ppm.setMaxColorValue(63);
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
+	for (int i = 0; i < mHeight; i++)
+		for (int j = 0; j < mWidth; j++)
 		{
 			int number = getNumber(i, j);
 			int r, g, b;
@@ -80,7 +80,7 @@ void NumberGrid::setPPM(PPM& ppm)
 			{
 				r = g = b = 0;
 			}
-			else if (number == max_number)
+			else if (number == mMaxNumber)
 			{
 				r = 63;
 				g = b = 31;
@@ -104,24 +104,24 @@ void NumberGrid::setPPM(PPM& ppm)
 }
 void NumberGrid::calculateAllNumbers()
 {
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
+	for (int i = 0; i < mHeight; i++)
+		for (int j = 0; j < mWidth; j++)
 			setNumber(i, j, calculateNumber(i, j));
 }
 void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors)
 {
 	if (colors.getNumberOfColors() >= 3)
 	{
-		ppm.setHeight(height);
-		ppm.setWidth(width);
+		ppm.setHeight(mHeight);
+		ppm.setWidth(mWidth);
 		ppm.setMaxColorValue(colors.getMaxChannelValue());
 
-		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++)
+		for (int i = 0; i < mHeight; i++)
+			for (int j = 0; j < mWidth; j++)
 			{
 				int number = getNumber(i, j);
 				int color_table_index;
-				if (number == max_number)
+				if (number == mMaxNumber)
 					color_table_index = colors.getNumberOfColors() - 1;
 				else if (number == 0)
 					color_table_index = colors.getNumberOfColors() - 2;
