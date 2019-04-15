@@ -77,7 +77,8 @@ double TuringPattern::calculateDivergence(const int& row, const int& column, con
 	return deltaA / (mDx * mDx);
 }
 double TuringPattern::calculateCurrValue(const int& row, const int& column, const int& species) {
-	return getPrevValue(row, column, species) + mDt * mDa * calculateDivergence(row, column, species);
+	// FIX
+	//return getPrevValue(row, column, species) + mDt * mDa * calculateDivergence(row, column, species);
 }
 void TuringPattern::updateValues(const int& steps) {
 	double value;
@@ -112,8 +113,18 @@ void TuringPattern::findMinMaxDifference() {
 		}
 }
 void TuringPattern::setGridSize(const int& height, const int& width) {
-	NumberGrid::setGridSize(height, width);
-	// need more
+	if (height > 0 && width > 0) {
+		NumberGrid::setGridSize(height, width);
+
+		size_t size = height * width * sizeof(int);
+		this->mData.resize(2);
+		this->mData[0].resize(2);
+		this->mData[1].resize(2);
+		this->mData[0][0].resize(size);
+		this->mData[0][1].resize(size);
+		this->mData[1][0].resize(size);
+		this->mData[1][1].resize(size);
+	}
 }
 int TuringPattern::calculateNumber(const int& row, const int& column) const {
 	double diff = std::abs(getCurrValue(row, column, 0) - getCurrValue(row, column, 1));
