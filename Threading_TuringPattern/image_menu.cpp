@@ -7,7 +7,6 @@
 #include <chrono>
 #include "image_menu.h"
 #include "PPM.h"
-#include "NumberGrid.h"
 #include "JuliaSet.h"
 #include "MandelbrotSet.h"
 #include "ColorTable.h"

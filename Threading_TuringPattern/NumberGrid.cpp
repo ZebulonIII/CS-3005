@@ -65,7 +65,7 @@ void NumberGrid::setNumber(const int& row, const int& column, const int& number)
 	if (indexValid(row, column) && numberValid(number))
 		number_grid[index(row, column)] = number;
 }
-void NumberGrid::setPPM(PPM& ppm)
+void NumberGrid::setPPM(PPM& ppm) const
 {
 	ppm.setHeight(mHeight);
 	ppm.setWidth(mWidth);
@@ -108,7 +108,7 @@ void NumberGrid::calculateAllNumbers()
 		for (int j = 0; j < mWidth; j++)
 			setNumber(i, j, calculateNumber(i, j));
 }
-void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors)
+void NumberGrid::setPPM(PPM& ppm, const ColorTable& colors) const
 {
 	if (colors.getNumberOfColors() >= 3)
 	{
@@ -137,7 +137,7 @@ int NumberGrid::getMaximumNumber() const // custom
 {
 	return *std::max_element(number_grid.begin(), number_grid.end());
 }
-void NumberGrid::setPPM(PPM& dst, const HSVColorTable& colors) // custom
+void NumberGrid::setPPM(PPM& dst, const HSVColorTable& colors) const // custom
 {
 	setPPM(dst, colors.toColorTable());
 }

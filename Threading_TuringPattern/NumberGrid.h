@@ -23,12 +23,12 @@ public:
 	bool numberValid(const int& number) const;
 	int getNumber(const int& row, const int& column) const;
 	void setNumber(const int& row, const int& column, const int& number);
-	virtual void setPPM(PPM& ppm) = 0;
+	virtual void setPPM(PPM& ppm) const;
 	virtual int calculateNumber(const int& row, const int& column) const = 0;
 	virtual void calculateAllNumbers();
-	virtual void setPPM(PPM& ppm, const ColorTable& colors) = 0;
+	void setPPM(PPM& ppm, const ColorTable& colors) const;
 	int getMaximumNumber() const; // custom
-	virtual void setPPM(PPM& dst, const HSVColorTable& colors) = 0; // custom
+	void setPPM(PPM& dst, const HSVColorTable& colors) const; // custom
 protected:
 	std::vector<int> number_grid;
 	int mHeight, mWidth, mMaxNumber;

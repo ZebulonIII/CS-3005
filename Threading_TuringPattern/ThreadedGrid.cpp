@@ -1,5 +1,4 @@
 #include <thread>
-#include <fstream>
 #include "ThreadedGrid.h"
 #include "ThreadedVector.h"
 #include "PPM.h"
@@ -16,7 +15,7 @@ void ThreadedGrid::calculateAllNumbers()
 	for (int i = 0; i < getHeight(); i++)
 		mWorkQueue.push_back(i);
 
-	unsigned int num_threads = std::thread::hardware_concurrency();
+	unsigned int num_threads = (getHeight() < 30) ? 2 : std::thread::hardware_concurrency() - 1;
 	std::thread threads[num_threads];
 
 	for (unsigned int i = 0; i < num_threads; i++)
@@ -27,7 +26,7 @@ void ThreadedGrid::calculateAllNumbers()
 }
 void ThreadedGrid::worker()
 {
-	std::vector<int> value;
+	std::vector<int> value(1);
 	while (!mWorkQueue.empty())
 	{
 		mWorkQueue.pop_back(value, 1);
@@ -37,7 +36,7 @@ void ThreadedGrid::worker()
 		value.clear();
 	}
 }
-void ThreadedGrid::setPPM(PPM& ppm)
+/*void ThreadedGrid::setPPM(PPM& ppm)
 {
 	ppm.setHeight(getHeight());
 	ppm.setWidth(getWidth());
@@ -56,10 +55,10 @@ void ThreadedGrid::setPPM(PPM& ppm)
 
 	for (unsigned int i = 0; i < num_threads; i++)
 		threads[i].join();
-}
-void ThreadedGrid::ppm_worker(PPM& ppm)
+}*/
+/*void ThreadedGrid::ppm_worker(PPM& ppm)
 {
-	std::vector<int> value;
+	std::vector<int> value(1);
 	while (!mWorkQueue.empty())
 	{
 		mWorkQueue.pop_back(value, 1);
@@ -96,8 +95,8 @@ void ThreadedGrid::ppm_worker(PPM& ppm)
 		}
 		value.clear();
 	}
-}
-void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors)
+}*/
+/*void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors)
 {
 	if (colors.getNumberOfColors() >= 3)
 	{
@@ -119,10 +118,10 @@ void ThreadedGrid::setPPM(PPM& ppm, const ColorTable& colors)
 		for (unsigned int i = 0; i < num_threads; i++)
 			threads[i].join();
 	}
-}
-void ThreadedGrid::ppm_color_worker(PPM& ppm, const ColorTable& colors)
+}*/
+/*void ThreadedGrid::ppm_color_worker(PPM& ppm, const ColorTable& colors)
 {
-	std::vector<int> value;
+	std::vector<int> value(1);
 	while (!mWorkQueue.empty())
 	{
 		mWorkQueue.pop_back(value, 1);
@@ -143,8 +142,8 @@ void ThreadedGrid::ppm_color_worker(PPM& ppm, const ColorTable& colors)
 		}
 		value.clear();
 	}
-}
-void ThreadedGrid::setPPM(PPM& ppm, const HSVColorTable& colors)
+}*/
+/*void ThreadedGrid::setPPM(PPM& ppm, const HSVColorTable& colors)
 {
 	setPPM(ppm, colors.toColorTable());
-}
+}*/

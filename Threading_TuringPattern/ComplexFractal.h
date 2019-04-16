@@ -1,7 +1,6 @@
 #ifndef _COMPLEX_FRACTAL_H_
 #define _COMPLEX_FRACTAL_H_
 
-#include "NumberGrid.h"
 #include "ThreadedGrid.h"
 
 class ComplexFractal : public ThreadedGrid

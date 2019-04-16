@@ -39,16 +39,16 @@ void TuringPattern::setParameters(const double& dx, const double& dt, const doub
 double TuringPattern::getCurrValue(const int& row, const int& column, const int& species) const {
 	return ((species == 0 || species == 1) && indexValid(row, column))
 		? this->mData[mCurr][species][index(row, column)]
-		: 1.;
+		: 0.;
 }
 double TuringPattern::getPrevValue(const int& row, const int& column, const int& species) const {
 	return ((species == 0 || species == 1) && indexValid(row, column))
 		? this->mData[mPrev][species][index(row, column)]
-		: 1.;
+		: 0.;
 }
 void TuringPattern::setCurrValue(const int& row, const int& column, const int& species, const double& value) {
 	if ((species == 0 || species == 1) && indexValid(row, column))
-		this->mData[mPrev][species][index(row, column)] = value;
+		this->mData[mCurr][species][index(row, column)] = value;
 }
 void TuringPattern::setPrevValue(const int& row, const int& column, const int& species, const double& value) {
 	if ((species == 0 || species == 1) && indexValid(row, column))
@@ -63,22 +63,30 @@ void TuringPattern::randomizeValues() {
 	for (int species = 0; species < 2; species++)
 		for (int row = 0; row < getHeight(); row++)
 			for (int col = 0; col < getWidth(); col++) {
-				random_value = ((std::rand() % big_value) - (big_value / 2)) / (50. * big_value);
+				random_value = ((std::rand() % big_value) - (big_value / 2.)) / (50. * big_value);
 				setCurrValue(row, col, species, random_value);
 				setPrevValue(row, col, species, random_value);
 			}
 }
 double TuringPattern::calculateDivergence(const int& row, const int& column, const int& species) {
-	double deltaA = -4.0 * getPrevValue(row, column, species)
-		+ getPrevValue(row - 1, column, species)
-		+ getPrevValue(row + 1, column, species)
-		+ getPrevValue(row, column - 1, species)
-		+ getPrevValue(row, column + 1, species);
-	return deltaA / (mDx * mDx);
+		double delta = -4.0 * getPrevValue(row, column, species)
+			+ getPrevValue(row - 1, column, species)
+			+ getPrevValue(row + 1, column, species)
+			+ getPrevValue(row, column - 1, species)
+			+ getPrevValue(row, column + 1, species);
+		return delta / (mDx * mDx);
 }
 double TuringPattern::calculateCurrValue(const int& row, const int& column, const int& species) {
-	// FIX
-	//return getPrevValue(row, column, species) + mDt * mDa * calculateDivergence(row, column, species);
+	double Ap = getPrevValue(row, column, 0);
+	double Bp = getPrevValue(row, column, 1);
+	double divergence = calculateDivergence(row, column, species);
+
+	if (species == 0)
+		return Ap + mDt * mDa * divergence + mDt * Ra(Ap, Bp);
+	else if (species == 1)
+		return Bp + mDt * mDb * divergence + mDt * Rb(Ap, Bp);
+	else
+		return 0.;
 }
 void TuringPattern::updateValues(const int& steps) {
 	double value;
@@ -105,7 +113,7 @@ void TuringPattern::findMinMaxDifference() {
 	double diff;
 	for (int row = 0; row < getHeight(); row++)
 		for (int col = 0; col < getWidth(); col++) {
-			diff = std::abs(getCurrValue(row, col, 0) - getCurrValue(row, col, 1));
+			diff = getCurrValue(row, col, 0) - getCurrValue(row, col, 1);
 			if (diff < mMinDifference)
 				mMinDifference = diff;
 			if (diff > mMaxDifference)
@@ -120,16 +128,16 @@ void TuringPattern::setGridSize(const int& height, const int& width) {
 		this->mData.resize(2);
 		this->mData[0].resize(2);
 		this->mData[1].resize(2);
-		this->mData[0][0].resize(size);
-		this->mData[0][1].resize(size);
-		this->mData[1][0].resize(size);
-		this->mData[1][1].resize(size);
+		this->mData[0][0].resize(size, 0);
+		this->mData[0][1].resize(size, 0);
+		this->mData[1][0].resize(size, 0);
+		this->mData[1][1].resize(size, 0);
 	}
 }
 int TuringPattern::calculateNumber(const int& row, const int& column) const {
-	double diff = std::abs(getCurrValue(row, column, 0) - getCurrValue(row, column, 1));
+	double diff = getCurrValue(row, column, 0) - getCurrValue(row, column, 1);
 	double s = (diff - mMinDifference) / (mMaxDifference - mMinDifference);
-	int n = 1 + (mMaxDifference - 2) * s;
+	int n = 1 + (getMaxNumber() - 2.) * s;
 	return n;
 }
 void TuringPattern::calculateAllNumbers() {
