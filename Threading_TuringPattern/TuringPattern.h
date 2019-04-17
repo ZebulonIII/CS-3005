@@ -36,6 +36,8 @@ private:
 	double mAlpha, mBeta;
 	double mDa, mDb;
 	double mMinDifference, mMaxDifference;
+
+	void worker_UpdateValues(const int& species);
 };
 
 #endif

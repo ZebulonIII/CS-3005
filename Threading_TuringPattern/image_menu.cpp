@@ -779,6 +779,9 @@ void updateTuringValues(std::istream& is, std::ostream& os, NumberGrid& grid) {
 
 	if (tp != nullptr) {
 		int steps = getInteger(is, os, "Steps? ");
+		/*std::ofstream output("file.txt", std::ios::app);
+		output << "steps: " << steps << std::endl;
+		output.close();*/
 		tp->updateValues(steps);
 	}
 	else

@@ -1,5 +1,7 @@
 #include <algorithm>
+#include <utility>
 #include <random>
+#include <thread>
 #include "TuringPattern.h"
 
 TuringPattern::TuringPattern() :
@@ -27,7 +29,7 @@ double TuringPattern::getDb() const {
 	return mDb;
 }
 void TuringPattern::setParameters(const double& dx, const double& dt, const double& alpha, const double& beta, const double& Da, const double& Db) {
-	if (dx > 0 && dt > 0 && Da > 0 && Db > 0) {
+	if (dx > 0. && dt > 0. && Da > 0. && Db > 0.) {
 		mDx = dx;
 		mDt = dt;
 		mAlpha = alpha;
@@ -69,12 +71,12 @@ void TuringPattern::randomizeValues() {
 			}
 }
 double TuringPattern::calculateDivergence(const int& row, const int& column, const int& species) {
-		double delta = -4.0 * getPrevValue(row, column, species)
-			+ getPrevValue(row - 1, column, species)
-			+ getPrevValue(row + 1, column, species)
-			+ getPrevValue(row, column - 1, species)
-			+ getPrevValue(row, column + 1, species);
-		return delta / (mDx * mDx);
+	double delta = -4.0 * getPrevValue(row, column, species)
+		+ getPrevValue(row - 1, column, species)
+		+ getPrevValue(row + 1, column, species)
+		+ getPrevValue(row, column - 1, species)
+		+ getPrevValue(row, column + 1, species);
+	return delta / (mDx * mDx);
 }
 double TuringPattern::calculateCurrValue(const int& row, const int& column, const int& species) {
 	double Ap = getPrevValue(row, column, 0);
@@ -82,33 +84,38 @@ double TuringPattern::calculateCurrValue(const int& row, const int& column, cons
 	double divergence = calculateDivergence(row, column, species);
 
 	if (species == 0)
-		return Ap + mDt * mDa * divergence + mDt * Ra(Ap, Bp);
+		return Ap + (mDt * mDa * divergence) + (mDt * Ra(Ap, Bp));
 	else if (species == 1)
-		return Bp + mDt * mDb * divergence + mDt * Rb(Ap, Bp);
+		return Bp + (mDt * mDb * divergence) + (mDt * Rb(Ap, Bp));
 	else
 		return 0.;
 }
+void TuringPattern::worker_UpdateValues(const int& species) {
+	for (int row = 0; row < getHeight(); row++)
+		for (int col = 0; col < getWidth(); col++)
+			setCurrValue(row, col, species, calculateCurrValue(row, col, species));
+}
 void TuringPattern::updateValues(const int& steps) {
-	double value;
+	std::thread threads[2];
+
 	for (int i = 0; i < steps; i++) {
 		swapCurrPrev();
-		for (int species = 0; species < 2; species++)
-			for (int row = 0; row < getHeight(); row++)
-				for (int col = 0; col < getWidth(); col++) {
-					value = calculateCurrValue(row, col, species);
-					setCurrValue(row, col, species, value);
-				}
+
+		for (int i = 0; i < 2; i++)
+			threads[i] = std::thread(&TuringPattern::worker_UpdateValues, this, i);
+
+		for (int i = 0; i < 2; i++)
+			threads[i].join();
 	}
 }
 double TuringPattern::Ra(const double& a, const double& b) const {
-	return a - a*a*a - b + mAlpha;
+	return a - (a*a*a) - b + mAlpha;
 }
 double TuringPattern::Rb(const double& a, const double& b) const {
 	return (a - b) * mBeta;
 }
 void TuringPattern::findMinMaxDifference() {
-	mMinDifference = 1.0e10;
-	mMaxDifference = -1.0e10;
+	mMaxDifference = mMinDifference = getCurrValue(0, 0, 0) - getCurrValue(0, 0, 1);
 
 	double diff;
 	for (int row = 0; row < getHeight(); row++)
