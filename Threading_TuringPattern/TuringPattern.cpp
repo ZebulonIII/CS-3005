@@ -2,6 +2,7 @@
 #include <utility>
 #include <random>
 #include <thread>
+#include <fstream>
 #include "TuringPattern.h"
 
 TuringPattern::TuringPattern() :
@@ -96,16 +97,12 @@ void TuringPattern::worker_UpdateValues(const int& species) {
 			setCurrValue(row, col, species, calculateCurrValue(row, col, species));
 }
 void TuringPattern::updateValues(const int& steps) {
-	std::thread threads[2];
-
 	for (int i = 0; i < steps; i++) {
 		swapCurrPrev();
-
-		for (int i = 0; i < 2; i++)
-			threads[i] = std::thread(&TuringPattern::worker_UpdateValues, this, i);
-
-		for (int i = 0; i < 2; i++)
-			threads[i].join();
+		for (int species = 0; species < 2; species++)			
+			for (int row = 0; row < getHeight(); row++)
+				for (int col = 0; col < getWidth(); col++)
+					setCurrValue(row, col, species, calculateCurrValue(row, col, species));
 	}
 }
 double TuringPattern::Ra(const double& a, const double& b) const {
@@ -151,3 +148,56 @@ void TuringPattern::calculateAllNumbers() {
 	findMinMaxDifference();
 	ThreadedGrid::calculateAllNumbers();
 }
+/*void TuringPattern::updateValues(const int& steps) {
+	std::thread threads[2];
+
+	for (int i = 0; i < steps; i++) {
+		swapCurrPrev();
+
+		for (int i = 0; i < 2; i++)
+			threads[i] = std::thread(&TuringPattern::worker_UpdateValues, this, std::ref(i));
+
+		for (int i = 0; i < 2; i++)
+			threads[i].join();
+	}
+}*/
+/*void TuringPattern::worker_UpdateValues(const int& species) {
+	std::vector<int> value;
+
+	while (!mWorkQueue.empty()) {
+		value.clear();
+		mWorkQueue.pop_back(value, 1);
+
+		int i = value[0];
+		for (int j = 0; j < getWidth(); j++)
+			setCurrValue(i, j, species, calculateCurrValue(i, j, species));
+	}
+}
+void TuringPattern::updateValues(const int& steps) {
+	std::ofstream output("file.txt", std::ios::app);
+	output << getNumThreads() << "\n";
+	output.close();
+
+	//setNumThreads(8);
+	std::thread threads[getNumThreads()];
+
+	// vector to copy into work queue
+	std::vector<int> work(getHeight());
+	for (int i = 0; i < getHeight(); i++)
+		work[i] = i;
+
+	for (int step = 0; step < steps; step++) {
+		swapCurrPrev();
+
+		mWorkQueue.resize(getHeight());
+		mWorkQueue.push_back(work);
+
+		for (int species = 0; species < 2; species++) {
+			for (unsigned int i = 0; i < getNumThreads(); i++)
+				threads[i] = std::thread(&TuringPattern::worker_UpdateValues, this, std::ref(species));
+
+			for (unsigned int i = 0; i < getNumThreads(); i++)
+				threads[i].join();
+		}
+	}
+}*/

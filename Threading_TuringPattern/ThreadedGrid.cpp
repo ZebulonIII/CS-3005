@@ -6,9 +6,9 @@
 #include "HSVColorTable.h"
 
 ThreadedGrid::ThreadedGrid()
-	: NumberGrid(), mNumThreads(std::thread::hardware_concurrency()) {}
+	: NumberGrid(), mNumThreads(std::thread::hardware_concurrency() - 1) {}
 ThreadedGrid::ThreadedGrid(const int& height, const int& width)
-	: NumberGrid(height, width), mNumThreads(std::thread::hardware_concurrency()) {}
+	: NumberGrid(height, width), mNumThreads(std::thread::hardware_concurrency() - 1) {}
 ThreadedGrid::ThreadedGrid(const int& height, const int& width, const unsigned int& n)
 	: NumberGrid(height, width), mNumThreads(n) {}
 ThreadedGrid::~ThreadedGrid() {}
@@ -18,11 +18,21 @@ unsigned int ThreadedGrid::getNumThreads() const {
 void ThreadedGrid::setNumThreads(unsigned int n) {
 	mNumThreads = n;
 }
-
-void ThreadedGrid::calculateAllNumbers()
-{
+void ThreadedGrid::worker() {
+	std::vector<int> value;
+	while (!mWorkQueue.empty())
+	{
+		value.clear();
+		mWorkQueue.pop_back(value, 1);
+		int i = value[0];
+		for (int j = 0; j < getWidth(); j++)
+			setNumber(i, j, calculateNumber(i, j));
+	}
+}
+void ThreadedGrid::calculateAllNumbers() {
 	// Create workload
 	mWorkQueue.clear();
+	mWorkQueue.resize(getHeight());
 	for (int i = 0; i < getHeight(); i++)
 		mWorkQueue.push_back(i);
 
@@ -33,18 +43,6 @@ void ThreadedGrid::calculateAllNumbers()
 
 	for (unsigned int i = 0; i < mNumThreads; i++)
 		threads[i].join();
-}
-void ThreadedGrid::worker()
-{
-	std::vector<int> value;
-	while (!mWorkQueue.empty())
-	{
-		value.clear();
-		mWorkQueue.pop_back(value, 1);
-		int i = value[0];
-		for (int j = 0; j < getWidth(); j++)
-			setNumber(i, j, calculateNumber(i, j));
-	}
 }
 /*void ThreadedGrid::setPPM(PPM& ppm)
 {
