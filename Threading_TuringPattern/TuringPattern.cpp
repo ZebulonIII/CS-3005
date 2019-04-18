@@ -92,9 +92,9 @@ double TuringPattern::calculateCurrValue(const int& row, const int& column, cons
 		return 0.;
 }
 void TuringPattern::worker_UpdateValues(const int& species) {
-	for (int row = 0; row < getHeight(); row++)
+	/*for (int row = 0; row < getHeight(); row++)
 		for (int col = 0; col < getWidth(); col++)
-			setCurrValue(row, col, species, calculateCurrValue(row, col, species));
+			setCurrValue(row, col, species, calculateCurrValue(row, col, species));*/
 }
 void TuringPattern::updateValues(const int& steps) {
 	for (int i = 0; i < steps; i++) {
