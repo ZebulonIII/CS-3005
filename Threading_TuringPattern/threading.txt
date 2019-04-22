@@ -1,0 +1,156 @@
+############################################
+# Make a first image
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 257
+set-color 255 255 255 255
+set-color 256 255 255 255
+set-color-gradient 0 247 107 171   10  193 251 108
+set-color-gradient 11 247 107 171  20  193 251 108
+set-color-gradient 21 247 107 171 254  193 251 108
+
+
+# Choose Mandelbrot
+mandelbrot
+
+# Configure the grid
+grid 500 500 255
+
+# Configure the fractal plane
+fractal-plane-size -2.0 2.0 -2.0 2.0
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-1.ppm
+
+# Calculate the escape values
+fractal-calculate-single-thread
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-1-single.ppm
+
+############################################
+# Make a second image
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 202
+set-color 200 0 99 99
+set-color 201 0 0 0
+set-color-gradient 13 0 198 198  34 255 170 0
+set-color-gradient 35 255 170 0  49 0 198 198
+set-color-gradient 50 0 198 198  69 255 170 0
+set-color-gradient 70 255 170 0  89 255 116 0
+set-color-gradient 90 255 116 0  199 14 73 208
+
+# Choose Mandelbrot
+mandelbrot
+
+# Configure the grid
+grid 1000 1000 200
+
+# Configure the fractal plane
+fractal-plane-size -0.537236 -0.522966 -0.675379 -0.661108
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-2.ppm
+
+# Calculate the escape values
+fractal-calculate-single-thread
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-2-single.ppm
+
+############################################
+# Make a third image
+############################################
+
+############################################
+# Fill the color table
+############################################
+# # First of 3 adjacent colors
+# 104 228   1 # green tint
+#  82 182   0  # green hue
+#  67 148   0  # green shade
+# # Second of 3 adjacent colors
+#   1 176 101 # teal tint
+#   0 140  80 # teal hue
+#   0 114  65 # teal shade
+# # Third of 3 adjacent colors
+#  51 117 168 # blue light tint
+#  12  99 166 # blue tint
+#   7  77 131 # blue hue
+#   5  63 107 # blue shade
+#   2  46  80 # blue dark shade
+# # Complement of 3 adjacent colors
+# 255 119  65 # orange light tint
+# 255  74   2 # orange tint
+# 204  58   0 # orange hue
+# 167  48   0 # orange shade
+
+set-color-table-size 302
+
+set-color 300 255 255 255
+set-color 301  12  99 166
+
+set-color-gradient     0   2  46  80  39    2  46  80
+set-color-gradient    40 104 228   1  59  67 148   0
+set-color-gradient    60 104 228   1 129  67 148   0
+set-color-gradient   130 104 228   1 299   5  63 107
+
+
+# Choose and configure Julia
+julia
+julia-parameters 0.279047 -0.481944
+
+# Configure the max number
+grid 1000 1000 300
+
+# Configure the fractal plane
+fractal-plane-size 0.412096 0.797398 0.624066 1.00937
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-3.ppm
+
+# Calculate the escape values
+fractal-calculate-single-thread
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write sample-color-image-3-single.ppm
+
+
+############################################
+# Done
+############################################
+
+# Quit
+quit

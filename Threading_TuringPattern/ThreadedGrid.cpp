@@ -6,9 +6,9 @@
 #include "HSVColorTable.h"
 
 ThreadedGrid::ThreadedGrid()
-	: NumberGrid(), mNumThreads(std::thread::hardware_concurrency() - 1) {}
+	: NumberGrid(), mNumThreads(std::thread::hardware_concurrency()) {}
 ThreadedGrid::ThreadedGrid(const int& height, const int& width)
-	: NumberGrid(height, width), mNumThreads(std::thread::hardware_concurrency() - 1) {}
+	: NumberGrid(height, width), mNumThreads(std::thread::hardware_concurrency()) {}
 ThreadedGrid::ThreadedGrid(const int& height, const int& width, const unsigned int& n)
 	: NumberGrid(height, width), mNumThreads(n) {}
 ThreadedGrid::~ThreadedGrid() {}

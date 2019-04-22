@@ -84,22 +84,33 @@ double TuringPattern::calculateCurrValue(const int& row, const int& column, cons
 	double Bp = getPrevValue(row, column, 1);
 	double divergence = calculateDivergence(row, column, species);
 
-	if (species == 0)
-		return Ap + (mDt * mDa * divergence) + (mDt * Ra(Ap, Bp));
-	else if (species == 1)
-		return Bp + (mDt * mDb * divergence) + (mDt * Rb(Ap, Bp));
-	else
-		return 0.;
+	return (species == 0)
+		? Ap + mDt * mDa * divergence + mDt * Ra(Ap, Bp)
+		: Bp + mDt * mDb * divergence + mDt * Rb(Ap, Bp);
 }
-void TuringPattern::worker_UpdateValues(const int& species) {
-	/*for (int row = 0; row < getHeight(); row++)
+void TuringPattern::worker_updateValues(const int& species) {
+	for (int row = 0; row < getHeight(); row++)
 		for (int col = 0; col < getWidth(); col++)
-			setCurrValue(row, col, species, calculateCurrValue(row, col, species));*/
+			setCurrValue(row, col, species, calculateCurrValue(row, col, species));
 }
+/*void TuringPattern::updateValues(const int& steps) {
+	std::thread threads[2];
+
+	//swapCurrPrev();
+	for (int step = 0; step < steps; step++) {
+		swapCurrPrev();
+
+		threads[0] = std::thread(&TuringPattern::worker_updateValues, this, 0);
+		threads[1] = std::thread(&TuringPattern::worker_updateValues, this, 1);
+
+		threads[0].join();
+		threads[1].join();
+	}
+}*/
 void TuringPattern::updateValues(const int& steps) {
 	for (int i = 0; i < steps; i++) {
 		swapCurrPrev();
-		for (int species = 0; species < 2; species++)			
+		for (int species = 0; species < 2; species++)
 			for (int row = 0; row < getHeight(); row++)
 				for (int col = 0; col < getWidth(); col++)
 					setCurrValue(row, col, species, calculateCurrValue(row, col, species));
@@ -112,7 +123,8 @@ double TuringPattern::Rb(const double& a, const double& b) const {
 	return (a - b) * mBeta;
 }
 void TuringPattern::findMinMaxDifference() {
-	mMaxDifference = mMinDifference = getCurrValue(0, 0, 0) - getCurrValue(0, 0, 1);
+	mMinDifference = 1.0e10;
+	mMaxDifference = -1.0e10;
 
 	double diff;
 	for (int row = 0; row < getHeight(); row++)
@@ -128,39 +140,24 @@ void TuringPattern::setGridSize(const int& height, const int& width) {
 	if (height > 0 && width > 0) {
 		NumberGrid::setGridSize(height, width);
 
-		size_t size = height * width * sizeof(int);
+		size_t size = height * width;
 		this->mData.resize(2);
-		this->mData[0].resize(2);
-		this->mData[1].resize(2);
-		this->mData[0][0].resize(size, 0);
-		this->mData[0][1].resize(size, 0);
-		this->mData[1][0].resize(size, 0);
-		this->mData[1][1].resize(size, 0);
+		for (int i = 0; i < 2; i++)
+			this->mData[i].resize(2);
+		for (int i = 0; i < 2; i++)
+			for (int j = 0; j < 2; j++)
+				this->mData[i][j].resize(size);
 	}
 }
 int TuringPattern::calculateNumber(const int& row, const int& column) const {
 	double diff = getCurrValue(row, column, 0) - getCurrValue(row, column, 1);
 	double s = (diff - mMinDifference) / (mMaxDifference - mMinDifference);
-	int n = 1 + (getMaxNumber() - 2.) * s;
-	return n;
+	return 1 + (getMaxNumber() - 2.) * s;
 }
 void TuringPattern::calculateAllNumbers() {
 	findMinMaxDifference();
 	ThreadedGrid::calculateAllNumbers();
 }
-/*void TuringPattern::updateValues(const int& steps) {
-	std::thread threads[2];
-
-	for (int i = 0; i < steps; i++) {
-		swapCurrPrev();
-
-		for (int i = 0; i < 2; i++)
-			threads[i] = std::thread(&TuringPattern::worker_UpdateValues, this, std::ref(i));
-
-		for (int i = 0; i < 2; i++)
-			threads[i].join();
-	}
-}*/
 /*void TuringPattern::worker_UpdateValues(const int& species) {
 	std::vector<int> value;
 

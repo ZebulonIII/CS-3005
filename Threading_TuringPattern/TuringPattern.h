@@ -37,7 +37,7 @@ private:
 	double mDa, mDb;
 	double mMinDifference, mMaxDifference;
 
-	void worker_UpdateValues(const int& species);
+	void worker_updateValues(const int& species);
 };
 
 #endif
