@@ -1,0 +1,11 @@
+quiet
+# Silence the output
+
+# Load input image 1
+read1 common-monet-water-lilies.ppm
+
+# Create Vertical Lines
+#v-edge
+write common-monet-water-lilies-vertical.ppm
+
+quit

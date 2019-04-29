@@ -15,7 +15,9 @@ struct CommandData;
 typedef int (*ActionFunctionType)(CommandData& data);
 
 struct CommandData {
-	CommandData(int n, std::istream& i, std::ostream& o);
+	//CommandData(int n, std::istream& i, std::ostream& o);
+	CommandData(int n, std::istream& i, std::ostream& o)
+		: grid(nullptr), table(ColorTable(n)), is(i), os(o) {}
 	PPM input_image1;
 	PPM input_image2;
 	PPM output_image;

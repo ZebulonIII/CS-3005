@@ -1,0 +1,14 @@
+# Load input image 1
+read1 common-van-gogh-starry-night-vertical.ppm
+
+# Load input image 2
+read2 common-van-gogh-starry-night-horizontal.ppm
+
+# Add them together
++
+
+# Save the result
+write common-van-gogh-starry-night-edges.ppm
+
+# End the script
+quit

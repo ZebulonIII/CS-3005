@@ -3,11 +3,11 @@ CXXFLAGS := -Wall -std=c++11 -Werror
 LDFLAGS := -lpthread
 SRCS    := $(sort $(wildcard *.cpp))
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
-TARGETS := ppm_menu
+TARGETS := ppm_command
 
 all: $(TARGETS)
 
-ppm_menu: $(OBJECTS)
+ppm_command: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 ######################################

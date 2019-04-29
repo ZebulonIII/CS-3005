@@ -1,23 +1,17 @@
-# Create hsv color table
+#!/bin/bash
 
-set-hsvcolor-table-size 257
-set-hsvcolor 255 0 0.0 1.0
-set-hsvcolor 256 0 0.0 1.0
-set-hsvcolor-gradient 0 333 0.567 0.969 10 84 0.57 0.984
-set-hsvcolor-gradient 11 333 0.567 0.969 20 84 0.57 0.984
-set-hsvcolor-gradient 21 333 .567 .969 254 84 0.57 0.984
-
-mandelbrot
-
-grid 1000 1000 255
-
-fractal-plane-size -2.0 2.0 -2.0 2.0
-
-fractal-calculate
-
-grid-apply-hsvcolor-table
-
-write fractal.ppm
-
-# Quit
-quit
+./ppm_command -T 302 -C set:300,255,255,255 -C set:301,12,99,166 \
+              -C gradient:0,2,46,80,39,2,46,80 \
+              -C gradient:40,104,228,1,59,67,148,0 \
+              -C gradient:60,104,228,1,129,67,148,0 \
+              -C gradient:130,104,228,1,299,5,63,107 \
+              -C random:1 \
+              -C random:99 \
+              -C random:100 \
+              -C random:101 \
+              -C random:200 \
+              -J \
+              -a 0.279047,-0.481944 \
+              -p 1000,1000 -m 300 \
+              -r 0.412096:0.797398,0.624066:1.00937 \
+			  -g calculate \

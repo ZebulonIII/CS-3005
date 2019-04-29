@@ -1,0 +1,14 @@
+# Load input image 1
+read1 common-monet-water-lilies-vertical.ppm
+
+# Load input image 2
+read2 common-monet-water-lilies-horizontal.ppm
+
+# Add them together
++
+
+# Save the result
+write common-monet-water-lilies-edges.ppm
+
+# End the script
+quit

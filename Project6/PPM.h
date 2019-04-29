@@ -4,12 +4,16 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "ThreadedVector.h"
 
 using byte = unsigned char;
 
 class PPM
 {
+private:
+	std::vector<byte> image;
+	int height, width, max_color_value;
+	const int num_channels = 3;
+
 public:
 	PPM();
 	PPM(const int& height, const int& width);
@@ -36,15 +40,9 @@ public:
 	void grayFromBlue(PPM& dst) const;
 	double linearColorimetricPixelValue(const int& row, const int& column) const;
 	void grayFromLinearColorimetric(PPM& dst) const;
-	int edgePixelValue(const int& row1, const int& column1, const int& row2, const int& column2) const;
-	void findHorizontalEdges(PPM& dst) const;
-	void findVerticalEdges(PPM& dst) const;
-	void drawDiamond(const int& row, const int& col, const int& size, const int& r, const int& g, const int& b);
-	void drawCircle(const int& row, const int& col, const int& radius, const int& r, const int& g, const int& b);
-	void drawBox(const int& tr, const int& lc, const int& br, const int& rc, const int& r, const int& g, const int& b);
-	void invert(PPM& dst); // custom
-	void motionBlur(const int& blur_length, PPM& dst); // custom
-	bool equals(const PPM& rhs) const; // custom
+	void invert(PPM& dst) const; // custom
+	void motionBlur(const int& blur_length, PPM& dst) const; // custom
+	//bool equals(const PPM& rhs) const;
 	PPM& operator= (const PPM& rhs);
 	PPM operator+ (const PPM& rhs) const;
 	PPM& operator+= (const PPM& rhs);
@@ -60,18 +58,10 @@ public:
 	bool operator<= (const PPM& rhs) const;
 	bool operator> (const PPM& rhs) const;
 	bool operator>= (const PPM& rhs) const;
-	void worker_invert(PPM& dst);
-	void worker_motionblur(const int& value, PPM& dst);
-	void workerPE(const PPM& rhs);
-	void workerME(const PPM& rhs);
-	void workerTE(const double& value);
-	void clear();
-private:
-	std::vector<byte> image;
-	int height, width, max_color_value;
-	unsigned int mNumThreads;
-	ThreadedVector<int> mWorkQueue;
-	const int num_channels = 3;
+	// Project 6
+	int edgePixelValue(const int& row1, const int& column1, const int& row2, const int& column2) const;
+	void findVerticalEdges(PPM& dst) const;
+	void findHorizontalEdges(PPM& dst) const;
 };
 
 std::ostream& operator<< (std::ostream& os, const PPM& rhs);

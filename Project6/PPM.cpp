@@ -1,25 +1,24 @@
 #include "PPM.h"
-#include "ThreadedVector.h"
 #include <cstring>
 #include <algorithm>
-#include <cmath>
-#include <thread>
 
 // The default constructor. A default PPM has 0 height, 0 width, and max color value of 0.
-PPM::PPM() :
-	image(std::vector<byte>()), height(0), width(0), max_color_value(0), mNumThreads(std::thread::hardware_concurrency() - 1) {}
+PPM::PPM() : image(std::vector<byte>()), height(0), width(0), max_color_value(0) {}
 // A constructor with parameters for the height and width. The max color value should be set to 0.
-PPM::PPM(const int& height, const int& width) :
-	height(height), width(width), max_color_value(0), mNumThreads(std::thread::hardware_concurrency() - 1)
+PPM::PPM(const int& height, const int& width) : height(height), width(width), max_color_value(0)
 {
 	initializeImage();
 }
 PPM::PPM(const PPM& copy)
 {
-	image = copy.image;
-	height = copy.height;
-	width = copy.width;
-	max_color_value = copy.max_color_value;
+	setHeight(copy.getHeight());
+	setWidth(copy.getWidth());
+	setMaxColorValue(copy.getMaxColorValue());
+	
+	for (int i = 0; i < getHeight(); i++)
+		for (int j = 0; j < getWidth(); j++)
+			for (int k = 0; k < 3; k++)
+				setChannel(i, j, k, copy.getChannel(i, j, k));
 }
 // Returns amount of memory needed to store the image
 size_t PPM::sizeOfImage() const
@@ -47,6 +46,7 @@ int PPM::index(const int& row, const int& column, const int& channel) const
 // Checks if value is a legal color value for this image. Returns true if it is legal, false otherwise.
 bool PPM::valueValid(const int& value) const
 {
+	std::cout << value << std::endl;
 	return value <= max_color_value && value >= 0;
 }
 // Returns the height of the PPM.
@@ -163,95 +163,19 @@ void PPM::grayFromLinearColorimetric(PPM& dst) const
 		for (int j = 0; j < width; j++)
 			dst.setPixel(i, j, (int)linearColorimetricPixelValue(i, j));
 }
-int PPM::edgePixelValue(const int& row1, const int& column1, const int& row2, const int& column2) const
-{
-	double v1 = linearColorimetricPixelValue(row1, column1);
-	double v2 = linearColorimetricPixelValue(row2, column2);
-	if (std::abs(v1 - v2) > (max_color_value * 0.1))
-		return max_color_value;
-	else
-		return 0;
-}
-void PPM::findHorizontalEdges(PPM& dst) const
-{
-	dst = PPM(getHeight(), getWidth());
-	dst.setMaxColorValue(getMaxColorValue());
-
-	for (int i = 1; i < getHeight() - 1; i++)
-		for (int j = 0; j < getWidth() - 1; j++)
-			dst.setPixel(i, j, edgePixelValue(i, j, i + 1, j + 1));
-}
-void PPM::findVerticalEdges(PPM& dst) const
-{
-	dst = PPM(getHeight(), getWidth());
-	dst.setMaxColorValue(getMaxColorValue());
-
-	for (int i = 0; i < getHeight(); i++)
-		for (int j = 1; j < getWidth(); j++)
-			dst.setPixel(i, j, edgePixelValue(i, j, i + 1, j + 1));
-}
-void PPM::drawDiamond(const int& row, const int& col, const int& size, const int& r, const int& g, const int& b)
-{
-	int lower_i = (row - size < 0 ? 0 : row - size);
-	int upper_i = (row + size >= getHeight() ? getHeight() - 1 : row + size);
-	int lower_j = (col - size < 0 ? 0 : col - size);
-	int upper_j = (col + size >= getWidth() ? getWidth() - 1 : col + size);
-
-	for (int i = lower_i; i <= upper_i; i++)
-		for (int j = lower_j; j <= upper_j; j++)
-			if (std::abs(i - row) + std::abs(j - col) <= size)
-				setPixel(i, j, r, g, b);
-}
-void PPM::drawCircle(const int& row, const int& col, const int& radius, const int& r, const int& g, const int& b)
-{
-	int lower_i = (row - radius < 0 ? 0 : row - radius);
-	int upper_i = (row + radius >= getHeight() ? getHeight() - 1 : row + radius);
-	int lower_j = (col - radius < 0 ? 0 : col - radius);
-	int upper_j = (col + radius >= getWidth() ? getWidth() - 1 : col + radius);
-
-	for (int i = lower_i; i <= upper_i; i++)
-		for (int j = lower_j; j <= upper_j; j++)
-			if (std::sqrt(std::pow(i - row, 2) + std::pow(j - col, 2)) <= radius)
-				setPixel(i, j, r, g, b);
-}
-void PPM::drawBox(const int& tr, const int& lc, const int& br, const int& rc, const int& r, const int& g, const int& b)
-{
-	for (int i = tr; i <= br; i++)
-		for (int j = lc; j <= rc; j++)
-			setPixel(i, j, r, g, b);
-}
-void PPM::invert(PPM& dst) // custom
+void PPM::invert(PPM& dst) const // custom
 {
 	dst.setHeight(height);
 	dst.setWidth(width);
 	dst.setMaxColorValue(max_color_value);
 
-	mWorkQueue.resize(height);
 	for (int i = 0; i < height; i++)
-		mWorkQueue.push_back(i);
-
-	std::thread threads[mNumThreads];
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i] = std::thread(&PPM::worker_invert, this, std::ref(dst));
-
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i].join();
-}
-void PPM::worker_invert(PPM& dst)
-{
-	std::vector<int> work(1);
-	while (!mWorkQueue.empty())
-	{
-		mWorkQueue.pop_back(work, 1);
-		int i = work[0];
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
 				dst.setChannel(i, j, k, max_color_value - getChannel(i, j, k));
-		work.clear();
-	}
 }
 // Blur length must be > 0
-void PPM::motionBlur(const int& blur_length, PPM& dst) // custom
+void PPM::motionBlur(const int& blur_length, PPM& dst) const // custom
 {
 	if (blur_length < 0)
 		return;
@@ -260,24 +184,7 @@ void PPM::motionBlur(const int& blur_length, PPM& dst) // custom
 	dst.setWidth(width);
 	dst.setMaxColorValue(max_color_value);
 
-	mWorkQueue.resize(height);
 	for (int i = 0; i < height; i++)
-		mWorkQueue.push_back(i);
-
-	std::thread threads[mNumThreads];
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i] = std::thread(&PPM::worker_motionblur, this, std::ref(blur_length), std::ref(dst));
-
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i].join();
-}
-void PPM::worker_motionblur(const int& blur_length, PPM& dst)
-{
-	std::vector<int> work(1);
-	while (!mWorkQueue.empty())
-	{
-		mWorkQueue.pop_back(work, 1);
-		int i = work[0];
 		for (int j = 0; j < width; j++)
 		{
 			int numPixelsToRight = std::min(width - j, blur_length);
@@ -294,18 +201,21 @@ void PPM::worker_motionblur(const int& blur_length, PPM& dst)
 
 			dst.setPixel(i, j, r, g, b);
 		}
-		work.clear();
-	}
 }
-bool PPM::equals(const PPM& rhs) const
+/*bool PPM::equals(const PPM& rhs) const
 {
 	if (height != rhs.getHeight()) return false;
 	else if (width != rhs.getWidth()) return false;
 	else if (max_color_value != rhs.getMaxColorValue()) return false;
-	else return image == rhs.image;
-}
+	else return std::memcmp(image, rhs.image, sizeOfImage()) == 0;
+}*/
 PPM& PPM::operator=(const PPM& rhs)
 {
+	//this->height = rhs.height;
+	//this->width = rhs.width;
+	//this->max_color_value = rhs.max_color_value;
+	//delete[] image;
+	//this->image = new byte[sizeOfImage()];
 	setHeight(rhs.getHeight());
 	setWidth(rhs.getWidth());
 	setMaxColorValue(rhs.getMaxColorValue());
@@ -314,6 +224,19 @@ PPM& PPM::operator=(const PPM& rhs)
 }
 PPM PPM::operator+ (const PPM& rhs) const
 {
+	/*PPM temp(height, width);
+	temp.setMaxColorValue(max_color_value);
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			for (int k = 0; k < num_channels; k++)
+			{
+				int new_value = getChannel(i, j, k) + rhs.getChannel(i, j, k);
+				if (new_value > max_color_value)
+					new_value = max_color_value;
+				temp.setChannel(i, j, k, new_value);
+			}
+	return temp;*/
+
 	PPM temp;
 	temp = *this;
 	temp += rhs;
@@ -321,26 +244,7 @@ PPM PPM::operator+ (const PPM& rhs) const
 }
 PPM& PPM::operator+= (const PPM& rhs)
 {
-	mWorkQueue.resize(height);
 	for (int i = 0; i < height; i++)
-		mWorkQueue.push_back(i);
-
-	std::thread threads[mNumThreads];
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i] = std::thread(&PPM::workerPE, this, std::ref(rhs));
-
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i].join();
-
-	return *this;
-}
-void PPM::workerPE(const PPM& rhs)
-{
-	std::vector<int> work(1);
-	while (!mWorkQueue.empty())
-	{
-		mWorkQueue.pop_back(work, 1);
-		int i = work[0];
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
 			{
@@ -349,8 +253,15 @@ void PPM::workerPE(const PPM& rhs)
 					new_value = max_color_value;
 				setChannel(i, j, k, new_value);
 			}
-		work.clear();
+	return *this;
+	/*for (size_t i = 0; i < sizeOfImage(); i++)
+	{
+		int new_value = image[i] + rhs.image[i];
+		if (new_value > max_color_value)
+			new_value = max_color_value;
+		image[i] = new_value;
 	}
+	return *this;*/
 }
 PPM PPM::operator- (const PPM& rhs) const
 {
@@ -361,26 +272,15 @@ PPM PPM::operator- (const PPM& rhs) const
 }
 PPM& PPM::operator-= (const PPM& rhs)
 {
-	mWorkQueue.resize(height);
-	for (int i = 0; i < height; i++)
-		mWorkQueue.push_back(i);
-
-	std::thread threads[mNumThreads];
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i] = std::thread(&PPM::workerME, this, std::ref(rhs));
-
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i].join();
-
-	return *this;
-}
-void PPM::workerME(const PPM& rhs)
-{
-	std::vector<int> work;
-	while (!mWorkQueue.empty())
+	/*for (size_t i = 0; i < sizeOfImage(); i++)
 	{
-		mWorkQueue.pop_back(work, 1);
-		int i = work[0];
+		int new_value = image[i] - rhs.image[i];
+		if (new_value < 0)
+			new_value = 0;
+		image[i] = new_value;
+	}
+	return *this;*/
+	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
 			{
@@ -389,8 +289,7 @@ void PPM::workerME(const PPM& rhs)
 					new_value = 0;
 				setChannel(i, j, k, new_value);
 			}
-		work.clear();
-	}
+	return *this;
 }
 // The operator to multiply the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 * 0.67;
 PPM PPM::operator* (const double& value) const
@@ -402,26 +301,15 @@ PPM PPM::operator* (const double& value) const
 }
 PPM& PPM::operator*= (const double& value)
 {
-	mWorkQueue.resize(height);
-	for (int i = 0; i < height; i++)
-		mWorkQueue.push_back(i);
-
-	std::thread threads[mNumThreads];
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i] = std::thread(&PPM::workerTE, this, std::ref(value));
-	
-	for (unsigned int i = 0; i < mNumThreads; i++)
-		threads[i].join();
-	
-	return *this;
-}
-void PPM::workerTE(const double& value)
-{
-	std::vector<int> work(1);
-	while (!mWorkQueue.empty())
+	/*for (size_t i = 0; i < sizeOfImage(); i++)
 	{
-		mWorkQueue.pop_back(work, 1);
-		int i = work[0];
+		int new_value = image[i] * value;
+		if (new_value > max_color_value) new_value = max_color_value;
+		else if (new_value < 0) new_value = 0;
+		image[i] = new_value;
+	}
+	return *this;*/
+	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			for (int k = 0; k < num_channels; k++)
 			{
@@ -430,8 +318,7 @@ void PPM::workerTE(const double& value)
 				else if (new_value < 0) new_value = 0;
 				setChannel(i, j, k, (int)new_value);
 			}
-		work.clear();
-	}
+	return *this;
 }
 // The operator to divide the values of a PPM object by a double, creating a new PPM object. e.g. ppm3 = ppm1 / 0.25;
 PPM PPM::operator/ (const double& value) const
@@ -503,8 +390,34 @@ std::istream& operator>> (std::istream& is, PPM& rhs)
 	delete[] pixel;
 	return is;
 }
-void PPM::clear() {
+// Project 6
+int PPM::edgePixelValue(const int& row1, const int& column1, const int& row2, const int& column2) const {
+	double value1 = linearColorimetricPixelValue(row1, column1);
+	double value2 = linearColorimetricPixelValue(row2, column2);
+
+	return (std::abs(value1 - value2) > (.1 * getMaxColorValue())) ? getMaxColorValue() : 0;
+}
+void PPM::findVerticalEdges(PPM& dst) const {
+	dst.setHeight(getHeight());
+	dst.setWidth(getWidth());
+	dst.setMaxColorValue(getMaxColorValue());
+
 	for (int i = 0; i < getHeight(); i++)
+		dst.setPixel(i, 0, 0);
+
+	for (int i = 1; i < getHeight(); i++)
 		for (int j = 0; j < getWidth(); j++)
-			setPixel(i, j, 0, 0, 0);
+			dst.setPixel(i, j, edgePixelValue(i, j, i - 1, j));
+}
+void PPM::findHorizontalEdges(PPM& dst) const {
+	dst.setHeight(getHeight());
+	dst.setWidth(getWidth());
+	dst.setMaxColorValue(getMaxColorValue());
+
+	for (int j = 0; j < getWidth(); j++)
+		dst.setPixel(0, j, 0);
+
+	for (int i = 0; i < getHeight(); i++)
+		for (int j = 1; j < getWidth(); j++)
+			dst.setPixel(i, j, edgePixelValue(i, j, i, j - 1));
 }
