@@ -281,6 +281,7 @@ void showMenu(std::ostream& os)
 		"turing-randomize) Randomize the chemical species concentrations.\n"
 		"turing-update) Update the chemical species concentrations.\n"
 		"turing-calculate) Calculate the grid numbers for Turing pattern.\n"
+		"threads) Set the number of threads to use.\n"
 		"# Comment to end of line\n"
 		"size) Set the size of input image 1\n"
 		"max) Set the max color value of input image 1\n"
@@ -392,6 +393,8 @@ void takeAction(std::istream& is, std::ostream& os, const std::string& choice, P
 		updateTuringValues(is, os, grid);
 	else if (choice == "turing-calculate")
 		calculateTuring(is, os, grid);
+	else if (choice == "threads")
+		setNumberThreads(is, os, grid);
 	else if (choice[0] == '#')
 		commentLine(is);
 	else if (choice == "size")
@@ -805,4 +808,14 @@ void setTuringPattern(std::istream& is, std::ostream& os, NumberGrid*& grid) {
 		delete grid;
 
 	grid = new TuringPattern();
+}
+void setNumberThreads(std::istream& is, std::ostream& os, NumberGrid& grid) {
+	TuringPattern* tp = dynamic_cast<TuringPattern*>(&grid);
+
+	if (tp != nullptr) {
+		int num_threads = getInteger(is, os, "Number of threads? ");
+		tp->setNumThreads(num_threads);
+	}
+	else
+		os << "Grid object is not a Turing object.\n";
 }

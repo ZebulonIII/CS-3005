@@ -38,6 +38,7 @@ private:
 	double mMinDifference, mMaxDifference;
 
 	void worker_updateValues(const int& species);
+	void worker_randomizeValues();
 };
 
 #endif

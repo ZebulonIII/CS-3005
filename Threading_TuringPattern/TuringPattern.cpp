@@ -60,7 +60,38 @@ void TuringPattern::setPrevValue(const int& row, const int& column, const int& s
 void TuringPattern::swapCurrPrev() {
 	std::swap(mCurr, mPrev);
 }
+void TuringPattern::worker_randomizeValues() {
+	int big_value = 1234567; 
+	double random_value;
+	std::vector<int> work;
+	work.clear();
+
+	while (!mWorkQueue.empty()) {
+		mWorkQueue.pop_back(work, 1);
+
+		int row = work[0];
+		for (int col = 0; col < getWidth(); col++)
+			for (int species = 0; species < 2; species++) {
+				random_value = ((std::rand() % big_value) - (big_value / 2.)) / (50. * big_value);
+				setCurrValue(row, col, species, random_value);
+				setPrevValue(row, col, species, random_value);
+		}
+		work.clear();
+	}
+}
 void TuringPattern::randomizeValues() {
+	mWorkQueue.resize(getHeight());
+	for (int i = 0; i < getHeight(); i++)
+		mWorkQueue.push_back(i);
+
+	std::thread threads[getNumThreads()];
+	for (unsigned int i = 0; i < getNumThreads(); i++)
+		threads[i] = std::thread(&TuringPattern::worker_randomizeValues, this);
+
+	for (unsigned int i = 0; i < getNumThreads(); i++)
+		threads[i].join();
+}
+/*void TuringPattern::randomizeValues() {
 	int big_value = 1234567;
 	double random_value;
 	for (int species = 0; species < 2; species++)
@@ -70,13 +101,13 @@ void TuringPattern::randomizeValues() {
 				setCurrValue(row, col, species, random_value);
 				setPrevValue(row, col, species, random_value);
 			}
-}
+}*/
 double TuringPattern::calculateDivergence(const int& row, const int& column, const int& species) {
 	double delta = -4.0 * getPrevValue(row, column, species)
-		+ getPrevValue(row - 1, column, species)
-		+ getPrevValue(row + 1, column, species)
-		+ getPrevValue(row, column - 1, species)
-		+ getPrevValue(row, column + 1, species);
+		+ getPrevValue((row - 1 >= 0) ? row - 1 : getHeight() - 1, column, species)
+		+ getPrevValue((row + 1 < getHeight()) ? row + 1 : 0, column, species)
+		+ getPrevValue(row, (column - 1 >= 0 ) ? column - 1 : getWidth() - 1, species)
+		+ getPrevValue(row, (column + 1 < getWidth()) ? column + 1 : 0, species);
 	return delta / (mDx * mDx);
 }
 double TuringPattern::calculateCurrValue(const int& row, const int& column, const int& species) {

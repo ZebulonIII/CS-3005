@@ -15,6 +15,8 @@ set-color-gradient 161 206 137   0  255   0   0   0
 # Choose Turing pattern
 turing
 
+threads 2
+
 # Configure the grid
 grid 100 100 255
 

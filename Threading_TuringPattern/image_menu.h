@@ -83,6 +83,6 @@ void randomizeTuringValues(std::istream& is, std::ostream& os, NumberGrid& grid)
 void updateTuringValues(std::istream& is, std::ostream& os, NumberGrid& grid);
 void calculateTuring(std::istream& is, std::ostream& os, NumberGrid& grid);
 void setTuringPattern(std::istream& is, std::ostream& os, NumberGrid*& grid);
-
+void setNumberThreads(std::istream& is, std::ostream& os, NumberGrid& grid);
 
 #endif // _IMAGE_MENU_H_
