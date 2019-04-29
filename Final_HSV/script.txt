@@ -1,0 +1,75 @@
+############################################
+# Make a first image
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 43
+set-color   0 255   0   0
+set-color  41   0 255   0
+set-color  42   0   0 255
+set-hsv-color-gradient 0 250 1.0 1.0 8 300 1.0 1.0
+set-hsv-color-gradient 8 115 1.0 1.0 16 115 1.0 0.10
+set-hsv-color-gradient 16 115 1.0 0.10 24 205 0.5 0.75
+set-hsv-color-gradient 24 205 1.0 0.10 32 205 1.0 0.50
+set-hsv-color-gradient 32 205 1.0 0.50 40 205 0.25 0.75
+
+# Choose JuliaSet, and configure it
+julia
+julia-parameters 0.285 0.01
+
+# Configure the grid
+grid 1000 1000 210
+
+# Configure the fractal plane
+fractal-plane-size -1.2 1.0 -0.90 1.30
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write exam-hsv-gradient-julia.ppm
+
+############################################
+# Make a second image
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 43
+set-color   0 255   0   0
+set-color  41   0 255   0
+set-color  42   0   0 255
+
+set-hsv-color-gradient 0 30 1.0 1.0 10 60 1.0 1.0
+set-hsv-color-gradient 10 60 1.0 1.0 20 60 1.0 0.50
+set-hsv-color-gradient 20 60 1.0 0.50 30 90 1.0 0.50
+set-hsv-color-gradient 30 90 1.0 0.50 40 90 0.5 1.0
+
+# Choose MandelbrotSet
+mandelbrot
+
+# Configure the grid
+grid 1000 1000 210
+
+# Configure the fractal plane
+fractal-plane-size -0.553068 -0.550138 0.62235 0.62528
+
+# Calculate the escape values
+fractal-calculate
+
+# Apply grid values to the output PPM
+grid-apply-color-table
+
+# Save the image to file
+write exam-hsv-gradient-mandelbrot.ppm
+
+############################################
+# Done
+############################################
+
+# Quit
+quit

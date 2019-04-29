@@ -1,0 +1,39 @@
+############################################
+# Make a Turing pattern
+############################################
+############################################
+# Fill the color table
+############################################
+set-color-table-size 258
+set-color 257 0   255   0
+set-color 256 255 255   0
+set-color   0   0 255 255
+set-color-gradient   1 255   0   0   89 255  79  79
+set-color-gradient  90 255  79  79  169  79  79 255
+set-color-gradient 170  79  79 255  255   0   0 255
+
+# Choose Turing pattern
+turing
+
+# Configure the grid
+grid 250 20 255
+
+# Configure the Turing pattern
+turing-parameters 1.0 0.001 -0.5 -1.0 0.1 10.0
+
+# Initialize the concentrations
+turing-randomize
+
+# Update 3000 steps and save the new image
+turing-update 3000
+turing-calculate
+grid-apply-color-table
+write turingpattern01.ppm
+
+############################################
+# Done
+############################################
+
+# Quit
+quit
+
